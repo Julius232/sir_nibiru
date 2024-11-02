@@ -313,7 +313,7 @@ main {
     align-items: center;
     gap: 15px;
     width: 100%;
-    max-width: 1100px; /* Matches the new max-width of .play-with-me */
+    max-width: 512px; /* Matches the new max-width of .play-with-me */
     margin: 0 auto;
 }
 
