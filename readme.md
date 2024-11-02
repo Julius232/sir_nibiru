@@ -19,7 +19,7 @@ Clone this repository into the XAMPP `htdocs` folder:
 ```bash
 git clone git@github.com:Julius232/sir_nibiru.git
 C:\xampp\htdocs\sir_nibiru
-
+```
 ### Step 2: Clone the Repository
 Open the XAMPP Control Panel.
 Start the Apache and MySQL modules.
@@ -33,11 +33,11 @@ Import any required SQL files for your database schema if available.
 ```bash
 cd C:\xampp\htdocs\sir_nibiru\node
 npm install
-
+```
 ### Step 5: Run the Build
 ```bash
 npm run build
-
+```
 ### Folder Structure
 PHP Backend: The PHP files for the backend are in the root project directory (e.g., index.php, data.php, submit_signature.php).
 Node and Webpack: All Node.js and Webpack configurations are located in the node folder.
