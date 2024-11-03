@@ -1,8 +1,3 @@
-<?php
-// Define tokenMint if not already defined
-include 'data.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,13 +41,6 @@ include 'data.php';
         <!-- Mobile Menu Overlay -->
         <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
     </header>
-
-
-
-    <!-- Embed PHP tokenMint variable into JavaScript -->
-    <script>
-        const tokenMint = "<?php echo $tokenMint; ?>";
-    </script>
 
 </body>
 

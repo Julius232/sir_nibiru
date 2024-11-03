@@ -9,13 +9,21 @@ import {
 if (!window.Buffer) window.Buffer = Buffer;
 
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const connectButton = document.getElementById('connect-wallet');
     const overlay = document.getElementById('walletOptionsOverlay');
     const newUsernameInput = document.getElementById('newUsernameInput');
     let wallet = null;
 
     const phantomWallet = new PhantomWalletAdapter();
+    let TOKEN_MINT_ADDRESS, TOKEN_DECIMALS;
+    let MAX_PROGRESS = 100;
+    let tokensForFullProgress = 10000; // Default values
+    let decayRatePerHour = 10; // Default values
+    let bars = { clean: 0, play: 0, feed: 0 }; // Initial bar values
+
+    // Call fetchConfig on page load to initialize the values
+    fetchConfig();
 
     // Restore session from local storage on page load
     function restoreSession() {
@@ -321,12 +329,6 @@ document.addEventListener("DOMContentLoaded", () => {
             // Use your proxy as the RPC endpoint
             const connection = new Connection('https://tame-few-season.solana-mainnet.quiknode.pro/f6d67e803c7016d76b4d81614f5c3b48531639d7', 'confirmed');
 
-            // Define the token mint address for the token you want to burn
-            const TOKEN_MINT_ADDRESS = new PublicKey('DXBYAw9aQheMdujaLZYnVSpKSK4n8jMS7HfLbiv5RWnS');
-
-            // Hardcode the token decimals to 9
-            const TOKEN_DECIMALS = 9;
-
             // Find the associated token account of the user
             const associatedTokenAddress = await getAssociatedTokenAddress(
                 TOKEN_MINT_ADDRESS,
@@ -563,20 +565,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Call the fetch function
     fetchLastSitters();
 
-    let MAX_PROGRESS = 100;
-    let tokensForFullProgress = 10000; // Default values
-    let decayRatePerHour = 10; // Default values
-
-    let bars = { clean: 0, play: 0, feed: 0 }; // Initial bar values
-
     // Fetch config values from the backend
     async function fetchConfig() {
         try {
             const response = await fetch('https://www.sir-nibiru.com/fetch_config.php');
             const data = await response.json();
-
+    
             if (data.status === "success") {
                 const config = data.config;
+                TOKEN_MINT_ADDRESS = new PublicKey(config.tokenMintAddress);
+                TOKEN_DECIMALS = parseInt(config.tokenDecimals, 10);
                 tokensForFullProgress = parseInt(config.tokensForFullProgress, 10) || tokensForFullProgress;
                 decayRatePerHour = parseInt(config.decayRatePerHour, 10) || decayRatePerHour;
             } else {
@@ -587,9 +585,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Call fetchConfig on page load to initialize the values
-    fetchConfig();
-
     // Calculate the increase per token based on tokensForFullProgress
     const increasePerToken = MAX_PROGRESS / tokensForFullProgress;
 
@@ -598,40 +593,40 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             // Reset bars to zero at the beginning of each calculation
             bars = { clean: 0, play: 0, feed: 0 };
-    
+
             const response = await fetch('https://www.sir-nibiru.com/fetch_donations.php');
             const data = await response.json();
-    
+
             if (data.status === "success") {
                 const donations = data.donations;
                 const now = new Date();
-    
+
                 donations.forEach(donation => {
                     const action = donation.action;
                     const donationAmount = parseFloat(donation.donation_amount);
                     const donationTimestamp = new Date(donation.timestamp);
-    
+
                     // Calculate the increase based on donation amount
                     const increase = donationAmount * increasePerToken;
-    
+
                     // Calculate elapsed hours since the donation
                     const elapsedHours = (now - donationTimestamp) / (1000 * 60 * 60);
-    
+
                     // Calculate decay based on elapsed hours since donation
                     const decay = elapsedHours * decayRatePerHour;
-    
+
                     // Calculate the net increase after decay
                     const netIncrease = Math.max(0, increase - decay);
-    
+
                     // Update the bar, ensuring it doesn't exceed MAX_PROGRESS
                     bars[action] = Math.min(bars[action] + netIncrease, MAX_PROGRESS);
                 });
             } else {
                 console.error("Failed to fetch donations:", data.message);
             }
-    
+
             updateProgressBars();
-    
+
         } catch (error) {
             console.error("Error fetching donations:", error);
         }

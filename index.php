@@ -1,12 +1,7 @@
 <?php
 // Include the header and data
 include 'header.php';
-include 'data.php';
 ?>
-
-<script>
-    const burnAddress = "<?php echo trim($burnAddress); ?>";
-</script>
 
 <!-- Include only the bundled JavaScript file -->
 <script src="dist/bundle.js"></script> <!-- Adjust path as needed -->

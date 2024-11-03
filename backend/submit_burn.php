@@ -7,6 +7,9 @@ $db = connect_db();
 define('API_URL', 'https://tame-few-season.solana-mainnet.quiknode.pro/f6d67e803c7016d76b4d81614f5c3b48531639d7');
 define('SPL_TOKEN_PROGRAM_ID', 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
 
+// Fetch token mint address from the config table
+$token_mint_address = getConfigValue('tokenMintAddress');
+
 // Get JSON input and decode it
 $data = json_decode(file_get_contents("php://input"), true);
 $wallet_address = $data['wallet_address'] ?? null;
@@ -39,6 +42,13 @@ if ($existingCount > 0) {
         "signature" => $signature
     ]);
     exit;
+}
+
+function getConfigValue($key) {
+    global $db; // Use the existing database connection
+    $stmt = $db->prepare("SELECT config_value FROM config WHERE config_key = ?");
+    $stmt->execute([$key]);
+    return $stmt->fetchColumn();
 }
 
 // Fetch and validate transaction details with API
@@ -116,7 +126,6 @@ if (empty($tx_details) || !isset($tx_details['transaction'])) {
 
 // Initialize variables
 $burned_amount = 0;
-$token_mint_address = 'DXBYAw9aQheMdujaLZYnVSpKSK4n8jMS7HfLbiv5RWnS';
 $burn_instruction_found = false;
 
 // Get the accountKeys array for index references
