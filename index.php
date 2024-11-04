@@ -5,6 +5,97 @@ include 'header.php';
 
 <!-- Include only the bundled JavaScript file -->
 <script src="dist/bundle.js"></script> <!-- Adjust path as needed -->
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script src="animations/sir-nibiru3.js"></script>
+<script>
+    var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+    function init() {
+        canvas = document.getElementById("canvas");
+        anim_container = document.getElementById("animation_container");
+        dom_overlay_container = document.getElementById("dom_overlay_container");
+        var comp = AdobeAn.getComposition("B309F7E37067A34FB780BA4C6E089657");
+        var lib = comp.getLibrary();
+        var loader = new createjs.LoadQueue(false);
+        loader.addEventListener("fileload", function (evt) { handleFileLoad(evt, comp) });
+        loader.addEventListener("complete", function (evt) { handleComplete(evt, comp) });
+        var lib = comp.getLibrary();
+        loader.loadManifest(lib.properties.manifest);
+    }
+    function handleFileLoad(evt, comp) {
+        var images = comp.getImages();
+        if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }
+    }
+    function handleComplete(evt, comp) {
+        //This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+        var lib = comp.getLibrary();
+        var ss = comp.getSpriteSheet();
+        var queue = evt.target;
+        var ssMetadata = lib.ssMetadata;
+        for (i = 0; i < ssMetadata.length; i++) {
+            ss[ssMetadata[i].name] = new createjs.SpriteSheet({ "images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames })
+        }
+        exportRoot = new lib.sirnibiru3();
+        stage = new lib.Stage(canvas);
+        //Registers the "tick" event listener.
+        fnStartAnimation = function () {
+            stage.addChild(exportRoot);
+            createjs.Ticker.framerate = lib.properties.fps;
+
+            const updateAnimationFrame = () => {
+                const yellowBarWidth = parseFloat(document.querySelector('.progress-bar.yellow').style.width) || 0;
+
+                if (yellowBarWidth <= 33) {
+                    // Keep frames between 70-100
+                    if (exportRoot.currentFrame >= 98 || exportRoot.currentFrame < 70) {
+                        exportRoot.gotoAndStop(70); // Reset to start frame 70
+                    } else {
+                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1); // Play the next frame
+                    }
+                } else {
+                    // Keep frames between 0-50
+                    if (exportRoot.currentFrame >= 50 || exportRoot.currentFrame < 0) {
+                        exportRoot.gotoAndStop(0); // Reset to start frame 0
+                    } else {
+                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1); // Play the next frame
+                    }
+                }
+            };
+
+            // Inside fnStartAnimation function
+            const updateBowlImage = () => {
+                const greenBarWidth = parseFloat(document.querySelector('.progress-bar.green').style.width) || 0;
+                const bowlImage = document.getElementById('bowlImage');
+
+                // Set the bowl image based on green bar width
+                if (greenBarWidth <= 25) {
+                    bowlImage.src = "animations/images/food/empty_bowl.png";
+                } else if (greenBarWidth <= 50) {
+                    bowlImage.src = "animations/images/food/slightly_filled_bowl.png";
+                } else if (greenBarWidth <= 75) {
+                    bowlImage.src = "animations/images/food/filled_bowl.png";
+                } else {
+                    bowlImage.src = "animations/images/food/over_filled_bowl.png";
+                }
+            };
+
+            // Update the bowl image on each tick
+            createjs.Ticker.addEventListener("tick", () => {
+                updateAnimationFrame(); // Keep this if you have an animation frame update function
+                updateBowlImage();      // Update bowl image based on green bar
+            });
+
+
+            createjs.Ticker.addEventListener("tick", updateAnimationFrame);
+            createjs.Ticker.addEventListener("tick", stage);
+        };
+
+        AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
+        AdobeAn.compositionLoaded(lib.properties.id);
+        fnStartAnimation();
+
+    }
+    window.onload = init;
+</script>
 
 <main>
     <section class="how-to">
@@ -95,14 +186,23 @@ include 'header.php';
         </div>
     </section>
 
-
-
     <section class="play-with-me">
         <h3>Play with Me</h3>
         <div class="play-area">
             <!-- Game Frame on the Left -->
             <div class="game-container">
-                <img src="tamagotchi/nibiru_happy.png" alt="Sir Nibiru" class="tamagotchi-image">
+                <div id="bowl_container"
+                    style="position: absolute; top: 0; left: 0; z-index: 2; width: 512px; height: 512px;">
+                    <img id="bowlImage" src="" alt="Food Bowl" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <div id="animation_container"
+                    style="background-color:rgba(255, 255, 255, 1.00); width:512px; height:512px">
+                    <canvas id="canvas" width="512" height="512"
+                        style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+                    <div id="dom_overlay_container"
+                        style="pointer-events:none; overflow:hidden; width:512px; height:512px; position: absolute; left: 0px; top: 0px; display: block;">
+                    </div>
+                </div>
 
                 <div class="progress-bars">
                     <div class="progress-bar-container">
@@ -141,7 +241,6 @@ include 'header.php';
                 </div>
             </div>
         </div>
-        </div>
     </section>
 
     <!-- Highscore Section -->
@@ -171,6 +270,7 @@ include 'header.php';
     </div>
 
 </main>
+
 
 
 

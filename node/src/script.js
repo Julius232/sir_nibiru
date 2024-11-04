@@ -619,12 +619,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const netIncrease = Math.max(0, increase - decay);
 
                     // Update the bar, ensuring it doesn't exceed MAX_PROGRESS
+                    
                     bars[action] = Math.min(bars[action] + netIncrease, MAX_PROGRESS);
                 });
             } else {
                 console.error("Failed to fetch donations:", data.message);
             }
-
+            //bars = { clean: 100, play: 12, feed: 24 }; -- for local testing
             updateProgressBars();
 
         } catch (error) {

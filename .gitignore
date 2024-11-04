@@ -6,6 +6,7 @@ build/
 # Ignore img folder
 img/
 tamagotchi/
+animations/images
 
 # Ignore everything in the node folder except specific files
 node/*
