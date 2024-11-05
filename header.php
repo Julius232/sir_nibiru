@@ -9,6 +9,20 @@
 
     <!-- Google Fonts: Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+        <!-- Default favicon (16x16 or 32x32 pixels) -->
+    <link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
+
+    <!-- PNG favicon for higher resolution devices -->
+    <link rel="icon" href="img/favicon/favicon-32x32.png" sizes="32x32" type="image/png">
+
+    <!-- Apple Touch Icon (for iOS devices) -->
+    <link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.png" sizes="180x180">
+
+    <!-- Android and Windows Icons (optional) -->
+    <link rel="icon" href="img/favicon/android-chrome-192x192.png" sizes="192x192" type="image/png">
+    <link rel="icon" href="img/favicon/android-chrome-512x512.png" sizes="512x512" type="image/png">
+    <link rel="icon" href="img/favicon/favicon-48x48.png" sizes="48x48" type="image/png">
+
 </head>
 
 <body>
