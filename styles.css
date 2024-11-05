@@ -204,6 +204,20 @@ h2 {
     }
 }
 
+/* Responsive Layout for Smaller Screens */
+@media (max-width: 600px) {
+    .game-container,
+    .right-panel {
+        width: 100%; /* Allow the container to scale down */
+        max-width: 512px; /* Ensure it doesn’t exceed the original width */
+    }
+
+    .button-grid h4 {
+        font-size: 1rem;
+        margin: 10px 0;
+    }
+}
+
 
 main {
     margin: 20px auto;
@@ -232,10 +246,9 @@ main {
 /* Play Area Layout */
 .play-area {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;    /* Center items */
     gap: 20px;
-    flex-wrap: wrap;
 }
 
 /* Game Frame */
@@ -307,29 +320,29 @@ main {
     background-color: #f1c40f;
 }
 
+/* Play Menu below Game Container */
 .right-panel {
+    width: 512px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-    width: 100%;
-    max-width: 512px; /* Matches the new max-width of .play-with-me */
-    margin: 0 auto;
-}
-
-
-.button-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns of equal width */
-    gap: 0; /* No gap between buttons */
+    margin-top: 20px; /* Spacing between Game Container and Play Menu */
     background-color: #820000;
-    padding: 0;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    width: 100%; /* Full width of parent */
 }
 
+/* Button Grid in Play Menu */
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 0;
+    width: 100%; /* Full width of parent */
+    padding: 0;
+    border-radius: 15px;
+}
 
+/* Play Menu Heading */
 .button-grid h4 {
     grid-column: span 2;
     font-size: 1.2rem;
@@ -339,18 +352,19 @@ main {
     font-weight: bold;
 }
 
+/* Play Menu Buttons */
 .button-grid button {
-    width: 100%; /* Fill the grid cell width */
+    width: 100%;
     padding: 0;
     margin: 0;
-    background-size: contain; /* Adjusts image within the button */
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     border: none;
     cursor: pointer;
     transition: transform 0.2s;
-    color: transparent; /* Hide text */
-    aspect-ratio: 536 / 122; /* Maintain the image's aspect ratio */
+    color: transparent;
+    aspect-ratio: 536 / 122;
 }
 
 /* Individual Button Styles with Background Images */

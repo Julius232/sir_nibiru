@@ -625,7 +625,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             } else {
                 console.error("Failed to fetch donations:", data.message);
             }
-            //bars = { clean: 100, play: 12, feed: 24 }; -- for local testing
+            bars = { clean: 100, play: 100, feed: 100 };
             updateProgressBars();
 
         } catch (error) {

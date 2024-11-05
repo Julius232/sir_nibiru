@@ -6,7 +6,7 @@ include 'header.php';
 <!-- Include only the bundled JavaScript file -->
 <script src="dist/bundle.js"></script> <!-- Adjust path as needed -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script src="animations/sir-nibiru3.js"></script>
+<script src="animations/sir-nibiru7.js"></script>
 <script>
     var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
     function init() {
@@ -34,29 +34,63 @@ include 'header.php';
         for (i = 0; i < ssMetadata.length; i++) {
             ss[ssMetadata[i].name] = new createjs.SpriteSheet({ "images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames })
         }
-        exportRoot = new lib.sirnibiru3();
+        exportRoot = new lib.sirnibiru7();
         stage = new lib.Stage(canvas);
         //Registers the "tick" event listener.
         fnStartAnimation = function () {
             stage.addChild(exportRoot);
-            createjs.Ticker.framerate = lib.properties.fps;
+            createjs.Ticker.framerate = 15;
 
             const updateAnimationFrame = () => {
                 const yellowBarWidth = parseFloat(document.querySelector('.progress-bar.yellow').style.width) || 0;
+                const blueBarWidth = parseFloat(document.querySelector('.progress-bar.blue').style.width) || 0;
 
-                if (yellowBarWidth <= 33) {
-                    // Keep frames between 70-100
-                    if (exportRoot.currentFrame >= 98 || exportRoot.currentFrame < 70) {
-                        exportRoot.gotoAndStop(70); // Reset to start frame 70
+                if (yellowBarWidth <= 33 && blueBarWidth <= 33) {
+                    // Frames 231-260
+                    if (exportRoot.currentFrame < 231 || exportRoot.currentFrame >= 260) {
+                        exportRoot.gotoAndStop(231);
                     } else {
-                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1); // Play the next frame
+                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
                     }
-                } else {
-                    // Keep frames between 0-50
-                    if (exportRoot.currentFrame >= 50 || exportRoot.currentFrame < 0) {
-                        exportRoot.gotoAndStop(0); // Reset to start frame 0
+                }
+                else if (yellowBarWidth > 33 && blueBarWidth <= 33) {
+                    // Frames 70-100
+                    if (exportRoot.currentFrame < 51 || exportRoot.currentFrame >= 98) {
+                        exportRoot.gotoAndStop(51);
                     } else {
-                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1); // Play the next frame
+                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
+                    }
+                }
+                else if (yellowBarWidth <= 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
+                    // Frames 200-230
+                    if (exportRoot.currentFrame < 200 || exportRoot.currentFrame >= 229) {
+                        exportRoot.gotoAndStop(200);
+                    } else {
+                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
+                    }
+                }
+                else if (yellowBarWidth > 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
+                    // Frames 1-50
+                    if (exportRoot.currentFrame < 1 || exportRoot.currentFrame >= 49) {
+                        exportRoot.gotoAndStop(1);
+                    } else {
+                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
+                    }
+                }
+                else if (yellowBarWidth <= 33 && blueBarWidth > 66) {
+                    // Frames 169-199
+                    if (exportRoot.currentFrame < 169 || exportRoot.currentFrame >= 198) {
+                        exportRoot.gotoAndStop(169);
+                    } else {
+                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
+                    }
+                }
+                else if (yellowBarWidth > 33 && blueBarWidth > 66) {
+                    // Frames 100-150
+                    if (exportRoot.currentFrame < 100 || exportRoot.currentFrame >= 151) {
+                        exportRoot.gotoAndStop(100);
+                    } else {
+                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
                     }
                 }
             };
@@ -192,9 +226,11 @@ include 'header.php';
             <!-- Game Frame on the Left -->
             <div class="game-container">
                 <div id="bowl_container"
-                    style="position: absolute; top: 0; left: 0; z-index: 2; width: 512px; height: 512px;">
-                    <img id="bowlImage" src="" alt="Food Bowl" style="width: 100%; height: 100%; object-fit: contain;">
+                    style="position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%;">
+                    <img id="bowlImage" src="" alt="Food Bowl"
+                        style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;">
                 </div>
+
                 <div id="animation_container"
                     style="background-color:rgba(255, 255, 255, 1.00); width:512px; height:512px">
                     <canvas id="canvas" width="512" height="512"
