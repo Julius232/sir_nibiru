@@ -7,28 +7,26 @@
 }
 
 body {
-    background-color: #f5f5f5;
+    background-color: #161616;
     color: #333;
     text-align: center;
 }
 
 /* Base Styles for the Header */
 header {
-    background: linear-gradient(135deg, #f06, #ff758f);
-    padding: 20px;
+    background-image: url('img/header.webp');
+    background-size: contain;         /* Scales image to fit without cropping */
+    background-position: center center; /* Centers the image */
+    background-repeat: no-repeat;
+    padding: 10px;
     color: white;
     text-align: center;
     position: relative;
-}
-
-.header-content {
-    margin-bottom: 20px;
-}
-
-.logo {
-    width: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
+    width: 100%;
+    height: auto;                     /* Allows height to adjust responsively */
+    max-width: 1100px;                /* Caps width for larger screens */
+    aspect-ratio: 2535 / 871;         /* Maintains the original aspect ratio */
+    margin: 0 auto;                   /* Centers the header horizontally */
 }
 
 h1 {
@@ -115,7 +113,6 @@ h2 {
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-
     /* Adjust header content */
     .header-content {
         margin-bottom: 10px;
@@ -186,10 +183,6 @@ h2 {
         display: block;
     }
     
-    /* Adjust logo and headings for mobile */
-    .logo {
-        width: 80px;
-    }
 
     h1 {
         font-size: 2rem;
@@ -206,6 +199,7 @@ h2 {
 
 /* Responsive Layout for Smaller Screens */
 @media (max-width: 600px) {
+    
     .game-container,
     .right-panel {
         width: 100%; /* Allow the container to scale down */
@@ -226,20 +220,24 @@ main {
 
 /* Play with Me Section */
 .play-with-me {
-    background-color: white;
+    background-image: url('img/bg_interact-with-me.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     color: black;
     padding: 25px;
     border-radius: 15px;
     margin: 20px auto;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 1100px; /* Increased from 800px */
-    width: 100%;       /* Ensure it takes full available width */
+    max-width: 1100px;
+    width: 100%;
+    aspect-ratio: 2535 / 2064; /* Matches header aspect ratio */
 }
 
-.play-with-me h3 {
-    font-size: 1.8rem;
+.play-with-me h1 {
+    font-size: 3rem;
     margin-bottom: 20px;
-    color: #333;
+    color: #ffffff;
     font-weight: bold;
 }
 
@@ -469,44 +467,52 @@ main {
 }
 
 /* Best Friend Badge Styling */
+.best-friend-section {
+    position: absolute;
+    top: 30%; /* Adjust position to place it slightly above the header content */
+    left: 75%; /* Position within the left side of the header */
+    transform: rotate(5deg); /* Slight rotation for style */
+    z-index: 10; /* Ensures it stays above other header elements */
+    width: 27%; /* Set a fixed width for the badge */
+    pointer-events: none; /* Prevents accidental clicks on the badge area */
+}
+
 .best-friend-badge {
-    background-color: #ffcc00;
-    /* Adjust to match your theme */
-    color: #333;
-    /* Text color for contrast */
-    padding: 20px;
-    /* Padding for a better appearance */
-    border-radius: 15px;
-    /* Rounded corners */
+    background-image: url('img/best-friend.webp'); /* Image for the badge */
+    background-size: contain;
+    background-repeat: no-repeat;
     width: 100%;
-    /* Full width to fit the section */
-    max-width: 400px;
-    /* Optional: max width for better layout */
-    margin: 20px auto;
-    /* Center it with margin */
+    padding-top: 100%;      /* Ensures square aspect ratio */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #333;            /* Text color for contrast */
     text-align: center;
-    /* Centered text */
+}
+
+.best-friend-name,
+.best-friend-donation {
+    font-size: clamp(0.5rem, 1.5vw, 1.2rem); /* Responsive font size with min and max */
     font-weight: bold;
-    /* Make text bold */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    /* Shadow effect for depth */
-}
-
-/* Adjusting font sizes for better readability */
-.best-friend-badge h4 {
-    font-size: 1.5rem;
-    /* Increase the size of the title */
-    margin-bottom: 10px;
-    /* Space below the title */
-}
-
-.best-friend-badge p {
-    font-size: 1.2rem;
-    /* Increase size of the description text */
+    color: #333;
     margin: 0;
-    /* Remove default margin */
+    padding: 0;
 }
 
+.best-friend-name {
+    position: absolute;
+    top: 53%;                 /* Position below the title */
+    color: #ff0000;  
+    transform: translateY(-50%) rotate(5deg);
+}
+
+.best-friend-donation {
+    position: absolute;
+    top: 60%;                 /* Positioned below the name */
+    transform: translateY(-50%) rotate(5deg);
+}
 
 /* Highscore Section */
 .highscore {

@@ -424,9 +424,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             const data = await response.json();
 
             if (data.status === "success") {
-                document.querySelector(".best-friend-badge h4").textContent = "Nibiru's Best Friend";
                 document.querySelector(".best-friend-badge p:nth-of-type(1)").textContent = data.username;
-                document.querySelector(".best-friend-badge p:nth-of-type(2)").textContent = data.topDonation;
+                const donationAmount = data.topDonation.split('.')[0];
+                document.querySelector(".best-friend-badge p:nth-of-type(2)").textContent = donationAmount;
             } else {
                 console.error("Error fetching best friend data:", data.message);
                 document.querySelector(".best-friend-badge h4").textContent = "Best Friend Not Found";

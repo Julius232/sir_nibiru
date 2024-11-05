@@ -9,7 +9,7 @@
 
     <!-- Google Fonts: Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-        <!-- Default favicon (16x16 or 32x32 pixels) -->
+    <!-- Default favicon (16x16 or 32x32 pixels) -->
     <link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
 
     <!-- PNG favicon for higher resolution devices -->
@@ -27,14 +27,18 @@
 
 <body>
     <header>
-        <div class="header-content">
-            <img src="img/sir_nibiru.png" alt="Sir Nibiru Logo" class="logo">
-            <h2>This Dog is Awesome</h2>
-            <h1>SIR NIBIRU</h1>
-            <p>This is a token you can show him your love in so many ways!</p>
-        </div>
-        <!-- Navigation Container -->
-        <nav class="nav-container">
+        <div class="header-banner"></div>
+        <section class="best-friend-section">
+            <div class="best-friend-badge">
+                <p class="best-friend-name"><?php echo $bestFriend; ?></p>
+                <p class="best-friend-donation"><?php echo $topDonation; ?></p>
+            </div>
+        </section>
+        
+    </header>
+
+    <!-- Navigation Container -->
+    <nav class="nav-container">
             <!-- Hamburger Menu Icon -->
             <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-controls="nav-links"
                 aria-expanded="false">
@@ -54,7 +58,6 @@
         </nav>
         <!-- Mobile Menu Overlay -->
         <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
-    </header>
 
 </body>
 

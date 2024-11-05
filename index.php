@@ -182,13 +182,7 @@ include 'header.php';
             </div>
         </div>
     </section>
-    <section class="best-friend-section">
-        <div class="best-friend-badge">
-            <h4>Nibiru's Best Friend</h4>
-            <p><?php echo $bestFriend; ?></p>
-            <p><?php echo $topDonation; ?></p>
-        </div>
-    </section>
+
 
     <section class="form-play">
         <!-- Modal Form -->
@@ -221,7 +215,7 @@ include 'header.php';
     </section>
 
     <section class="play-with-me">
-        <h3>Play with Me</h3>
+        <h1>INTERACT WITH ME</h1>
         <div class="play-area">
             <!-- Game Frame on the Left -->
             <div class="game-container">
