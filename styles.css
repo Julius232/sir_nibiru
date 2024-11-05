@@ -326,9 +326,8 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px; /* Spacing between Game Container and Play Menu */
+    margin-top: -20px; /* Spacing between Game Container and Play Menu */
     background-color: #820000;
-    border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
