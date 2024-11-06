@@ -1,0 +1,175 @@
+:root {
+    --base-size: 2.5vw; /* Slightly smaller for more compact layout */
+}
+
+.play-with-me {
+    background-image: url('../img/bg_interact-with-me.webp');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: black;
+    padding: 25px;
+    border-radius: 15px;
+    margin: 20px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 1100px;
+    width: 100%;
+    aspect-ratio: 2535 / 2064;
+}
+
+/* Main Container */
+.play-area {
+    background-color: #301a1a;
+    padding: calc(var(--base-size) * 0.5);
+    border-radius: 15px;
+    width: 55%;
+    margin: 5vh auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.play-area h1 {
+    font-size: calc(var(--base-size) * 1);
+    color: #ffffff;
+    margin-bottom: calc(var(--base-size) * 0.3);
+    font-weight: bold;
+}
+
+/* Game Frame */
+.game-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin-bottom: calc(var(--base-size) * 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #442222;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+#animation_container {
+    position: relative;
+    width: 100%;
+}
+
+.canvas {
+    width: 100%;
+}
+
+.dom_overlay_container {
+    pointer-events: none;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.bowl_container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+
+.bowl_image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Progress Bars positioned in the top-right corner of the game frame */
+.progress-bars {
+    padding: 10px;
+    background-color: #ff527b;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 30%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Container for Progress Bar with 100% Border */
+.progress-bar-container {
+    width: 100%;
+    /* Represents 100% of the progress */
+    height: 12px;
+    /* Slightly larger than the bar itself */
+    border: 1px solid black;
+    /* Black border to represent the full range */
+    border-radius: 5px;
+    padding: 1px;
+    /* Small padding to separate the bar from the border */
+    background-color: #000000;
+}
+
+
+.progress-bar {
+    height: 100%;
+    border-radius: 3px;
+}
+
+.progress-bar.blue { background-color: #3498db; }
+.progress-bar.green { background-color: #2ecc71; }
+.progress-bar.yellow { background-color: #f1c40f; }
+
+/* Button Grid */
+.right-panel {
+    margin-top: calc(var(--base-size) * 0.2);
+    padding: calc(var(--base-size) * 0.2);
+    background-color: #301a1a;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.2em;
+}
+
+.button-grid h4 {
+    grid-column: span 2;
+    font-size: calc(var(--base-size) * 0.5);
+    color: #ffcccb;
+    font-weight: bold;
+    margin-bottom: calc(var(--base-size) * 0.2);
+}
+
+/* Buttons */
+.button-grid button {
+    background-color: #542b2b;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+    padding: calc(var(--base-size) * 0.3); /* Reduced padding */
+    border-radius: 5px;
+    aspect-ratio: 5 / 1;
+    font-size: calc(var(--base-size) * 0.35); /* Slightly smaller text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-howto { background-image: url('../img/buttons/how_to.png'); }
+.btn-clean { background-image: url('../img/buttons/clean_me.png'); }
+.btn-play { background-image: url('../img/buttons/play_with_me.png'); }
+.btn-feed { background-image: url('../img/buttons/feed_me.png'); }

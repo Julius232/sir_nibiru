@@ -1,0 +1,248 @@
+/* Responsive Layout for Smaller Screens */
+@media (max-width: 600px) {
+    
+    .game-container,
+    .right-panel {
+        width: 100%; /* Allow the container to scale down */
+        max-width: 512px; /* Ensure it doesn’t exceed the original width */
+    }
+
+    .button-grid h4 {
+        font-size: 1rem;
+        margin: 10px 0;
+    }
+}
+
+
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: #161616;
+    color: #333;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #fff;
+}
+
+main {
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+/* Overlay Styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* Ensures it's on top of other content */
+}
+
+/* Overlay Content */
+.overlay-content {
+    background: #ffffff;
+    /* White background */
+    padding: 20px;
+    border-radius: 15px;
+    /* Rounded corners */
+    text-align: center;
+    max-width: 400px;
+    /* Increased width for better appearance */
+    width: 90%;
+    /* Responsive width */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    /* Shadow effect */
+}
+
+/* Overlay Headings */
+.overlay-content h3 {
+    font-size: 1.8rem;
+    /* Title size */
+    color: #ff527b;
+    /* Match your theme color */
+    margin-bottom: 15px;
+    /* Space below the title */
+}
+
+/* Overlay Input Styles */
+.overlay-content input[type="text"] {
+    width: calc(100% - 20px);
+    /* Full width minus padding */
+    padding: 10px;
+    margin-bottom: 15px;
+    /* Space below input */
+    border: 1px solid #ccc;
+    /* Light gray border */
+    border-radius: 8px;
+    /* Rounded corners for input */
+    font-size: 1rem;
+    /* Input font size */
+}
+
+/* Overlay Buttons */
+.overlay-content button {
+    padding: 10px 15px;
+    /* Padding for buttons */
+    background-color: #ff527b;
+    /* Button color */
+    border: none;
+    /* No border */
+    border-radius: 10px;
+    /* Rounded corners */
+    color: white;
+    /* Text color */
+    cursor: pointer;
+    /* Pointer on hover */
+    font-size: 1rem;
+    /* Button font size */
+    margin: 5px;
+    /* Space between buttons */
+    transition: background 0.3s, transform 0.2s;
+    /* Hover effect */
+}
+
+.overlay-content button:hover {
+    background-color: #ff758f;
+    /* Darker shade on hover */
+    transform: scale(1.05);
+    /* Slight scale effect on hover */
+}
+
+/* Overlay styling */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.overlay-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 300px;
+    width: 80%;
+}
+
+/* Loading Overlay Specific Styles */
+#loadingOverlay .overlay-content {
+    background: transparent;
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* Optional: Add a spinner */
+#loadingOverlay .overlay-content::before {
+    content: '';
+    display: block;
+    margin: 0 auto 20px;
+    width: 50px;
+    height: 50px;
+    border: 6px solid #fff;
+    border-top: 6px solid #ff527b;
+    border-radius: 50%;
+    animation: spinner 1s linear infinite;
+}
+
+/* Modal Overlay */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    /* Prevents scrolling of the main page */
+}
+
+/* Scrollable Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    /* Set a maximum height for the modal */
+    overflow-y: auto;
+    /* Enables internal scrolling */
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    line-height: 1.6;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Modal Headings */
+.modal-content h3 {
+    font-size: 1.8rem;
+    color: #ff527b;
+    /* Primary color */
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Numbered Instructions */
+.modal-content p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Highlighted Labels */
+.modal-content strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+
+/* Spinner Animation */
+@keyframes spinner {
+    to { transform: rotate(360deg); }
+}

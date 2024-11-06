@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sir Nibiru - Token Page</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
 
+    <link rel="stylesheet" href="styles/header.css">
     <!-- Google Fonts: Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <!-- Default favicon (16x16 or 32x32 pixels) -->

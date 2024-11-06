@@ -9,84 +9,71 @@ include 'header.php';
 <script src="animations/sir-nibiru7.js"></script>
 <script>
     var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+
     function init() {
         canvas = document.getElementById("canvas");
         anim_container = document.getElementById("animation_container");
         dom_overlay_container = document.getElementById("dom_overlay_container");
-        var comp = AdobeAn.getComposition("B309F7E37067A34FB780BA4C6E089657");
-        var lib = comp.getLibrary();
-        var loader = new createjs.LoadQueue(false);
+
+        const comp = AdobeAn.getComposition("B309F7E37067A34FB780BA4C6E089657");
+        const lib = comp.getLibrary();
+        const loader = new createjs.LoadQueue(false);
         loader.addEventListener("fileload", function (evt) { handleFileLoad(evt, comp) });
         loader.addEventListener("complete", function (evt) { handleComplete(evt, comp) });
-        var lib = comp.getLibrary();
         loader.loadManifest(lib.properties.manifest);
     }
+
     function handleFileLoad(evt, comp) {
-        var images = comp.getImages();
+        const images = comp.getImages();
         if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }
     }
+
     function handleComplete(evt, comp) {
-        //This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
-        var lib = comp.getLibrary();
-        var ss = comp.getSpriteSheet();
-        var queue = evt.target;
-        var ssMetadata = lib.ssMetadata;
-        for (i = 0; i < ssMetadata.length; i++) {
-            ss[ssMetadata[i].name] = new createjs.SpriteSheet({ "images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames })
-        }
+        const lib = comp.getLibrary();
         exportRoot = new lib.sirnibiru7();
         stage = new lib.Stage(canvas);
-        //Registers the "tick" event listener.
+
+        // Animation Function
         fnStartAnimation = function () {
             stage.addChild(exportRoot);
-            createjs.Ticker.framerate = 15;
+            createjs.Ticker.framerate = 20;
 
+            // Function to handle frame updates based on progress bar widths
             const updateAnimationFrame = () => {
                 const yellowBarWidth = parseFloat(document.querySelector('.progress-bar.yellow').style.width) || 0;
                 const blueBarWidth = parseFloat(document.querySelector('.progress-bar.blue').style.width) || 0;
 
                 if (yellowBarWidth <= 33 && blueBarWidth <= 33) {
-                    // Frames 231-260
                     if (exportRoot.currentFrame < 231 || exportRoot.currentFrame >= 260) {
                         exportRoot.gotoAndStop(231);
                     } else {
                         exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
                     }
-                }
-                else if (yellowBarWidth > 33 && blueBarWidth <= 33) {
-                    // Frames 70-100
+                } else if (yellowBarWidth > 33 && blueBarWidth <= 33) {
                     if (exportRoot.currentFrame < 51 || exportRoot.currentFrame >= 98) {
                         exportRoot.gotoAndStop(51);
                     } else {
                         exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
                     }
-                }
-                else if (yellowBarWidth <= 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
-                    // Frames 200-230
+                } else if (yellowBarWidth <= 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
                     if (exportRoot.currentFrame < 200 || exportRoot.currentFrame >= 229) {
                         exportRoot.gotoAndStop(200);
                     } else {
                         exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
                     }
-                }
-                else if (yellowBarWidth > 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
-                    // Frames 1-50
+                } else if (yellowBarWidth > 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
                     if (exportRoot.currentFrame < 1 || exportRoot.currentFrame >= 49) {
                         exportRoot.gotoAndStop(1);
                     } else {
                         exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
                     }
-                }
-                else if (yellowBarWidth <= 33 && blueBarWidth > 66) {
-                    // Frames 169-199
+                } else if (yellowBarWidth <= 33 && blueBarWidth > 66) {
                     if (exportRoot.currentFrame < 169 || exportRoot.currentFrame >= 198) {
                         exportRoot.gotoAndStop(169);
                     } else {
                         exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
                     }
-                }
-                else if (yellowBarWidth > 33 && blueBarWidth > 66) {
-                    // Frames 100-150
+                } else if (yellowBarWidth > 33 && blueBarWidth > 66) {
                     if (exportRoot.currentFrame < 100 || exportRoot.currentFrame >= 151) {
                         exportRoot.gotoAndStop(100);
                     } else {
@@ -95,12 +82,11 @@ include 'header.php';
                 }
             };
 
-            // Inside fnStartAnimation function
+            // Function to update the bowl image based on green bar width
             const updateBowlImage = () => {
                 const greenBarWidth = parseFloat(document.querySelector('.progress-bar.green').style.width) || 0;
                 const bowlImage = document.getElementById('bowlImage');
 
-                // Set the bowl image based on green bar width
                 if (greenBarWidth <= 25) {
                     bowlImage.src = "animations/images/food/empty_bowl.png";
                 } else if (greenBarWidth <= 50) {
@@ -112,26 +98,55 @@ include 'header.php';
                 }
             };
 
-            // Update the bowl image on each tick
+            // Register "tick" event to update animation and bowl image
             createjs.Ticker.addEventListener("tick", () => {
-                updateAnimationFrame(); // Keep this if you have an animation frame update function
-                updateBowlImage();      // Update bowl image based on green bar
+                updateAnimationFrame();
+                updateBowlImage();
             });
 
-
-            createjs.Ticker.addEventListener("tick", updateAnimationFrame);
             createjs.Ticker.addEventListener("tick", stage);
         };
 
-        AdobeAn.makeResponsive(true, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
         AdobeAn.compositionLoaded(lib.properties.id);
         fnStartAnimation();
 
+        // ResizeObserver to make the canvas responsive to `.play-area`
+        const parentContainer = document.querySelector('.play-area');
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                const { width, height } = entry.contentRect;
+                scaleCanvas(width, height);
+            }
+        });
+        resizeObserver.observe(parentContainer);
     }
+
+    function scaleCanvas(parentWidth, parentHeight) {
+        const lib = AdobeAn.getComposition("B309F7E37067A34FB780BA4C6E089657").getLibrary();
+
+        // Calculate the scale to fit the parent container
+        const scaleX = parentWidth / lib.properties.width;
+        const scaleY = parentHeight / lib.properties.height;
+        const scale = Math.min(scaleX, scaleY);
+
+        // Set canvas dimensions and scale
+        canvas.width = lib.properties.width * scale;
+        canvas.height = lib.properties.height * scale;
+
+        // Apply scaling to the stage
+        stage.scaleX = stage.scaleY = scale;
+
+        // Update stage to reflect the changes
+        stage.update();
+    }
+
     window.onload = init;
 </script>
 
 <main>
+    <link rel="stylesheet" href="styles/styles.css"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="styles/play.css">
+    <link rel="stylesheet" href="styles/highscore.css">
     <section class="how-to">
         <!-- Modal Overlay -->
         <div id="walletOptionsOverlay" class="overlay" style="display: none;">
@@ -183,7 +198,6 @@ include 'header.php';
         </div>
     </section>
 
-
     <section class="form-play">
         <!-- Modal Form -->
         <div id="actionFormModal" class="modal">
@@ -215,23 +229,17 @@ include 'header.php';
     </section>
 
     <section class="play-with-me">
-        <h1>INTERACT WITH ME</h1>
         <div class="play-area">
+            <h1>INTERACT WITH ME</h1>
             <!-- Game Frame on the Left -->
             <div class="game-container">
-                <div id="bowl_container"
-                    style="position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%;">
-                    <img id="bowlImage" src="" alt="Food Bowl"
-                        style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;">
+                <div id="bowl_container" class="bowl_container">
+                    <img id="bowlImage" class="bowl_image" src="" alt="Food Bowl">
                 </div>
 
-                <div id="animation_container"
-                    style="background-color:rgba(255, 255, 255, 1.00); width:512px; height:512px">
-                    <canvas id="canvas" width="512" height="512"
-                        style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
-                    <div id="dom_overlay_container"
-                        style="pointer-events:none; overflow:hidden; width:512px; height:512px; position: absolute; left: 0px; top: 0px; display: block;">
-                    </div>
+                <div id="animation_container" class="animation_container">
+                    <canvas id="canvas" class="canvas"></canvas>
+                    <div id="dom_overlay_container" class="dom_overlay_container"></div>
                 </div>
 
                 <div class="progress-bars">
@@ -258,7 +266,6 @@ include 'header.php';
                     <button class="btn-feed" onclick="openActionForm('feed')"></button>
                 </div>
             </div>
-
 
             <!-- Overlay Form -->
             <div id="actionOverlay" class="overlay" style="display: none;">
@@ -300,9 +307,6 @@ include 'header.php';
     </div>
 
 </main>
-
-
-
 
 <?php
 // Include the footer

@@ -1,0 +1,221 @@
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    /* Adjust header content */
+    .header-content {
+        margin-bottom: 10px;
+    }
+
+    .nav-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    /* Show hamburger menu */
+    .hamburger {
+        display: flex;
+    }
+    .hamburger .bar {
+        /* Adjust the bar width and height accordingly */
+        width: 25px;
+        height: 2px;
+    }
+
+    /* Hide navigation links by default */
+    .nav-links {
+        position: fixed;
+        right: -100%;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        max-width: 300px;
+        background-color: #ff527b;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        transition: right 0.3s ease;
+        z-index: 1000;
+    }
+
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a,
+    .nav-links button {
+        width: 80%;
+        font-size: 1.2rem;
+    }
+
+    /* When the menu is active */
+    .nav-links.active {
+        right: 0;
+    }
+
+    /* Mobile Menu Overlay */
+    .mobile-menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .mobile-menu-overlay.active {
+        display: block;
+    }
+    
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .header-content p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Base Styles for the Header */
+header {
+    background-image: url('../img/header.webp');
+    background-size: contain;         /* Scales image to fit without cropping */
+    background-position: center center; /* Centers the image */
+    background-repeat: no-repeat;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    height: auto;                     /* Allows height to adjust responsively */
+    max-width: 1100px;                /* Caps width for larger screens */
+    aspect-ratio: 2535 / 871;         /* Maintains the original aspect ratio */
+    margin: 0 auto;                   /* Centers the header horizontally */
+}
+
+/* Navigation Container */
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    z-index: 1000; /* Above the overlay but below the hamburger */
+}
+
+.nav-links li {
+    display: flex;
+}
+
+.nav-links a,
+.nav-links button {
+    padding: 10px 20px;
+    background-color: #ff527b;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links button:hover {
+    background-color: #ff758f;
+}
+
+.nav-links button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hamburger Menu Styles */
+.hamburger {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001; /* Ensure it's on top */
+    margin-left: auto;
+}
+
+.hamburger .bar {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+    display: none;
+}
+
+/* Best Friend Badge Styling */
+.best-friend-section {
+    position: absolute;
+    top: 30%; /* Adjust position to place it slightly above the header content */
+    left: 75%; /* Position within the left side of the header */
+    transform: rotate(5deg); /* Slight rotation for style */
+    z-index: 10; /* Ensures it stays above other header elements */
+    width: 27%; /* Set a fixed width for the badge */
+    pointer-events: none; /* Prevents accidental clicks on the badge area */
+}
+
+.best-friend-badge {
+    background-image: url('../img/best-friend.webp'); /* Image for the badge */
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    padding-top: 100%;      /* Ensures square aspect ratio */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #333;            /* Text color for contrast */
+    text-align: center;
+}
+
+.best-friend-name,
+.best-friend-donation {
+    font-size: clamp(0.5rem, 1.5vw, 1.2rem); /* Responsive font size with min and max */
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.best-friend-name {
+    position: absolute;
+    top: 53%;                 /* Position below the title */
+    color: #ff0000;  
+    transform: translateY(-50%) rotate(5deg);
+}
+
+.best-friend-donation {
+    position: absolute;
+    top: 60%;                 /* Positioned below the name */
+    transform: translateY(-50%) rotate(5deg);
+}
+
