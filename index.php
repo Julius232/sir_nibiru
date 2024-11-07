@@ -140,6 +140,48 @@ include 'header.php';
         stage.update();
     }
 
+    function adjustHeightToBackground() {
+        if (window.innerWidth <= 768) {
+            // Exit the function early for mobile devices
+            return;
+        }
+        const header = document.getElementById('header');
+        const playWithMe = document.getElementById('playWithMe');
+
+        // Header Image
+        const headerImage = new Image();
+        headerImage.src = 'img/header.webp';
+        headerImage.onload = function () {
+            const aspectRatioHeader = headerImage.width / headerImage.height;
+            header.style.height = `${header.offsetWidth / aspectRatioHeader}px`;
+        };
+
+        // PlayWithMe Image
+        const playWithMeImage = new Image();
+        playWithMeImage.src = 'img/bg_interact-with-me.webp';
+        playWithMeImage.onload = function () {
+            const aspectRatioPlayWithMe = playWithMeImage.width / playWithMeImage.height;
+            playWithMe.style.height = `${playWithMe.offsetWidth / aspectRatioPlayWithMe}px`;
+        };
+    }
+
+    // Adjust height on page load and resize
+    window.addEventListener('load', adjustHeightToBackground);
+    window.addEventListener('resize', adjustHeightToBackground);
+
+    // Refresh page on resize with debounce to avoid excessive reloads
+    let resizeTimeout;
+    let lastWindowWidth = window.innerWidth;
+
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (Math.abs(window.innerWidth - lastWindowWidth) > 10) { // Check for a significant width change
+                location.reload();
+            }
+        }, 200); // Adjust debounce delay as needed
+    });
+
     window.onload = init;
 </script>
 
@@ -228,7 +270,7 @@ include 'header.php';
         </div>
     </section>
 
-    <section class="play-with-me">
+    <section class="play-with-me" id="playWithMe">
         <div class="play-area">
             <h1>INTERACT WITH ME</h1>
             <!-- Game Frame on the Left -->

@@ -1,147 +1,83 @@
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-    /* Adjust header content */
-    .header-content {
-        margin-bottom: 10px;
-    }
-
-    .nav-container {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-    }
-
-    /* Show hamburger menu */
-    .hamburger {
-        display: flex;
-    }
-    .hamburger .bar {
-        /* Adjust the bar width and height accordingly */
-        width: 25px;
-        height: 2px;
-    }
-
-    /* Hide navigation links by default */
-    .nav-links {
-        position: fixed;
-        right: -100%;
-        top: 0;
-        height: 100vh;
-        width: 100%;
-        max-width: 300px;
-        background-color: #ff527b;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        transition: right 0.3s ease;
-        z-index: 1000;
-    }
-
-    .nav-links li {
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-links a,
-    .nav-links button {
-        width: 80%;
-        font-size: 1.2rem;
-    }
-
-    /* When the menu is active */
-    .nav-links.active {
-        right: 0;
-    }
-
-    /* Mobile Menu Overlay */
-    .mobile-menu-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }
-
-    .mobile-menu-overlay.active {
-        display: block;
-    }
-    
-
-    h1 {
-        font-size: 2rem;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    .header-content p {
-        font-size: 0.9rem;
-    }
-}
-
 /* Base Styles for the Header */
 header {
+    position: relative;
     background-image: url('../img/header.webp');
-    background-size: contain;         /* Scales image to fit without cropping */
-    background-position: center center; /* Centers the image */
+    background-size: contain;
+    background-position: center;
     background-repeat: no-repeat;
-    padding: 10px;
     color: white;
     text-align: center;
-    position: relative;
     width: 100%;
-    height: auto;                     /* Allows height to adjust responsively */
-    max-width: 1100px;                /* Caps width for larger screens */
-    aspect-ratio: 2535 / 871;         /* Maintains the original aspect ratio */
-    margin: 0 auto;                   /* Centers the header horizontally */
+    height: auto; /* Allows height to adjust responsively */
+    max-width: 1100px; /* Caps width for larger screens */
+    aspect-ratio: 2535 / 871; /* Maintains the original aspect ratio */
+    margin: 0 auto; /* Centers the header horizontally */                 
 }
 
 /* Navigation Container */
 .nav-container {
+    position: absolute;
+    bottom: -45px; /* Adjust this value as needed */
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    align-items: center;
-    justify-content: center;
+    gap: 10px;
+    z-index: 1;
 }
 
 /* Navigation Links */
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 15px;
-    z-index: 1000; /* Above the overlay but below the hamburger */
+    gap: 5px; /* Minimized gap to keep buttons close together */
+    z-index: 1000;
 }
 
 .nav-links li {
     display: flex;
 }
 
+/* Button Styles with Larger Proportional Width */
 .nav-links a,
-.nav-links button {
-    padding: 10px 20px;
-    background-color: #ff527b;
-    border-radius: 10px;
-    color: white;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.3s;
-}
-
-.nav-links a:hover,
-.nav-links button:hover {
-    background-color: #ff758f;
-}
-
 .nav-links button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: clamp(150px, 10vw, 200px); /* Larger scaling range */
+    max-width: 453px;
+    aspect-ratio: 453 / 241; /* Maintain original aspect ratio */
+    background-size: contain;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+    color: transparent; /* Hide text */
+    padding: 5px; /* Add padding for larger clickable area */
+    transition: transform 0.3s ease;
+}
+
+/* Individual Icon Styles */
+.icon.token-address {
+    background-image: url('../img/buttons/tokenadress.webp');
+}
+
+.icon.jupiter {
+    background-image: url('../img/buttons/jupiter.webp');
+}
+
+.icon.coffee {
+    background-image: url('../img/buttons/coffee.webp');
+}
+
+.icon.telegram {
+    background-image: url('../img/buttons/telegram.webp');
+}
+
+.icon.x {
+    background-image: url('../img/buttons/x.webp');
+}
+
+.icon.phantom {
+    background-image: url('../img/buttons/phantom.webp');
 }
 
 /* Hamburger Menu Styles */
@@ -149,13 +85,15 @@ header {
     display: none; /* Hidden by default */
     flex-direction: column;
     justify-content: space-around;
+    background: none;
     width: 30px;
     height: 30px;
-    background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 1001; /* Ensure it's on top */
-    margin-left: auto;
+    z-index: 1001;
+    position: absolute;
+    top: 20px;
+    right: -40%;
 }
 
 .hamburger .bar {
@@ -174,7 +112,7 @@ header {
 /* Best Friend Badge Styling */
 .best-friend-section {
     position: absolute;
-    top: 30%; /* Adjust position to place it slightly above the header content */
+    top: 25%; /* Adjust position to place it slightly above the header content */
     left: 75%; /* Position within the left side of the header */
     transform: rotate(5deg); /* Slight rotation for style */
     z-index: 10; /* Ensures it stays above other header elements */
@@ -219,3 +157,87 @@ header {
     transform: translateY(-50%) rotate(5deg);
 }
 
+    
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    /* Adjust header content */
+    .header-content {
+        margin-bottom: 10px;
+    }
+
+    .nav-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    /* Show hamburger menu */
+    .hamburger {
+        display: flex;
+    }
+    .hamburger .bar {
+        width: 25px;
+        height: 2px;
+    }
+
+    /* Hide navigation links by default */
+    .nav-links {
+        position: fixed;
+        right: -200%;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        max-width: 300px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        transition: right 0.3s ease;
+        z-index: 1000;
+    }
+
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a,
+    .nav-links button {
+        width: clamp(140px, 25vw, 300px); /* Larger width on smaller screens */
+        font-size: 1.2rem;
+    }
+
+    /* When the menu is active */
+    .nav-links.active {
+        right: -90%;
+    }
+
+    /* Mobile Menu Overlay */
+    .mobile-menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .mobile-menu-overlay.active {
+        display: block;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .header-content p {
+        font-size: 0.9rem;
+    }
+}
