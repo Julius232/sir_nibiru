@@ -37,23 +37,7 @@
     aspect-ratio: 2535 / 2064;
 }
 
-/* Responsive Width for Small Screens */
-@media (max-width: 768px) {
 
-    .play-area {
-        width: 100%;
-        margin: 0px auto;
-        padding: 15px;
-    }
-    .play-area h1 {
-        font-size: 24px;
-        margin-bottom: 8px;
-    }
-    .play-with-me {
-        background-size: auto;
-        margin: -5% auto;
-    }
-}
 
 /* Game Frame */
 .game-container {
@@ -107,7 +91,7 @@
 /* Progress Bars */
 .progress-bars {
     padding: 10px;
-    background-color: #ff527b;
+    background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
     top: 10px;
     right: 10px;
@@ -185,3 +169,21 @@
 .btn-clean { background-image: url('../img/buttons/button_cleame.webp'); }
 .btn-play { background-image: url('../img/buttons/button_energy.webp'); }
 .btn-feed { background-image: url('../img/buttons/button_hunger.webp'); }
+
+/* Responsive Width for Small Screens */
+@media (max-width: 768px) {
+
+    .play-area {
+        width: 100%;
+        margin: 0px auto;
+        padding: 15px;
+    }
+    .play-area h1 {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+    .play-with-me {
+        background-size: auto;
+        margin: -5% auto;
+    }
+}

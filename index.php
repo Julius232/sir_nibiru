@@ -36,12 +36,13 @@ include 'header.php';
         // Animation Function
         fnStartAnimation = function () {
             stage.addChild(exportRoot);
-            createjs.Ticker.framerate = 20;
+            createjs.Ticker.framerate = 25;
 
             // Function to handle frame updates based on progress bar widths
             const updateAnimationFrame = () => {
                 const yellowBarWidth = parseFloat(document.querySelector('.progress-bar.yellow').style.width) || 0;
                 const blueBarWidth = parseFloat(document.querySelector('.progress-bar.blue').style.width) || 0;
+                const greenBarWidth = parseFloat(document.querySelector('.progress-bar.green').style.width) || 0;
 
                 if (yellowBarWidth <= 33 && blueBarWidth <= 33) {
                     if (exportRoot.currentFrame < 231 || exportRoot.currentFrame >= 260) {
@@ -212,37 +213,50 @@ include 'header.php';
             <div class="modal-content">
                 <span class="close-btn" onclick="closeModal()">&times;</span>
 
-                <!-- Disclaimer First -->
                 <h3>Disclaimer</h3>
                 <p>
-                    - We are private individuals who created this platform as a fun, interactive tool to visualize
-                    tokens burned for Sir Nibiru on the Solana blockchain. This is a community project without any
-                    profit intentions; every token sent to the burn address is permanently removed from circulation.<br>
-                    - We are not affiliated with Solana, nor are we responsible for any token loss or transaction
-                    errors.<br>
-                    - All burns are irreversible; once sent, tokens cannot be returned or recovered. Please ensure all
-                    details are correct before burning tokens.
+                    Welcome to our community-driven platform, designed as a fun, interactive experience to visualize
+                    tokens burned for Sir Nibiru on the Solana blockchain. This project is non-profit and intended
+                    purely for entertainment. Any tokens sent to the burn address are permanently removed from
+                    circulation.
+                    <br><br>
+                    <strong>We are not affiliated with Solana</strong> and hold no responsibility for any token loss or
+                    transaction errors. <strong>All burns are irreversible</strong>; once tokens are sent to the burn
+                    address, they cannot be returned or recovered. Please verify all transaction details carefully
+                    before proceeding.
                 </p>
 
-                <!-- How to Play Instructions -->
-                <h3>How to Play</h3>
-                <p>1. <strong>Select an Action in the Menu:</strong><br>
-                    "Clean Me" impacts the blue bar, "Feed Me" impacts the green bar, and "Play With Me" impacts the
-                    yellow bar.</p>
-                <p>2. <strong>Enter Your Details:</strong> Input your username and wallet address in the respective
-                    fields.</p>
-                <p>3. <strong>Open Your Wallet:</strong> Use a compatible Solana wallet, such as Phantom.</p>
-                <p>4. <strong>Send Tokens:</strong> In your wallet, select the "Send" option, enter the burn address
-                    <span onclick="copyToClipboard(this)" style="cursor: pointer; color: red; font-weight: bold;">
-                        1nc1nerator11111111111111111111111111111111
-                    </span>
-                    confirm the amount to burn, and complete the transaction. Remember, this action is
-                    permanent.
+                <h3>How It Works:</h3>
+                <ol>
+                    <li><strong>Connect Your Phantom Wallet</strong>: Start by connecting your Phantom Wallet. If you
+                        choose not to set a username, the first 8 characters of your wallet's public address will be
+                        displayed on the leaderboard.</li>
+                    <li><strong>Choose an Action</strong>: Select an action you’d like to perform with Sir Nibiru (e.g.,
+                        clean, feed, or play).</li>
+                    <li><strong>Select Token Amount</strong>: Enter the number of tokens you wish to burn. This amount
+                        will directly affect the interaction.</li>
+                    <li><strong>Sign the Transaction</strong>: After confirming your action and token amount, sign the
+                        transaction using your Phantom Wallet. This will initiate a burn instruction on Solana,
+                        permanently burning the specified tokens.</li>
+                </ol>
+
+                <h3>Leaderboards:</h3>
+                <ul>
+                    <li><strong>Nibiru’s Best Friend</strong>: This title goes to the user who has completed the highest
+                        single burn transaction of all time.</li>
+                    <li><strong>Monthly Top 10</strong>: This leaderboard showcases the top 10 users by total burned
+                        tokens for the current month. Your position here is determined by the sum of all tokens you've
+                        burned within the month.</li>
+                    <li><strong>All-Time Top 10</strong>: This leaderboard shows the top 10 users by total tokens burned
+                        across all time. Your ranking here is based on the cumulative total of all your burn
+                        transactions.</li>
+                </ul>
+
+                <p>
+                    Enjoy interacting with Sir Nibiru and see if you can climb the leaderboards! Thank you for being
+                    part of our community, and remember: every token burned here is a permanent donation to the Sir
+                    Nibiru experience.
                 </p>
-                <p>5. <strong>Submit Proof:</strong> Enter the transaction’s signature as proof.</p>
-                <p>6. <strong>Press Enter and Have Fun!</strong> Based on the amount burned, your selected bar will
-                    increase by a percentage. These bars gradually decrease over time, so revisit to keep Sir Nibiru
-                    happy!</p>
             </div>
         </div>
     </section>
@@ -359,9 +373,7 @@ include 'header.php';
         </div>
     </section>
 
-    <section class="road-map">
-        <img class="roadMap">
-    </section>
+    <section class="road-map"></section>
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="overlay" style="display: none;">

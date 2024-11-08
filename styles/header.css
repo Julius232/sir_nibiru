@@ -7,17 +7,22 @@ header {
     background-repeat: no-repeat;
     color: white;
     text-align: center;
-height: 100%;
-    height: auto; /* Allows height to adjust responsively */
-    max-width: 1100px; /* Caps width for larger screens */
-    aspect-ratio: 2535 / 871; /* Maintains the original aspect ratio */
-    margin: 0 auto; /* Centers the header horizontally */                 
+    height: 100%;
+    height: auto;
+    /* Allows height to adjust responsively */
+    max-width: 1100px;
+    /* Caps width for larger screens */
+    aspect-ratio: 2535 / 871;
+    /* Maintains the original aspect ratio */
+    margin: 0 auto;
+    /* Centers the header horizontally */
 }
 
 /* Navigation Container */
 .nav-container {
     position: absolute;
-    bottom: -45px; /* Adjust this value as needed */
+    bottom: -45px;
+    /* Adjust this value as needed */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -29,7 +34,8 @@ height: 100%;
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 5px; /* Minimized gap to keep buttons close together */
+    gap: 5px;
+    /* Minimized gap to keep buttons close together */
     z-index: 1000;
 }
 
@@ -43,15 +49,19 @@ height: 100%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: clamp(150px, 10vw, 200px); /* Larger scaling range */
+    width: clamp(150px, 10vw, 200px);
+    /* Larger scaling range */
     max-width: 453px;
-    aspect-ratio: 453 / 241; /* Maintain original aspect ratio */
+    aspect-ratio: 453 / 241;
+    /* Maintain original aspect ratio */
     background-size: contain;
     background-position: center;
     border: none;
     cursor: pointer;
-    color: transparent; /* Hide text */
-    padding: 5px; /* Add padding for larger clickable area */
+    color: transparent;
+    /* Hide text */
+    padding: 5px;
+    /* Add padding for larger clickable area */
     transition: transform 0.3s ease;
 }
 
@@ -82,7 +92,8 @@ height: 100%;
 
 /* Hamburger Menu Styles */
 .hamburger {
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
     flex-direction: column;
     justify-content: space-around;
     background: none;
@@ -112,32 +123,42 @@ height: 100%;
 /* Best Friend Badge Styling */
 .best-friend-section {
     position: absolute;
-    top: 25%; /* Adjust position to place it slightly above the header content */
-    left: 75%; /* Position within the left side of the header */
-    transform: rotate(5deg); /* Slight rotation for style */
-    z-index: 10; /* Ensures it stays above other header elements */
-    width: 27%; /* Set a fixed width for the badge */
-    pointer-events: none; /* Prevents accidental clicks on the badge area */
+    top: 25%;
+    /* Adjust position to place it slightly above the header content */
+    left: 75%;
+    /* Position within the left side of the header */
+    transform: rotate(5deg);
+    /* Slight rotation for style */
+    z-index: 10;
+    /* Ensures it stays above other header elements */
+    width: 27%;
+    /* Set a fixed width for the badge */
+    pointer-events: none;
+    /* Prevents accidental clicks on the badge area */
 }
 
 .best-friend-badge {
-    background-image: url('../img/best-friend.webp'); /* Image for the badge */
+    background-image: url('../img/best-friend.webp');
+    /* Image for the badge */
     background-size: contain;
     background-repeat: no-repeat;
     width: 100%;
-    padding-top: 100%;      /* Ensures square aspect ratio */
+    padding-top: 100%;
+    /* Ensures square aspect ratio */
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #333;            /* Text color for contrast */
+    color: #333;
+    /* Text color for contrast */
     text-align: center;
 }
 
 .best-friend-name,
 .best-friend-donation {
-    font-size: clamp(0.5rem, 1.5vw, 1.2rem); /* Responsive font size with min and max */
+    
+    /* Responsive font size with min and max */
     font-weight: bold;
     color: #333;
     margin: 0;
@@ -145,22 +166,27 @@ height: 100%;
 }
 
 .best-friend-name {
+    font-size: clamp(0.7rem, 1.5vw, 1.2rem);
     position: absolute;
-    top: 53%;                 /* Position below the title */
-    color: #ff0000;  
+    top: 53.8%;
+    /* Position below the title */
+    color: #ff0000;
     transform: translateY(-50%) rotate(5deg);
 }
 
 .best-friend-donation {
+    font-size: clamp(0.5rem, 1.5vw, 1.2rem);
     position: absolute;
-    top: 60%;                 /* Positioned below the name */
+    top: 60%;
+    /* Positioned below the name */
     transform: translateY(-50%) rotate(5deg);
 }
 
-    
+
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
+
     /* Adjust header content */
     .header-content {
         margin-bottom: 10px;
@@ -176,6 +202,7 @@ height: 100%;
     .hamburger {
         display: flex;
     }
+
     .hamburger .bar {
         width: 25px;
         height: 2px;
@@ -204,7 +231,8 @@ height: 100%;
 
     .nav-links a,
     .nav-links button {
-        width: clamp(140px, 25vw, 300px); /* Larger width on smaller screens */
+        width: clamp(140px, 25vw, 300px);
+        /* Larger width on smaller screens */
         font-size: 1.2rem;
     }
 
