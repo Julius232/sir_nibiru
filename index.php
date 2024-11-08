@@ -86,15 +86,21 @@ include 'header.php';
             const updateBowlImage = () => {
                 const greenBarWidth = parseFloat(document.querySelector('.progress-bar.green').style.width) || 0;
                 const bowlImage = document.getElementById('bowlImage');
+                let newSrc;
 
                 if (greenBarWidth <= 25) {
-                    bowlImage.src = "animations/images/food/empty_bowl.png";
+                    newSrc = "animations/images/food/empty_bowl.png";
                 } else if (greenBarWidth <= 50) {
-                    bowlImage.src = "animations/images/food/slightly_filled_bowl.png";
+                    newSrc = "animations/images/food/slightly_filled_bowl.png";
                 } else if (greenBarWidth <= 75) {
-                    bowlImage.src = "animations/images/food/filled_bowl.png";
+                    newSrc = "animations/images/food/filled_bowl.png";
                 } else {
-                    bowlImage.src = "animations/images/food/over_filled_bowl.png";
+                    newSrc = "animations/images/food/over_filled_bowl.png";
+                }
+
+                // Update src only if it's different from the current one
+                if (bowlImage.getAttribute('src') !== newSrc) {
+                    bowlImage.setAttribute('src', newSrc);
                 }
             };
 
@@ -189,6 +195,7 @@ include 'header.php';
     <link rel="stylesheet" href="styles/styles.css"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="styles/play.css">
     <link rel="stylesheet" href="styles/highscore.css">
+    <link rel="stylesheet" href="styles/roadmap.css">
     <section class="how-to">
         <!-- Modal Overlay -->
         <div id="walletOptionsOverlay" class="overlay" style="display: none;">
@@ -322,23 +329,38 @@ include 'header.php';
         </div>
     </section>
 
-    <!-- Highscore Section -->
     <section class="highscore">
         <h3>SIR NIBIRU LOVES</h3>
-        <!-- Tabs for Switching -->
+
+        <!-- Tabs for Switching Between Monthly and All-Time High Scores -->
         <div class="highscore-tabs">
             <button id="monthlyTab" class="active">Monthly Top 10</button>
             <button id="allTimeTab">All-Time Top 10</button>
         </div>
-        <!-- Highscore Lists -->
-        <div id="monthlyHighscore" class="highscore-list"></div>
-        <div id="allTimeHighscore" class="highscore-list" style="display: none;"></div>
+
+        <!-- Monthly Highscore List -->
+        <div id="monthlyHighscore" class="highscore-list">
+
+        </div>
+
+        <!-- All-Time Highscore List (Initially Hidden) -->
+        <div id="allTimeHighscore" class="highscore-list" style="display: none;">
+            <!-- Add more all-time highscore items as needed -->
+        </div>
 
         <!-- Last Sitter Section -->
         <div class="last-sitter">
-            <h4>LAST SITTER:</h4>
-            <p>TakeMyMoney24<br>pumpitup<br>Mr. Bitcoin<br>ButterTherea<br>DieterFohlen</p>
+            <div class="last-sitter-item last-sitter-title">
+                <h4>LAST DOG SITTER:</h4>
+            </div>
+            <div class="last-sitter-item last-sitter-names">
+                <p>TakeMyMoney24<br>pumpitup<br>Mr. Bitcoin<br>ButterTherea<br>DieterFohlen</p>
+            </div>
         </div>
+    </section>
+
+    <section class="road-map">
+        <img class="roadMap">
     </section>
 
     <!-- Loading Overlay -->

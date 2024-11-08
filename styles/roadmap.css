@@ -1,0 +1,12 @@
+/* Highscore Section */
+.roadMap {
+    src: url("../img/roadmap.webp");
+    position: relative;
+    border-radius: 15px;
+    margin: 20px auto;
+    text-align: center;
+    color: #fff;
+    width: 100%;
+    max-width: 1100px; /* Caps width for larger screens */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}

@@ -483,31 +483,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Update fetchHighscore function to accept a parameter
     async function fetchHighscore(period) {
+        const highscoreContainer = period === 'monthly' ? document.getElementById('monthlyHighscore') : document.getElementById('allTimeHighscore');
+
         try {
             const response = await fetch(`https://www.sir-nibiru.com/get_highscore.php?period=${period}`);
             const data = await response.json();
 
             if (data.status === "success") {
-                const highscoreList = data.highscore;
-                const highscoreContainer = period === 'monthly' ? monthlyHighscoreList : allTimeHighscoreList;
-
-                // Clear any existing content
-                highscoreContainer.innerHTML = '';
-
-                highscoreList.forEach((donor, index) => {
-                    const donationAmount = parseFloat(donor.total_donations) || 0;
-
-                    // Create new elements for each donor
+                data.highscore.forEach((donor, index) => {
                     const highscoreItem = document.createElement("div");
-                    highscoreItem.className = `highscore-item-${index % 2 === 0 ? 'even' : 'odd'}`;
+                    highscoreItem.className = `highscore-item highscore-item-${index % 2 === 0 ? 'even' : 'odd'}`;
 
                     highscoreItem.innerHTML = `
                         <span class="rank">${index + 1}</span>
-                        <span class="name">${donor.username}</span>
-                        <span class="amount">${donationAmount.toFixed(2)}</span>
+                        <span class="username">${donor.username}</span>
+                        <span class="score">${parseFloat(donor.total_donations).toFixed(0)}</span>
                     `;
 
-                    // Append the item to the highscore container
                     highscoreContainer.appendChild(highscoreItem);
                 });
             } else {

@@ -1,22 +1,60 @@
-/* Highscore Section */
+/* Highscore Section with Dynamic Background */
 .highscore {
-    background-color: #f2a3b3;
-    padding: 20px;
-    border-radius: 15px;
+    position: relative;
+    background-image: url('../img/bg_best.webp');
+    background-color: black;
+    /* Background image URL */
+    background-size: contain;
+    /* Covers the full section, even if cropped */
+    background-position: center;
+    /* Centers the background image */
+    background-repeat: no-repeat;
+    /* No repeat to prevent tiling */
+    padding: 40px 20px;
+    /* Padding for content inside the section */
     margin: 20px auto;
     text-align: center;
     color: #fff;
-    max-width: 800px;
+    max-width: 1100px;
+    /* Max width for large screens */
+    width: 100%;
+    /* Full width for responsiveness */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    /* Optional: Aspect Ratio to make height responsive based on width */
+    aspect-ratio: 2535 / 2720;
+    /* Adjust to your image's aspect ratio */
+    font-size: 1.5rem;
+    text-align: start;
+    transition-property: opacity, transform;
+    font-family: "Montserrat variant0", Tofu;
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: ultra-expanded;
+    font-optical-sizing: auto;
+    line-height: initial;
+    opacity: 1;
+    transition-duration: 350ms;
+    text-shadow:
+        -1px -1px 0 black,
+        /* Top left */
+        1px -1px 0 black,
+        /* Top right */
+        -1px 1px 0 black,
+        /* Bottom left */
+        1px 1px 0 black;
+    /* Bottom right */
+    /* Font styling */
 }
 
 .highscore h3 {
+    text-align: center;
     font-size: 1.8rem;
     margin-bottom: 20px;
     color: #fff;
     font-weight: bold;
 }
 
+/* Highscore Tabs */
 .highscore-tabs {
     display: flex;
     justify-content: center;
@@ -25,7 +63,7 @@
 
 .highscore-tabs button {
     padding: 10px 20px;
-    background-color: #ff527b;
+    background-color: #77311f;
     border: none;
     color: white;
     font-size: 1rem;
@@ -37,50 +75,107 @@
 
 .highscore-tabs button.active,
 .highscore-tabs button:hover {
-    background-color: #ff002f;
+    background-color: #c39c40;
 }
 
 /* Highscore List */
 .highscore-list {
-    grid-template-columns: 30px auto 120px;
-    gap: 10px;
+    display: grid;
     align-items: center;
     margin-bottom: 20px;
+    max-width: 800px;
+    /* Increased max width for more space */
+    margin: 0 auto;
+
 }
 
 /* Highscore Item Styles */
-.highscore-item-odd,
-.highscore-item-even {
-    max-width: 600px;
+.highscore-item {
     display: grid;
-    grid-template-columns: 30px auto 120px;
-    gap: 10px;
+    grid-template-columns: 60px auto 160px;
+    /* Increased column width for more balance */
     align-items: center;
-    padding: 12px;
-    font-weight: bold;
     color: #fff;
     border-radius: 8px;
-    margin: 0 auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    /* Added padding around the entire item */
+    gap: 5px;
+    font-stretch: expanded;
+    /* Tries to make the font wider if supported */
 }
 
-.highscore-item-odd {
-    background-color: #b00045;
+/* Odd rows */
+.highscore-item-odd .rank,
+.highscore-item-odd .username,
+.highscore-item-odd .score {
+    border: 5px solid black;
+    background-color: #c39c40;
 }
 
-.highscore-item-even {
-    background-color: #820000;
+/* Even rows */
+.highscore-item-even .rank,
+.highscore-item-even .username,
+.highscore-item-even .score {
+    border: 5px solid black;
+    background-color: #77311f;
 }
 
-/* Last Sitter Box */
+
+/* Rank Column */
+.highscore-item .rank {
+    text-align: center;
+    font-weight: bold;
+    border-radius: 8px 0 0 8px;
+}
+
+/* Username Column */
+.highscore-item .username {
+    text-align: left;
+    padding-left: 10px;
+}
+
+/* Score Column */
+.highscore-item .score {
+    text-align: right;
+    padding-right: 10px;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Last Sitter Section in Highscore Style */
 .last-sitter {
-    background-color: #8b0000;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: left;
+    border-radius: 8px;
     padding: 15px;
-    border-radius: 10px;
-    width: 200px;
-    margin: 0 auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    /* Match width with highscore items */
+    gap: 10px;
+
+}
+
+/* Title Item */
+.last-sitter-title h4 {
+    margin: 0;
+    padding: 10px;
+    background-color: #77311f;
+    /* Same color as odd highscore items */
+    border-radius: 8px 0 0 8px;
+    text-align: center;
     font-weight: bold;
     color: #fff;
-    text-align: center;
+    font-size: 1.2rem;
+    border: 5px solid black;
+}
+
+/* Names Item */
+.last-sitter-names p {
+    border: 5px solid black;
+    margin: 0;
+    padding: 10px;
+    background-color: #77311f;
+    /* Same color as even highscore items */
+    border-radius: 20px;
+    text-align: left;
 }
