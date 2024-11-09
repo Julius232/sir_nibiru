@@ -1,49 +1,32 @@
-/* Highscore Section with Dynamic Background */
 .highscore {
     position: relative;
     background-image: url('../img/bg_best.webp');
-    /* Background image URL */
     background-size: contain;
-    /* Covers the full section, even if cropped */
     background-position: center;
-    /* Centers the background image */
     background-repeat: no-repeat;
-    /* No repeat to prevent tiling */
     padding: 40px 20px;
-    /* Padding for content inside the section */
     margin: 20px auto;
     text-align: center;
     color: #fff;
     max-width: 1100px;
-    /* Max width for large screens */
     width: 100%;
-    /* Full width for responsiveness */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    /* Optional: Aspect Ratio to make height responsive based on width */
     aspect-ratio: 2535 / 2720;
-    /* Adjust to your image's aspect ratio */
     font-size: 1.5rem;
     text-align: start;
-    transition-property: opacity, transform;
     font-family: "Montserrat variant0", Tofu;
     font-weight: 700;
-    font-style: normal;
-    font-stretch: ultra-expanded;
-    font-optical-sizing: auto;
     line-height: initial;
     opacity: 1;
     transition-duration: 350ms;
     text-shadow:
         -1px -1px 0 black,
-        /* Top left */
         1px -1px 0 black,
-        /* Top right */
         -1px 1px 0 black,
-        /* Bottom left */
         1px 1px 0 black;
-    /* Bottom right */
-    /* Font styling */
+    z-index: 2;
 }
+
 
 .highscore h3 {
     text-align: center;

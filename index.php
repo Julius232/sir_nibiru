@@ -171,10 +171,38 @@ include 'header.php';
             playWithMe.style.height = `${playWithMe.offsetWidth / aspectRatioPlayWithMe}px`;
         };
     }
+    function adjustRoadmapPosition() {
+        if (window.innerWidth <= 768) {
+            // Exit the function early for mobile devices
+            return;
+        }
+        else {
+            const highscore = document.querySelector('.highscore');
+            const roadmap = document.querySelector('.road-map');
 
-    // Adjust height on page load and resize
-    window.addEventListener('load', adjustHeightToBackground);
-    window.addEventListener('resize', adjustHeightToBackground);
+            // Ensure both elements are found
+            if (!highscore || !roadmap) return;
+
+            // Calculate Highscore's bottom position to align the Roadmap section
+            const highscoreBottom = highscore.getBoundingClientRect().bottom + window.scrollY;
+            const roadmapTopOffset = roadmap.getBoundingClientRect().top + window.scrollY;
+
+            roadmap.style.top = `-${(highscoreBottom - roadmapTopOffset) + (highscoreBottom - roadmapTopOffset) * 0.4}px`;
+        }
+
+    }
+
+    // Adjust position on page load and resize
+    window.addEventListener('load', () => {
+        adjustHeightToBackground(); // Keep existing adjustments for header and playWithMe
+        adjustRoadmapPosition();
+        
+    });
+    window.addEventListener('resize', () => {
+        adjustHeightToBackground();
+        adjustRoadmapPosition();
+        
+    });
 
     // Refresh page on resize with debounce to avoid excessive reloads
     let resizeTimeout;
@@ -197,6 +225,7 @@ include 'header.php';
     <link rel="stylesheet" href="styles/play.css">
     <link rel="stylesheet" href="styles/highscore.css">
     <link rel="stylesheet" href="styles/roadmap.css">
+    <link rel="stylesheet" href="styles/story.css">
     <section class="how-to">
         <!-- Modal Overlay -->
         <div id="walletOptionsOverlay" class="overlay" style="display: none;">
@@ -374,6 +403,7 @@ include 'header.php';
     </section>
 
     <section class="road-map"></section>
+    <section class="story"></section>
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="overlay" style="display: none;">

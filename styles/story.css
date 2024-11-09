@@ -1,0 +1,52 @@
+.story {
+    position: relative;
+    background-image: url("../img/story.webp");
+    background-size: contain;
+    background-position: top;
+    background-repeat: no-repeat;
+    padding: 40px 20px;
+    margin: -235px auto 0; /* Apply negative margin-top here */
+    text-align: center;
+    color: #fff;
+    max-width: 1100px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    aspect-ratio: 2535 / 3451;
+    font-size: 1.5rem;
+    text-align: start;
+    font-family: "Montserrat variant0", Tofu;
+    font-weight: 700;
+    line-height: initial;
+    opacity: 1;
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
+    z-index: 4;
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+    .story {
+        margin-top: -230px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 992px) {
+    .story {
+        margin-top: -200px;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 768px) {
+    .story {
+        margin-top: -170px;
+    }
+}
+
+@media (max-width: 600px) {
+    .story {
+        margin-top: -130px;
+    }
+}
