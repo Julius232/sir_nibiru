@@ -37,13 +37,6 @@
 
         <!-- Navigation Container Moved Inside Header -->
         <nav class="nav-container">
-            <!-- Hamburger Menu Icon -->
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-controls="nav-links"
-                aria-expanded="false">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
             <!-- Navigation Links -->
             <ul class="nav-links" id="nav-links">
                 <li><a href="#" id="copyButton" onclick="copyAddress()" class="icon token-address"></a></li>
@@ -55,14 +48,12 @@
             </ul>
         </nav>
 
+        <!-- Hamburger Menu Icon -->
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"></button>
+
+
         <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
     </header>
-
-
-
-    <!-- Mobile Menu Overlay -->
-
-
 </body>
 
 </html>

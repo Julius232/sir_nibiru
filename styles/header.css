@@ -27,7 +27,7 @@ header {
     transform: translateX(-50%);
     display: flex;
     gap: 10px;
-    z-index: 1;
+    z-index: 12;
 }
 
 /* Navigation Links */
@@ -36,7 +36,6 @@ header {
     list-style: none;
     gap: 5px;
     /* Minimized gap to keep buttons close together */
-    z-index: 1000;
 }
 
 .nav-links li {
@@ -90,29 +89,41 @@ header {
     background-image: url('../img/buttons/phantom.webp');
 }
 
-/* Hamburger Menu Styles */
-.hamburger {
+/* Positioning for Hamburger and Pfeil Buttons on Mobile */
+.hamburger,
+.pfeil {
     display: none;
-    /* Hidden by default */
-    flex-direction: column;
-    justify-content: space-around;
-    background: none;
-    width: 30px;
-    height: 30px;
-    border: none;
-    cursor: pointer;
+    position: fixed;
+    top: 6%;
+    right: 20px;
+    width: 40px;
+    /* Adjust size for mobile */
+    height: 40px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: 0;
     z-index: 1001;
-    position: absolute;
-    top: 20px;
-    right: -40%;
+    /* Ensures it's on top of other elements */
+    cursor: pointer;
 }
 
-.hamburger .bar {
-    width: 100%;
-    height: 3px;
-    background-color: white;
-    border-radius: 10px;
-    transition: all 0.3s ease;
+/* Hamburger Icon Styles */
+.hamburger {
+    background-image: url('../img/hamburger/hamburger.webp');
+    /* Path to your hamburger image */
+}
+
+/* Pfeil Icon Styles (Arrow Button) */
+.pfeil {
+    background-image: url('../img/hamburger/pfeil.webp');
+    /* Path to your pfeil image */
+}
+
+/* Hide Pfeil by default and display it only on mobile */
+.pfeil {
+    display: none;
 }
 
 /* Mobile Menu Overlay */
@@ -129,7 +140,7 @@ header {
     /* Position within the left side of the header */
     transform: rotate(5deg);
     /* Slight rotation for style */
-    z-index: 10;
+    z-index: 1;
     /* Ensures it stays above other header elements */
     width: 27%;
     /* Set a fixed width for the badge */
@@ -157,7 +168,7 @@ header {
 
 .best-friend-name,
 .best-friend-donation {
-    
+
     /* Responsive font size with min and max */
     font-weight: bold;
     color: #333;
@@ -182,10 +193,47 @@ header {
     transform: translateY(-50%) rotate(5deg);
 }
 
-
-
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
+
+    .hamburger {
+        display: block;
+    }
+
+    .pfeil {
+        display: block;
+        top: 20px;
+        right: 70px;
+        /* Position it next to the hamburger menu */
+    }
+
+    /* Navigation Links for Mobile */
+    .nav-links {
+        position: fixed;
+        top: -20px;
+        right: -200%;
+        /* Hide offscreen initially */
+        width: 80%;
+        /* Adjust width as needed */
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.9);
+        /* Dark background for menu */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: right 0.3s ease;
+       
+        
+    }
+
+    /* Show menu when active */
+    .nav-links.active {
+        position: fixed;
+        right: -70%;
+        z-index: 10;
+    }
+
 
     /* Adjust header content */
     .header-content {
@@ -193,35 +241,9 @@ header {
     }
 
     .nav-container {
-        position: absolute;
+        position: fixed;
         top: 20px;
         right: 20px;
-    }
-
-    /* Show hamburger menu */
-    .hamburger {
-        display: flex;
-    }
-
-    .hamburger .bar {
-        width: 25px;
-        height: 2px;
-    }
-
-    /* Hide navigation links by default */
-    .nav-links {
-        position: fixed;
-        right: -200%;
-        top: 0;
-        height: 100vh;
-        width: 100%;
-        max-width: 300px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        transition: right 0.3s ease;
-        z-index: 1000;
     }
 
     .nav-links li {
@@ -234,11 +256,6 @@ header {
         width: clamp(140px, 25vw, 300px);
         /* Larger width on smaller screens */
         font-size: 1.2rem;
-    }
-
-    /* When the menu is active */
-    .nav-links.active {
-        right: -90%;
     }
 
     /* Mobile Menu Overlay */
