@@ -1,49 +1,57 @@
-.impressum-container {
+.footer {
+    background-image: url("../img/bg_footer.webp");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    max-width: 1100px;
+    position: relative;
+    margin: -20px auto 0;
+    padding: 20px;
+    color: #ffffff;
     text-align: center;
-    margin-top: 20px;
 }
 
-.button-container {
-    display: inline-flex;
-    gap: 10px;
+.impressum-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    font-size: 0.5rem;
 }
 
-.impressum-toggle,
-.datenschutz-toggle {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: none;
-    font-size: 12px;
+.datenschutz-link,
+.impressum-link {
     color: #ffffff;
     cursor: pointer;
-    padding: 6px 10px;
-    border-radius: 5px;
+    text-decoration: none;
+    margin: 0 5px;
 }
 
-.impressum-toggle:hover,
-.datenschutz-toggle:hover {
-    background-color: rgba(200, 255, 255, 0.5);
+.datenschutz-link:hover,
+.impressum-link:hover {
+    color: rgba(200, 255, 255, 0.7);
+}
+
+.da-imp-links {
+    display: flex;
+    gap: 10px;
 }
 
 .impressum-content {
     display: none;
-    font-size: 13px;
-    color: #333;
-    background-color: rgba(255, 245, 235, 0.98);
+    background: rgba(255, 245, 235, 0.98);
     padding: 15px;
-    border: 1px solid #000000;
     border-radius: 8px;
-    width: 280px;
     max-width: 90%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    margin: 10px auto 0; /* Center align with auto left/right margins */
-    text-align: center; /* Center text inside the box */
-    font-family: 'Arial', sans-serif;
     line-height: 1.4;
-}
-
-
-.impressum-content p {
-    margin-bottom: 10px;
+    position: fixed;
+    z-index: 1001;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
 
 .impressum-content a {
@@ -54,4 +62,10 @@
 
 .impressum-content a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .impressum-container {
+        font-size: 0.3rem;
+    }
 }
