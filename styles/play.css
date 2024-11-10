@@ -1,7 +1,9 @@
 /* Root and Base Sizing */
 :root {
-    --base-padding: 10px; /* Use absolute units for padding */
-    --base-font-size: 20px; /* Define a base font size */
+    --base-padding: 10px;
+    /* Use absolute units for padding */
+    --base-font-size: 20px;
+    /* Define a base font size */
 }
 
 /* Main Container */
@@ -117,9 +119,17 @@
     border-radius: 3px;
 }
 
-.progress-bar.blue { background-color: #3498db; }
-.progress-bar.green { background-color: #2ecc71; }
-.progress-bar.yellow { background-color: #f1c40f; }
+.progress-bar.blue {
+    background-color: #3498db;
+}
+
+.progress-bar.green {
+    background-color: #2ecc71;
+}
+
+.progress-bar.yellow {
+    background-color: #f1c40f;
+}
 
 /* Right Panel and Button Grid */
 .right-panel {
@@ -165,10 +175,37 @@
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.btn-howto { background-image: url('../img/buttons/button_howto.webp'); }
-.btn-clean { background-image: url('../img/buttons/button_cleame.webp'); }
-.btn-play { background-image: url('../img/buttons/button_energy.webp'); }
-.btn-feed { background-image: url('../img/buttons/button_hunger.webp'); }
+.btn-howto {
+    background-image: url('../img/buttons/button_howto.webp');
+}
+
+.btn-howto:hover {
+    background-image: url('../img/buttons/howto_hv.webp');
+}
+
+.btn-clean {
+    background-image: url('../img/buttons/button_cleame.webp');
+}
+
+.btn-clean:hover {
+    background-image: url('../img/buttons/cleanme_hv.webp'); /* Replace with hover image */
+}
+
+.btn-play {
+    background-image: url('../img/buttons/button_energy.webp');
+}
+
+.btn-play:hover {
+    background-image: url('../img/buttons/energy_hv.webp'); /* Replace with hover image */
+}
+
+.btn-feed {
+    background-image: url('../img/buttons/button_hunger.webp');
+}
+
+.btn-feed:hover {
+    background-image: url('../img/buttons/hunger_hv.webp'); /* Replace with hover image */
+}
 
 /* Responsive Width for Small Screens */
 @media (max-width: 768px) {
@@ -178,10 +215,12 @@
         margin: 0px auto;
         padding: 15px;
     }
+
     .play-area h1 {
         font-size: 24px;
         margin-bottom: 8px;
     }
+
     .play-with-me {
         background-size: auto;
         margin: -5% auto;
