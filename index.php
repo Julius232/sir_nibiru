@@ -45,8 +45,8 @@ include 'header.php';
                 const greenBarWidth = parseFloat(document.querySelector('.progress-bar.green').style.width) || 0;
 
                 if (yellowBarWidth <= 33 && blueBarWidth <= 33) {
-                    if (exportRoot.currentFrame < 231 || exportRoot.currentFrame >= 260) {
-                        exportRoot.gotoAndStop(231);
+                    if (exportRoot.currentFrame < 232 || exportRoot.currentFrame >= 260) {
+                        exportRoot.gotoAndStop(232);
                     } else {
                         exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
                     }
@@ -148,7 +148,7 @@ include 'header.php';
     }
 
     function adjustHeightToBackground() {
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 1024) {
             // Exit the function early for mobile devices
             return;
         }
@@ -171,37 +171,13 @@ include 'header.php';
             playWithMe.style.height = `${playWithMe.offsetWidth / aspectRatioPlayWithMe}px`;
         };
     }
-    function adjustRoadmapPosition() {
-        if (window.innerWidth <= 768) {
-            // Exit the function early for mobile devices
-            return;
-        }
-        else {
-            const highscore = document.querySelector('.highscore');
-            const roadmap = document.querySelector('.road-map');
-
-            // Ensure both elements are found
-            if (!highscore || !roadmap) return;
-
-            // Calculate Highscore's bottom position to align the Roadmap section
-            const highscoreBottom = highscore.getBoundingClientRect().bottom + window.scrollY;
-            const roadmapTopOffset = roadmap.getBoundingClientRect().top + window.scrollY;
-
-            roadmap.style.top = `-${(highscoreBottom - roadmapTopOffset) + (highscoreBottom - roadmapTopOffset) * 0.4}px`;
-        }
-
-    }
 
     // Adjust position on page load and resize
     window.addEventListener('load', () => {
         adjustHeightToBackground(); // Keep existing adjustments for header and playWithMe
-        adjustRoadmapPosition();
-        
     });
     window.addEventListener('resize', () => {
         adjustHeightToBackground();
-        adjustRoadmapPosition();
-        
     });
 
     // Refresh page on resize with debounce to avoid excessive reloads
@@ -209,13 +185,14 @@ include 'header.php';
     let lastWindowWidth = window.innerWidth;
 
     window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            if (Math.abs(window.innerWidth - lastWindowWidth) > 10) { // Check for a significant width change
-                location.reload();
-            }
-        }, 200); // Adjust debounce delay as needed
-    });
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (Math.abs(window.innerWidth - lastWindowWidth) > 100) { // Increase threshold
+            lastWindowWidth = window.innerWidth; // Update width only on significant change
+            location.reload();
+        }
+    }, 200);
+});
 
     window.onload = init;
 </script>

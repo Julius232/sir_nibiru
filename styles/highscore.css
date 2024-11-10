@@ -139,7 +139,6 @@
     /* Match width with highscore items */
     gap: 10px;
     margin: 0 auto;
-
 }
 
 /* Title Item */
@@ -166,8 +165,38 @@
     border-radius: 20px;
 }
 
+
+/* Responsive Width for Small Screens */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Last Sitter Section in Highscore Style */
+
+    .highscore-item {
+        gap: 15px;
+        padding: 3px;
+    }
+
+    .last-sitter {
+        padding: 5px;
+    }
+
+    .highscore {
+        background-size: cover;
+    }
+
+}
+
+
 /* Responsive Width for Small Screens */
 @media (max-width: 768px) {
+
+    .highscore-item {
+        gap: 3px;
+        padding: 1px;
+    }
+
+    .last-sitter {
+        padding: 50px;
+    }
 
     .highscore {
         background-size: cover;

@@ -1,12 +1,12 @@
 .road-map {
-    position: sticky;
+    position: relative;
     background-image: url("../img/roadmap.webp");
     background-size: contain;
     background-position: top;
     background-repeat: no-repeat;
     padding: 40px 20px;
-    margin: 0 auto;
-    top: -80px; /* Verschiebt die Roadmap nach oben - wird dynamisch nachberechnet - javascript */ 
+    margin: -5px auto 0;
+    top: -80px; 
     text-align: center;
     color: #fff;
     max-width: 1100px;

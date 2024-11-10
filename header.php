@@ -39,9 +39,9 @@
         <nav class="nav-container">
             <!-- Navigation Links -->
             <ul class="nav-links" id="nav-links">
-                <li><a href="#" id="copyButton" onclick="copyAddress()" class="icon token-address"></a></li>
-                <li><a href="https://jup.ag/swap/SOL-<?php echo $tokenMint; ?>" target="_blank"
-                        class="icon jupiter"></a></li>
+                <li><a href="#" id="copyButton" onclick="copyAddress()" class="icon token-address"
+                        data-address="InitialAddress">CopyAddress</a></li>
+                <li><a target="_blank" class="icon jupiter"></a></li>
                 <li><a href="https://t.me/sirnibiru" target="_blank" class="icon telegram"></a></li>
                 <li><a href="https://www.x.com/sirnibiru" target="_blank" class="icon x"></a></li>
                 <li><button id="connect-wallet" class="icon phantom"></button></li>
@@ -49,7 +49,8 @@
         </nav>
 
         <!-- Hamburger Menu Icon -->
-        <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"></button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-controls="nav-links"
+            aria-expanded="false"></button>
         <button class="pfeil" id="scrollTop" aria-label="Scroll to top"></button>
 
         <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
@@ -57,3 +58,23 @@
 </body>
 
 </html>
+
+<script>
+    function copyAddress() {
+        // Get the updated address from the `data-address` attribute
+        const address = document.getElementById("copyButton").getAttribute("data-address");
+
+        // Create a temporary input element to hold the address for copying
+        const tempInput = document.createElement("input");
+        tempInput.value = address;
+        document.body.appendChild(tempInput);
+
+        // Select and copy the text, then remove the temporary element
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+
+        // Optional: Give feedback to the user that the address was copied
+        alert("Address copied: " + address);
+    }
+</script>

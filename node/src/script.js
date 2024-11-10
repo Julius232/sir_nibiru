@@ -39,10 +39,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Call restoreSession on page load
+    console.log("Starting restoreSession");
     restoreSession();
 
     // Set up wallet event listeners
+    console.log("Setting up wallet events");
     setupWalletEvents();
+
+    console.log("Connecting wallet...");
 
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
@@ -54,7 +58,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Scroll to top when the pfeil button is clicked
     scrollTopButton.addEventListener('click', () => {
-        console.log("scroll")
         window.scrollTo({
             top: 0,
             behavior: 'smooth' // Smooth scrolling effect
@@ -73,8 +76,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function connectWallet() {
         if (wallet) {
+            console.log("Wallet is defined:", wallet.toString());
             showWalletOptions();
             return; // Open wallet options if already connected
+        }
+        else {
+            console.error("Wallet is null or undefined");
         }
 
         try {
@@ -572,18 +579,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         try {
             const response = await fetch('https://www.sir-nibiru.com/fetch_config.php');
             const data = await response.json();
-    
+
             if (data.status === "success") {
                 const config = data.config;
                 TOKEN_MINT_ADDRESS = new PublicKey(config.tokenMintAddress);
                 TOKEN_DECIMALS = parseInt(config.tokenDecimals, 10);
                 tokensForFullProgress = parseInt(config.tokensForFullProgress, 10) || tokensForFullProgress;
                 decayRatePerHour = parseInt(config.decayRatePerHour, 10) || decayRatePerHour;
+
+                // Call updateJupiterLink here to set the link once the TOKEN_MINT_ADDRESS is available
+                updateJupiterLink(TOKEN_MINT_ADDRESS.toString());
+                updateAddress(TOKEN_MINT_ADDRESS.toString());
             } else {
                 console.error("Failed to fetch config:", data.message);
             }
         } catch (error) {
             console.error("Error fetching config:", error);
+        }
+    }
+
+    function updateAddress(newAddress) {
+        document.getElementById("copyButton").setAttribute("data-address", newAddress);
+    }
+
+    function updateJupiterLink(tokenMint) {
+        const jupiterLink = document.querySelector('.icon.jupiter');
+        if (jupiterLink) {
+            jupiterLink.href = `https://jup.ag/swap/SOL-${tokenMint}`;
         }
     }
 
@@ -621,13 +643,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const netIncrease = Math.max(0, increase - decay);
 
                     // Update the bar, ensuring it doesn't exceed MAX_PROGRESS
-                    
+
                     bars[action] = Math.min(bars[action] + netIncrease, MAX_PROGRESS);
                 });
             } else {
                 console.error("Failed to fetch donations:", data.message);
             }
-            bars = { clean: 100, play: 100, feed: 100 };
+            //bars = { clean: 0, play: 0, feed: 0 };
             updateProgressBars();
 
         } catch (error) {
