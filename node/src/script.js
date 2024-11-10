@@ -46,9 +46,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
+    const scrollTopButton = document.getElementById('scrollTop');
 
     hamburger.addEventListener('click', () => {
         navLinks.classList.toggle('active');
+    });
+
+    // Scroll to top when the pfeil button is clicked
+    scrollTopButton.addEventListener('click', () => {
+        console.log("scroll")
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Smooth scrolling effect
+        });
     });
 
     // Show the overlay with wallet options

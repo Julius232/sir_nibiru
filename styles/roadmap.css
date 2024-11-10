@@ -1,5 +1,5 @@
 .road-map {
-    position: relative;
+    position: sticky;
     background-image: url("../img/roadmap.webp");
     background-size: contain;
     background-position: top;

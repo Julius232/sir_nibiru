@@ -50,7 +50,7 @@
 
         <!-- Hamburger Menu Icon -->
         <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-controls="nav-links" aria-expanded="false"></button>
-
+        <button class="pfeil" id="scrollTop" aria-label="Scroll to top"></button>
 
         <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
     </header>

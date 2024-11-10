@@ -89,15 +89,12 @@ header {
     background-image: url('../img/buttons/phantom.webp');
 }
 
-/* Positioning for Hamburger and Pfeil Buttons on Mobile */
+/* Hamburger and Pfeil Positioning */
 .hamburger,
 .pfeil {
     display: none;
     position: fixed;
-    top: 6%;
-    right: 20px;
     width: 40px;
-    /* Adjust size for mobile */
     height: 40px;
     background-size: contain;
     background-position: center;
@@ -105,20 +102,21 @@ header {
     background-color: transparent;
     border: 0;
     z-index: 1001;
-    /* Ensures it's on top of other elements */
     cursor: pointer;
 }
 
 /* Hamburger Icon Styles */
 .hamburger {
+    top: 6%;
+    right: 20px;
     background-image: url('../img/hamburger/hamburger.webp');
-    /* Path to your hamburger image */
 }
 
-/* Pfeil Icon Styles (Arrow Button) */
+/* Pfeil Icon Styles for Scroll-to-Top */
 .pfeil {
-    background-image: url('../img/hamburger/pfeil.webp');
-    /* Path to your pfeil image */
+    top: 12%; /* Positioned just below the hamburger */
+    right: 20px;
+    background-image: url('../img/hamburger/pfeil.webp'); /* Adjust path as needed */
 }
 
 /* Hide Pfeil by default and display it only on mobile */
@@ -202,9 +200,6 @@ header {
 
     .pfeil {
         display: block;
-        top: 20px;
-        right: 70px;
-        /* Position it next to the hamburger menu */
     }
 
     /* Navigation Links for Mobile */
