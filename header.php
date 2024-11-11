@@ -28,6 +28,15 @@
 <body>
     <header id="header">
         <div class="header-banner"></div>
+
+        <section class="menu">
+            <a href="#playWithMe" class="menu-link">Play |</a>
+            <a href="#highscore" class="menu-link">Highscore |</a>
+            <a href="#roadmap" class="menu-link">Roadmap |</a>
+            <a href="#story" class="menu-link">The Story</a>
+            <img src="img/icon_burn.webp" alt="Burn Icon" class="burn-icon">
+            <span class="menu-text">Tokens Burned: <span id="total-burn-amount">999999999</span></span>
+        </section>
         <section class="best-friend-section">
             <div class="best-friend-badge">
                 <p class="best-friend-name"><?php echo $bestFriend; ?></p>

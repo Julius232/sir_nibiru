@@ -15,79 +15,125 @@ $data = json_decode(file_get_contents("php://input"), true);
 $wallet_address = $data['wallet_address'] ?? null;
 $signature = $data['signature'] ?? null;
 $action = $data['action'] ?? null;
+$nonce = $data['nonce'] ?? null;
+
+// Fetch the user_id based on the wallet address
+$user_id = get_user_id_from_wallet($wallet_address);
 
 // Check if required fields are present
-if (!$wallet_address || !$signature || !$action) {
+if (!$wallet_address || !$signature || !$action || !$nonce) {
+    record_failed_transaction($signature, "Missing required fields", $action, $user_id);
     echo json_encode([
         "status" => "error",
         "message" => "Missing required fields.",
         "details" => [
             "wallet_address" => $wallet_address ?? "missing",
             "signature" => $signature ?? "missing",
-            "action" => $action ?? "missing"
+            "action" => $action ?? "missing",
+            "nonce" => $nonce ?? "missing"
         ]
     ]);
     exit;
 }
 
-// Check if the signature has already been processed
-$stmt = $db->prepare("SELECT COUNT(*) FROM donations WHERE signature = ?");
-$stmt->execute([$signature]);
-$existingCount = $stmt->fetchColumn();
+// Validate nonce by checking if it exists in the database
+$stmt = $db->prepare("SELECT nonce FROM nonces WHERE wallet_address = ? AND nonce = ?");
+$stmt->execute([$wallet_address, $nonce]);
+$nonce_row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($existingCount > 0) {
+if (!$nonce_row) {
+    record_failed_transaction($signature, "Invalid nonce", $action, $user_id);
+    echo json_encode(["status" => "error", "message" => "Invalid nonce. Please re-authenticate."]);
+    exit;
+}
+
+// Check if the signature already exists in the database
+$stmt = $db->prepare("SELECT donation_id FROM donations WHERE signature = ?");
+$stmt->execute([$signature]);
+$existing_donation = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($existing_donation) {
     echo json_encode([
         "status" => "error",
-        "message" => "This signature has been used already.",
+        "message" => "This signature has already been processed.",
         "signature" => $signature
     ]);
     exit;
 }
 
+// Proceed with processing the action
+
 function getConfigValue($key) {
-    global $db; // Use the existing database connection
+    global $db;
     $stmt = $db->prepare("SELECT config_value FROM config WHERE config_key = ?");
     $stmt->execute([$key]);
     return $stmt->fetchColumn();
 }
 
-// Fetch and validate transaction details with API
+function record_failed_transaction($signature, $reason, $action = null, $user_id = null) {
+    global $db;
+    $stmt = $db->prepare("INSERT INTO failed_transactions (signature, reason, action, user_id, timestamp) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$signature, $reason, $action, $user_id, date('Y-m-d H:i:s')]);
+}
+
+function get_user_id_from_wallet($wallet_address) {
+    global $db;
+    $stmt = $db->prepare("SELECT user_id FROM users WHERE wallet_address = ?");
+    $stmt->execute([$wallet_address]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $user ? $user['user_id'] : null;
+}
+
 function fetch_transaction_details($signature) {
-    $body = json_encode([
-        'jsonrpc' => '2.0',
-        'method' => 'getTransaction',
-        'params' => [$signature, ["encoding" => "jsonParsed"]],
-        'id' => 1
-    ]);
+    global $action, $user_id; // Ensure action and user_id are available in case of failure
+    $attempts = 6;
+    $delay = 10;
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, API_URL);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json'
-    ]);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    for ($i = 0; $i < $attempts; $i++) {
+        $body = json_encode([
+            'jsonrpc' => '2.0',
+            'method' => 'getTransaction',
+            'params' => [$signature, ["encoding" => "jsonParsed"]],
+            'id' => 1
+        ]);
 
-    $response = curl_exec($ch);
-    if (curl_errno($ch)) {
-        echo json_encode(["status" => "error", "message" => "Failed to connect to API", "details" => curl_error($ch)]);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, API_URL);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            record_failed_transaction($signature, "Failed to connect to API", $action, $user_id);
+            echo json_encode(["status" => "error", "message" => "Failed to connect to API", "details" => curl_error($ch)]);
+            curl_close($ch);
+            exit;
+        }
+
         curl_close($ch);
-        exit;
+        $decoded_response = json_decode($response, true);
+
+        if (isset($decoded_response['result'])) {
+            return $decoded_response['result'];
+        } else {
+            echo json_encode(["status" => "error", "message" => "Invalid response from API, retrying...", "attempt" => $i + 1]);
+            if ($i < $attempts - 1) {
+                sleep($delay);
+            }
+        }
     }
 
-    curl_close($ch);
-    $decoded_response = json_decode($response, true);
-    if (!isset($decoded_response['result'])) {
-        echo json_encode(["status" => "error", "message" => "Invalid response from API", "response" => $decoded_response]);
-        exit;
-    }
-
-    return $decoded_response['result'];
+    record_failed_transaction($signature, "Failed to fetch transaction details after multiple attempts", $action, $user_id);
+    echo json_encode(["status" => "error", "message" => "Failed to fetch transaction details after multiple attempts"]);
+    return null;
 }
 
 function fetch_transaction_details_with_retry($signature, $maxRetries = 5, $initialRetryInterval = 5) {
-    $attempt = 0;
+    global $action, $user_id;
+    $attempt = 5;
     $retryInterval = $initialRetryInterval;
 
     while ($attempt < $maxRetries) {
@@ -97,16 +143,13 @@ function fetch_transaction_details_with_retry($signature, $maxRetries = 5, $init
             return $tx_details;
         }
 
-        // Log the retry attempt details
         error_log("Transaction not found, retrying in {$retryInterval} seconds (Attempt ".($attempt + 1)." of {$maxRetries})");
-        sleep($retryInterval); // Wait before retrying
-
-        // Exponential backoff
+        sleep($retryInterval);
         $retryInterval *= 2;
         $attempt++;
     }
 
-    // Final error if transaction not found after all retries
+    record_failed_transaction($signature, "Transaction not found after multiple retries", $action, $user_id);
     echo json_encode([
         "status" => "error",
         "message" => "Transaction not found after multiple retries",
@@ -115,52 +158,39 @@ function fetch_transaction_details_with_retry($signature, $maxRetries = 5, $init
     exit;
 }
 
-
-
-// Fetch transaction details
 $tx_details = fetch_transaction_details_with_retry($signature);
 if (empty($tx_details) || !isset($tx_details['transaction'])) {
+    record_failed_transaction($signature, "Transaction not found or invalid signature", $action, $user_id);
     echo json_encode(["status" => "error", "message" => "Transaction not found or invalid signature", "tx_details" => $tx_details]);
     exit;
 }
 
-// Initialize variables
 $burned_amount = 0;
 $burn_instruction_found = false;
-
-// Get the accountKeys array for index references
 $accountKeys = $tx_details['transaction']['message']['accountKeys'] ?? [];
 
-// Iterate over the transaction instructions
 $instructions = $tx_details['transaction']['message']['instructions'] ?? [];
 foreach ($instructions as $instruction) {
-    // Get the programId directly
     $programId = $instruction['programId'] ?? null;
 
     if ($programId === SPL_TOKEN_PROGRAM_ID) {
-        // Check if 'parsed' instruction is available
         if (isset($instruction['parsed'])) {
             $parsedInstruction = $instruction['parsed'];
-            // Check if the type is 'burnChecked' (case-sensitive comparison)
             if ($parsedInstruction['type'] === 'burnChecked') {
                 $burn_instruction_found = true;
 
-                // Extract the info
                 $info = $parsedInstruction['info'];
-                // Extract tokenAmount details
                 $tokenAmount = $info['tokenAmount'];
-                $amount = $tokenAmount['amount']; // This is a string
+                $amount = $tokenAmount['amount'];
                 $decimals = $tokenAmount['decimals'];
 
-                // Convert amount to human-readable format
                 $burned_amount = $amount / pow(10, $decimals);
 
-                // Verify mint address and owner
                 $mint_account = $info['mint'];
                 $owner_account = $info['authority'];
 
-                // Verify mint address
                 if ($mint_account !== $token_mint_address) {
+                    record_failed_transaction($signature, "Mint address does not match", $action, $user_id);
                     echo json_encode([
                         "status" => "error",
                         "message" => "Mint address does not match",
@@ -170,8 +200,8 @@ foreach ($instructions as $instruction) {
                     exit;
                 }
 
-                // Verify owner address
                 if ($owner_account !== $wallet_address) {
+                    record_failed_transaction($signature, "Owner address does not match", $action, $user_id);
                     echo json_encode([
                         "status" => "error",
                         "message" => "Owner address does not match",
@@ -180,23 +210,21 @@ foreach ($instructions as $instruction) {
                     ]);
                     exit;
                 }
-
-                // At this point, we've successfully parsed the burn instruction
                 break;
             }
         } else {
-            // Handle the case where 'parsed' is not available
+            record_failed_transaction($signature, "Parsed instruction data not available", $action, $user_id);
             echo json_encode([
                 "status" => "error",
                 "message" => "Parsed instruction data not available"
             ]);
             exit;
         }
-
     }
 }
 
 if (!$burn_instruction_found) {
+    record_failed_transaction($signature, "No BurnChecked instruction found in the transaction", $action, $user_id);
     echo json_encode([
         "status" => "error",
         "message" => "No BurnChecked instruction found in the transaction"
@@ -204,19 +232,18 @@ if (!$burn_instruction_found) {
     exit;
 }
 
-// Retrieve user_id based on wallet_address
 $stmt = $db->prepare("SELECT user_id FROM users WHERE wallet_address = ?");
 $stmt->execute([$wallet_address]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
+    record_failed_transaction($signature, "User not found for this wallet address", $action, $user_id);
     echo json_encode(["status" => "error", "message" => "User not found for this wallet address", "wallet_address" => $wallet_address]);
     exit;
 }
 
 $user_id = $user['user_id'];
 
-// Store the action and transaction details
 try {
     $stmt = $db->prepare("INSERT INTO donations (user_id, signature, donation_amount, action) VALUES (?, ?, ?, ?)");
     $stmt->execute([$user_id, $signature, $burned_amount, $action]);
@@ -228,5 +255,15 @@ try {
         "burned_amount" => $burned_amount
     ]);
 } catch (PDOException $e) {
-    echo json_encode(["status" => "error", "message" => "Database error", "details" => $e->getMessage()]);
+    if ($e->getCode() == 23000) {
+        echo json_encode([
+            "status" => "error",
+            "message" => "This signature has already been processed.",
+            "signature" => $signature
+        ]);
+    } else {
+        record_failed_transaction($signature, "Database error: " . $e->getMessage(), $action, $user_id);
+        echo json_encode(["status" => "error", "message" => "Database error", "details" => $e->getMessage()]);
+    }
 }
+?>

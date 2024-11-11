@@ -185,14 +185,14 @@ include 'header.php';
     let lastWindowWidth = window.innerWidth;
 
     window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-        if (Math.abs(window.innerWidth - lastWindowWidth) > 100) { // Increase threshold
-            lastWindowWidth = window.innerWidth; // Update width only on significant change
-            location.reload();
-        }
-    }, 200);
-});
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (Math.abs(window.innerWidth - lastWindowWidth) > 100) { // Increase threshold
+                lastWindowWidth = window.innerWidth; // Update width only on significant change
+                location.reload();
+            }
+        }, 200);
+    });
 
     window.onload = init;
 </script>
@@ -349,7 +349,7 @@ include 'header.php';
         </div>
     </section>
 
-    <section class="highscore">
+    <section id="highscore" class="highscore">
         <h3>SIR NIBIRU LOVES</h3>
 
         <!-- Tabs for Switching Between Monthly and All-Time High Scores -->
@@ -379,8 +379,8 @@ include 'header.php';
         </div>
     </section>
 
-    <section class="road-map"></section>
-    <section class="story"></section>
+    <section id="roadmap" class="road-map"></section>
+    <section id="story" class="story"></section>
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="overlay" style="display: none;">

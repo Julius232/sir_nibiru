@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@solana/spl-token": "^0.2.0",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-phantom": "^0.9.24",
     "@solana/web3.js": "^1.95.4",
-    "@solana/spl-token": "^0.2.0",
     "buffer": "^6.0.3",
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4"
