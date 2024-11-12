@@ -12,6 +12,19 @@
     }
 }
 
+/* Gradient Animation for Burn Effect */
+@keyframes burnGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 /* General Reset */
 * {
     box-sizing: border-box;
@@ -85,64 +98,106 @@ main {
     max-width: 1200px;
 }
 
-/* Overlay Styles */
+/* Overlay Styling - Comic Theme */
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    /* Semi-transparent background */
+    background: rgba(0, 0, 0, 0.95);
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
+    /* Dark semi-transparent background */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    /* Ensures it's on top of other content */
 }
 
-/* Overlay Content */
 .overlay-content {
-    background: #1a0901;
-    /* White background */
-    padding: 20px;
-    border-radius: 15px;
-    /* Rounded corners */
+    /* Comic-inspired gradient */
+    background-size: 300% 300%;
+    background: linear-gradient(135deg, rgba(255, 69, 0, 0.2), rgba(255, 140, 0, 0.2), rgba(255, 99, 71, 0.2), rgba(255, 0, 0, 0.2));
+    animation: burnGradient 1s ease-in-out infinite;
+    border: 4px solid #FF4500; /* Fiery orange-red border */
+    padding: 30px;
+    border-radius: 20px;
     text-align: center;
-    max-width: 800px;
-    /* Increased width for better appearance */
-    width: 90%;
-    /* Responsive width */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    /* Shadow effect */
+    max-width: 600px;
+    width: 100%;
+    color: #fff;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.1);
+    /* Bright yellow border for comic feel */
+    position: relative;
+   
 }
 
-/* Overlay Headings */
+/* Overlay Heading - Burn Colors */
 .overlay-content h3 {
-    font-size: 1.8rem;
-    /* Title size */
-    color: #fd2738;
-    /* Match your theme color */
-    margin-bottom: 15px;
-    /* Space below the title */
+    text-transform: uppercase;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #FF4500; /* Burnt orange */
+    margin-bottom: 50px;
+    text-shadow: 0 0 10px rgba(255, 99, 71, 0.6), 0 0 20px rgba(255, 140, 0, 0.5); /* Glowing effect */
 }
 
-/* Overlay Input Styles */
-.overlay-content input[type="text"] {
-    width: calc(100% - 20px);
-    /* Full width minus padding */
+/* Input Field Styling with Burn Theme */
+.overlay-content input[type="text"],
+.overlay-content input[type="number"] {
+    width: 100%;
+    margin: 20px 0;
     padding: 10px;
-    margin-bottom: 15px;
-    /* Space below input */
-    border: 1px solid #ccc;
-    /* Light gray border */
-    border-radius: 8px;
-    /* Rounded corners for input */
-    font-size: 1rem;
-    /* Input font size */
+    border: 2px solid #FF4500; /* Fiery orange-red border */
+    border-radius: 10px;
+    font-size: 1.1rem;
+    background-color: rgba(255, 69, 0, 0.1); /* Subtle burnt orange background */
+    color: #FFD700; /* Gold text */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-/* Common button style */
+.overlay-content input[type="text"]:focus,
+.overlay-content input[type="number"]:focus {
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.6); /* Orange glow on focus */
+    border-color: #FFD700; /* Golden border on focus */
+}
+
+.burn-amount-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust spacing between image and input */
+    margin: 20px 0; /* Vertical margin to separate from other elements */
+}
+
+.burn-amount-img {
+    width: 30px; /* Adjust as needed */
+    height: auto;
+    filter: hue-rotate(90deg) saturate(2) brightness(0.8);
+}
+
+
+#tokenAmountInput {
+    flex: 1; /* Makes the input take up the remaining space */
+    width: auto; /* Ensures the input grows within the flex container */
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    width: 100%; /* Full width of container */
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    width: 100%; /* Ensure the container takes full width */
+}
+
+/* Button Burn Effect */
 .overlay-content button {
     background-color: transparent;
     background-size: contain;
@@ -150,20 +205,26 @@ main {
     background-position: center;
     border: none;
     cursor: pointer;
-    padding: 8px;
-    aspect-ratio: 5 / 1;
-    font-size: 12px;
+    padding: 30px;
+    flex: 1;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #ffffff;
+    color: #FFD700; /* Gold color for text */
+    font-size: 1rem;
     font-weight: bold;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.3s ease;
 }
 
-/* Button-specific images */
+.overlay-content button:hover {
+    transform: scale(1.05);
+}
+/* Button-specific Images */
 .btn-submit {
     background-image: url('../img/buttons/submit.webp');
+    filter: hue-rotate(90deg) saturate(2) brightness(0.8);
 }
 
 .btn-submit:hover {
@@ -171,43 +232,23 @@ main {
 }
 
 .btn-disconnect {
-    background-image: url('../img/buttons/disconnect_button.webp');
+    background-image: url('../img/buttons/disconnect.webp');
+    filter: hue-rotate(90deg) saturate(2) brightness(0.8);
 }
 
 .btn-disconnect:hover {
-    background-image: url('../img/buttons/disconnect_button_hover.webp');
+    background-image: url('../img/buttons/disconnect_hv.webp');
 }
 
 .btn-cancel {
     background-image: url('../img/buttons/cancel.webp');
+    filter: hue-rotate(90deg) saturate(2) brightness(0.8);
 }
 
 .btn-cancel:hover {
     background-image: url('../img/buttons/cancel_hv.webp');
 }
 
-/* Overlay styling */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.overlay-content {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    max-width: 300px;
-    width: 80%;
-}
 
 /* Loading Overlay Specific Styles */
 #loadingOverlay .overlay-content {
@@ -261,7 +302,6 @@ main {
 
 .modal-content h3 {
     font-size: 1.8rem;
-    color: #fd2738;
     margin-bottom: 20px;
     font-weight: bold;
     text-align: center;
@@ -324,5 +364,19 @@ main {
     .button-grid h4 {
         font-size: 1rem;
         margin: 10px 0;
+    }
+
+    .button-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* Two-column grid on smaller screens */
+        gap: 10px;
+    }
+
+    .overlay-content button {
+        width: 100%;
+        /* Full width in each grid cell */
+        max-width: none;
+        /* Remove max-width constraint */
     }
 }

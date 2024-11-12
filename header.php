@@ -25,9 +25,9 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/sir_nibiru/img/favicon/favicon-16x16.png">
     <link rel="icon" href="/sir_nibiru/img/favicon/favicon.ico" type="image/x-icon">
     <link rel="manifest" href="/sir_nibiru/manifest.json">
-    
+
     <meta name="msapplication-TileImage" content="/sir_nibiru/img/favicon/ms-icon-144x144.png">
-    
+
 
 </head>
 
@@ -59,7 +59,11 @@
                 <li><a target="_blank" class="icon jupiter"></a></li>
                 <li><a href="https://t.me/sirnibiru" target="_blank" class="icon telegram"></a></li>
                 <li><a href="https://www.x.com/sirnibiru" target="_blank" class="icon x"></a></li>
-                <li><button id="connect-wallet" class="icon phantom"></button></li>
+                <li>
+                    <button id="connect-wallet" class="icon phantom">
+                        <span id="connect-text"></span>
+                    </button>
+                </li>
             </ul>
         </nav>
 

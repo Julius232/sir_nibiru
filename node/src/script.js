@@ -33,6 +33,7 @@ const encodedUniqueId = 'ZjZkNjdlODAzYzcwMTZkNzZiNGQ4MTYxNGY1YzNiNDg1MzE2MzlkNw=
 document.addEventListener("DOMContentLoaded", async () => {
     // DOM Elements
     const connectButton = document.getElementById('connect-wallet');
+    const connectText = document.getElementById('connect-text'); 
     const overlay = document.getElementById('walletOptionsOverlay');
     const newUsernameInput = document.getElementById('newUsernameInput');
     const hamburger = document.getElementById('hamburger');
@@ -149,7 +150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (data.status === "success") {
                 connectButton.textContent = data.username;
-                connectButton.style.color = 'blue';
+                connectButton.style.color = 'black';
                 localStorage.setItem('walletAddress', walletAddress);
                 localStorage.setItem('username', data.username);
                 localStorage.setItem('nonce', nonce);
@@ -184,8 +185,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (storedWalletAddress && storedUsername) {
             wallet = new PublicKey(storedWalletAddress);
-            connectButton.textContent = storedUsername || "Options";
-            connectButton.style.color = 'blue';
+            document.getElementById('connect-wallet').classList.add('connected');
+            connectText.textContent = storedUsername || "Options";
+            connectText.style.color = 'black';
             console.log("Session restored with wallet:", storedWalletAddress);
         }
     }
@@ -195,16 +197,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         phantomWallet.on('connect', () => {
             wallet = phantomWallet.publicKey;
             console.log("Wallet connected:", wallet.toString());
-            connectButton.textContent = "Options";
+            connectText.textContent = "Options";
+            connectText.style.color = 'black';
             handleNonceVerification(wallet);
+        
+            // Add connected class
+            document.getElementById('connect-wallet').classList.add('connected');
+            console.log("Added connected class:", connectButton.classList); // Log to confirm
         });
-
+        
         phantomWallet.on('disconnect', () => {
             wallet = null;
             console.log("Wallet disconnected");
-            connectButton.textContent = "Connect Wallet";
-            connectButton.style.color = ''; // Reset to default color
-            localStorage.clear(); // Clear all session data on disconnect
+            
+            // Remove connected class
+            connectText.textContent = "";
+            document.getElementById('connect-wallet').classList.remove('connected');
+            console.log("Removed connected class:", connectButton.classList); // Log to confirm
         });
     }
 
@@ -250,8 +259,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             const data = await verificationResponse.json();
 
             if (data.status === "success") {
-                connectButton.textContent = data.username;
-                connectButton.style.color = 'blue';
+                connectText.textContent = data.username;
+                connectText.style.color = 'black';
                 localStorage.setItem('walletAddress', walletAddress);
                 localStorage.setItem('username', data.username);
             } else {
@@ -493,7 +502,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             wallet = phantomWallet.publicKey;
-            connectButton.textContent = "Options";
+            connectText.textContent = "Options";
             handleNonceVerification(wallet);
         } catch (error) {
             console.error("Failed to connect wallet:", error);
@@ -528,8 +537,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 wallet = null;
 
                 // Update connect button
-                connectButton.textContent = "Connect Wallet";
-                connectButton.style.color = ''; // Reset to default color
+                connectText.textContent = "";
                 closeWalletOptions();
             } else {
                 console.error("Failed to delete nonce:", result.error);
@@ -591,7 +599,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 localStorage.setItem('username', newUsername);
                 localStorage.setItem('nonce', data.new_nonce);
                 localStorage.setItem('nonceTimestamp', Date.now()); // Update nonce timestamp
-                connectButton.textContent = newUsername;
+                connectText.textContent = newUsername;
                 closeWalletOptions();
             } else {
                 alert("Failed to update username: " + data.message);
@@ -615,7 +623,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         selectedAction = action;
-        document.getElementById("actionTitle").textContent = `Perform ${action.charAt(0).toUpperCase() + action.slice(1)} Action`;
+        document.getElementById("actionTitle").textContent = `BURN 4 ${action.charAt(0).toUpperCase() + action.slice(1)}`;
         document.getElementById("actionOverlay").style.display = "flex";
     };
 
@@ -623,6 +631,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.closeActionForm = function () {
         document.getElementById("actionOverlay").style.display = "none";
     };
+
+    window.updateTokenAmountColor = async function () {
+        const inputField = document.getElementById('tokenAmountInput');
+        const value = parseInt(inputField.value) || 0; // Parse the value as an integer, default to 0 if empty or invalid
+
+        // Ensure the value is at least 1000
+        if (value < 1000 && value !== 0) {
+            inputField.value = 1000; // Set the input value to the minimum
+            value = 1000; // Update the value for color logic
+        }
+
+        if (value >= 1000 && value < 10000) {
+            inputField.style.color = 'yellow';
+        } else if (value >= 10000 && value < 1000000) {
+            inputField.style.color = 'orange';
+        } else if (value >= 1000000 && value < 10000000) {
+            inputField.style.color = 'red';
+        } else if (value >= 10000000) {
+            inputField.style.color = 'black';
+        }
+    }
 
     // Adjusted 'submitAction' function
     window.submitAction = async function () {

@@ -204,17 +204,17 @@ include 'header.php';
     <link rel="stylesheet" href="styles/roadmap.css">
     <link rel="stylesheet" href="styles/story.css">
     <section class="how-to">
-        <!-- Modal Overlay -->
         <div id="walletOptionsOverlay" class="overlay" style="display: none;">
             <div class="overlay-content">
                 <h3>Wallet Options</h3>
-                <label for="newUsernameInput">Change Username:</label>
                 <input type="text" id="newUsernameInput" placeholder="New Username">
 
-                <!-- Apply classes for image backgrounds -->
-                <button class="submit btn-submit" onclick="changeUsername()"></button>
-                <button class="disconnect btn-disconnect" onclick="disconnectWallet()">Disconnect</button>
-                <button class="cancel btn-cancel" onclick="closeWalletOptions()"></button>
+                <!-- Button container to align buttons in a row -->
+                <div class="button-container">
+                    <button class="submit btn-submit" onclick="changeUsername()"></button>
+                    <button class="cancel btn-cancel" onclick="closeWalletOptions()"></button>
+                    <button class="disconnect btn-disconnect" onclick="disconnectWallet()"></button>
+                </div>
             </div>
         </div>
 
@@ -270,36 +270,6 @@ include 'header.php';
         </div>
     </section>
 
-    <section class="form-play">
-        <!-- Modal Form -->
-        <div id="actionFormModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeForm()">&times;</span>
-                <h3 id="formTitle">Action</h3>
-                <form id="actionForm" onsubmit="validateUser(event)">
-                    <!-- Hidden input to store the action type -->
-                    <input type="hidden" id="actionType" name="actionType">
-
-                    <!-- Username and Wallet ID inputs -->
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-
-                    <label for="walletId">Wallet ID:</label>
-                    <input type="text" id="walletId" name="walletId" required>
-
-                    <!-- Signature input, hidden initially -->
-                    <div id="signatureField" style="display: none;">
-                        <label for="signature">Signature:</label>
-                        <input type="text" id="signature" name="signature">
-                    </div>
-
-                    <!-- Submit button -->
-                    <button type="submit" id="nextButton">Next</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
     <section class="play-with-me" id="playWithMe">
         <div class="play-area">
             <h1>INTERACT WITH ME</h1>
@@ -343,12 +313,18 @@ include 'header.php';
             <div id="actionOverlay" class="overlay" style="display: none;">
                 <div class="overlay-content">
                     <h3 id="actionTitle">Perform Action</h3>
-                    <label for="tokenAmountInput">Enter Token Amount:</label>
-                    <input type="number" id="tokenAmountInput" placeholder="Token Amount" min="0" step="any">
-                    <button onclick="submitAction()">Submit</button>
-                    <button onclick="closeActionForm()">Cancel</button>
+                    <div class="burn-amount-container">
+                        <img src="img/icon_burn.webp" alt="Burn Icon" class="burn-amount-img">
+                        <input type="number" id="tokenAmountInput" placeholder="Token Amount" min="1000" step="any"
+                            oninput="updateTokenAmountColor()">
+                    </div>
+                    <div class="button-container">
+                        <button class="submit btn-submit" onclick="submitAction()"></button>
+                        <button class="cancel btn-cancel" onclick="closeActionForm()"></button>
+                    </div>
                 </div>
             </div>
+
         </div>
     </section>
 
