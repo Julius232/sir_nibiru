@@ -33,7 +33,7 @@ const encodedUniqueId = 'ZjZkNjdlODAzYzcwMTZkNzZiNGQ4MTYxNGY1YzNiNDg1MzE2MzlkNw=
 document.addEventListener("DOMContentLoaded", async () => {
     // DOM Elements
     const connectButton = document.getElementById('connect-wallet');
-    const connectText = document.getElementById('connect-text'); 
+    const connectText = document.getElementById('connect-text');
     const overlay = document.getElementById('walletOptionsOverlay');
     const newUsernameInput = document.getElementById('newUsernameInput');
     const hamburger = document.getElementById('hamburger');
@@ -54,15 +54,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Initialize
     await fetchConfig(); // Initialize configuration values
     restoreSession(); // Restore session from local storage
-    setupWalletEvents(); // Set up wallet event listeners
     fetchBestFriend(); // Fetch and display the best friend
     fetchHighscore('monthly'); // Fetch and display the monthly highscore
     fetchTotalBurned();
     fetchLastSitters(); // Fetch and display last sitters
     fetchAndProcessDonations(); // Fetch donations and update progress bars
     setInterval(fetchAndProcessDonations, 60000); // Poll backend every minute
-
-
+    setupWalletEvents(); // Set up wallet event listeners
     // Event Listeners
     connectButton.addEventListener("click", () => {
         if (wallet) {
@@ -200,20 +198,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             connectText.textContent = "Options";
             connectText.style.color = 'black';
             handleNonceVerification(wallet);
-        
+
             // Add connected class
             document.getElementById('connect-wallet').classList.add('connected');
-            console.log("Added connected class:", connectButton.classList); // Log to confirm
         });
-        
+
         phantomWallet.on('disconnect', () => {
             wallet = null;
             console.log("Wallet disconnected");
-            
+
             // Remove connected class
             connectText.textContent = "";
             document.getElementById('connect-wallet').classList.remove('connected');
-            console.log("Removed connected class:", connectButton.classList); // Log to confirm
         });
     }
 
@@ -538,6 +534,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Update connect button
                 connectText.textContent = "";
+                document.getElementById('connect-wallet').classList.remove('connected');
                 closeWalletOptions();
             } else {
                 console.error("Failed to delete nonce:", result.error);
@@ -715,11 +712,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     async function performBurnAction(amount, action) {
-        // Show loading overlay
-        document.getElementById('loadingOverlay').style.display = 'flex';
+        // Show loading overlay with initial message
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        loadingOverlay.style.display = 'flex';
+        const overlayContent = document.querySelector('.overlay-content p');
+
         try {
             // Ensure the wallet is connected
             if (!phantomWallet.connected) {
+                overlayContent.textContent = 'Connecting wallet...';
                 await phantomWallet.connect();
             }
 
@@ -727,13 +728,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             const uniqueId = decodeBase64(encodedUniqueId);
             const connection = new Connection(`${base}${subdomain}${domain}${uniqueId}`, 'finalized');
 
-            // Find the associated token account of the user
+            // Step 1: Retrieve associated token account
+            overlayContent.textContent = 'Checking associated token account...';
             const associatedTokenAddress = await getAssociatedTokenAddress(
                 TOKEN_MINT_ADDRESS,
                 wallet
             );
 
-            // Validate user input
+            // Step 2: Verify token balance
+            overlayContent.textContent = 'Validating token balance...';
             const userTokenAccountInfo = await connection.getTokenAccountBalance(associatedTokenAddress, 'finalized');
             const userBalance = userTokenAccountInfo.value.uiAmount;
 
@@ -745,7 +748,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Calculate the amount in smallest units
             const amountInSmallestUnits = Math.round(amount * Math.pow(10, TOKEN_DECIMALS));
 
-            // Create the burn instruction
+            // Step 3: Create burn instruction
+            overlayContent.textContent = 'Creating burn transaction...';
             const burnInstruction = createBurnCheckedInstruction(
                 associatedTokenAddress,
                 TOKEN_MINT_ADDRESS,
@@ -754,7 +758,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 TOKEN_DECIMALS
             );
 
-            // Create a memo instruction
+            // Step 4: Add memo instruction
             const memoText = `Burning ${amount} Sir.Nibiru tokens for action[${action}]`;
             const memoInstruction = new TransactionInstruction({
                 keys: [],
@@ -762,50 +766,46 @@ document.addEventListener("DOMContentLoaded", async () => {
                 data: Buffer.from(memoText, 'utf-8'),
             });
 
-            // Create a new transaction and add the instructions
+            // Step 5: Create and prepare transaction
+            overlayContent.textContent = 'Preparing transaction...';
             let transaction = new Transaction().add(memoInstruction, burnInstruction);
-
-            // Get the latest blockhash
             const latestBlockhash = await connection.getLatestBlockhash('finalized');
-
-            // Set transaction recentBlockhash and feePayer
             transaction.recentBlockhash = latestBlockhash.blockhash;
             transaction.feePayer = wallet;
 
-            // Sign the transaction
+            // Step 6: Sign transaction
+            overlayContent.textContent = 'Signing transaction...';
             let signedTransaction = await phantomWallet.signTransaction(transaction);
 
-            // Serialize the transaction
+            // Step 7: Serialize and send transaction
+            overlayContent.textContent = 'Sending transaction to network...';
             const serializedTransaction = signedTransaction.serialize();
-
-            // Send the transaction with finalized commitment
             const signature = await connection.sendRawTransaction(serializedTransaction, { preflightCommitment: 'finalized' });
 
-            // Wait for the transaction to reach finalized status
-            const maxWaitTime = 100000; // Maximum wait time of 60 seconds
+            // Step 8: Confirm transaction status
+            const maxWaitTime = 60000; // 60 seconds max wait
             const startTime = Date.now();
+            overlayContent.textContent = 'Waiting for confirmation...';
 
             while (Date.now() - startTime < maxWaitTime) {
-                // Check transaction status for finalized confirmation
                 const status = await connection.getSignatureStatus(signature, { searchTransactionHistory: true });
-
                 if (status.value?.confirmationStatus === 'finalized') {
-                    return signature; // Transaction is finalized
+                    overlayContent.textContent = 'Transaction confirmed!';
+                    await new Promise(resolve => setTimeout(resolve, 2000)); // Briefly show confirmation
+                    return signature;
                 }
-
-                // Wait for the next poll interval
-                await new Promise(resolve => setTimeout(resolve, 5000)); // Poll every 2 seconds
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Poll every 2 seconds
             }
 
-            // If transaction wasn't confirmed within the max wait time, throw an error
             throw new Error('Transaction confirmation timed out.');
         } catch (error) {
             console.error("Error performing burn action:", error);
             alert(`Transaction failed: ${error.message}`);
+            overlayContent.textContent = 'Transaction failed!';
             return null;
         } finally {
-            // Hide the loading overlay
-            document.getElementById('loadingOverlay').style.display = 'none';
+            // Hide the loading overlay after processing
+            loadingOverlay.style.display = 'none';
         }
     }
 
