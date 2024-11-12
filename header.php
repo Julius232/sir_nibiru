@@ -4,24 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sir Nibiru - Token Page</title>
+    <meta property="og:title" content="Sir.Nibiru">
+    <title>Sir.Nibiru</title>
 
     <link rel="stylesheet" href="styles/header.css">
     <!-- Google Fonts: Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Default favicon (16x16 or 32x32 pixels) -->
-    <link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
-
-    <!-- PNG favicon for higher resolution devices -->
-    <link rel="icon" href="img/favicon/favicon-32x32.png" sizes="32x32" type="image/png">
-
-    <!-- Apple Touch Icon (for iOS devices) -->
-    <link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.png" sizes="180x180">
-
-    <!-- Android and Windows Icons (optional) -->
-    <link rel="icon" href="img/favicon/android-chrome-192x192.png" sizes="192x192" type="image/png">
-    <link rel="icon" href="img/favicon/android-chrome-512x512.png" sizes="512x512" type="image/png">
-    <link rel="icon" href="img/favicon/favicon-48x48.png" sizes="48x48" type="image/png">
+    <link rel="apple-touch-icon" sizes="57x57" href="/sir_nibiru/img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/sir_nibiru/img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/sir_nibiru/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/sir_nibiru/img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/sir_nibiru/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/sir_nibiru/img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/sir_nibiru/img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/sir_nibiru/img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/sir_nibiru/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/sir_nibiru/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/sir_nibiru/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/sir_nibiru/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/sir_nibiru/img/favicon/favicon-16x16.png">
+    <link rel="icon" href="/sir_nibiru/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="/sir_nibiru/manifest.json">
+    
+    <meta name="msapplication-TileImage" content="/sir_nibiru/img/favicon/ms-icon-144x144.png">
+    
 
 </head>
 
@@ -35,7 +41,7 @@
             <a href="#roadmap" class="menu-link">Roadmap |</a>
             <a href="#story" class="menu-link">The Story</a>
             <img src="img/icon_burn.webp" alt="Burn Icon" class="burn-icon">
-            <span class="menu-text">Tokens Burned: <span id="total-burn-amount">999999999</span></span>
+            <span class="menu-text">Tokens Burned: <span id="total-burn-amount">0</span></span>
         </section>
         <section class="best-friend-section">
             <div class="best-friend-badge">

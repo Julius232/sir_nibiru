@@ -210,11 +210,14 @@ include 'header.php';
                 <h3>Wallet Options</h3>
                 <label for="newUsernameInput">Change Username:</label>
                 <input type="text" id="newUsernameInput" placeholder="New Username">
-                <button onclick="changeUsername()">Submit</button>
-                <button onclick="disconnectWallet()">Disconnect</button>
-                <button onclick="closeWalletOptions()">Cancel</button>
+
+                <!-- Apply classes for image backgrounds -->
+                <button class="submit btn-submit" onclick="changeUsername()"></button>
+                <button class="disconnect btn-disconnect" onclick="disconnectWallet()">Disconnect</button>
+                <button class="cancel btn-cancel" onclick="closeWalletOptions()"></button>
             </div>
         </div>
+
         <div id="howToModal" class="modal">
             <div class="modal-content">
                 <span class="close-btn" onclick="closeModal()">&times;</span>

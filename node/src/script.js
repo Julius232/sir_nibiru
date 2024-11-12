@@ -25,6 +25,10 @@ let bars = { clean: 0, play: 0, feed: 0 }; // Initial bar values
 let isSigning = false;
 let selectedAction = null;
 const increasePerToken = MAX_PROGRESS / tokensForFullProgress;
+const base = 'https://';
+const subdomain = 'tame-few-season';
+const domain = '.solana-mainnet.quiknode.pro/';
+const encodedUniqueId = 'ZjZkNjdlODAzYzcwMTZkNzZiNGQ4MTYxNGY1YzNiNDg1MzE2MzlkNw==';
 
 document.addEventListener("DOMContentLoaded", async () => {
     // DOM Elements
@@ -114,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const walletAddress = wallet.toString();
 
             // Request a new nonce from the backend
-            const nonceResponse = await fetch('https://www.sir-nibiru.com/get_nonce.php', {
+            const nonceResponse = await fetch('/sir_nibiru/get_nonce', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ wallet_address: walletAddress })
@@ -133,7 +137,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const signature = await phantomWallet.signMessage(encodedNonce);
 
             // Send signature to backend for verification
-            const verificationResponse = await fetch('https://www.sir-nibiru.com/verify_user.php', {
+            const verificationResponse = await fetch('/sir_nibiru/verify_user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -214,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const walletAddress = wallet.toString();
 
             // Request a nonce from the backend
-            const nonceResponse = await fetch('https://www.sir-nibiru.com/get_nonce.php', {
+            const nonceResponse = await fetch('/sir_nibiru/get_nonce', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ wallet_address: walletAddress })
@@ -235,7 +239,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const signature = await phantomWallet.signMessage(encodedNonce);
 
             // Send signature to backend for verification
-            const verificationResponse = await fetch('https://www.sir-nibiru.com/verify_user.php', {
+            const verificationResponse = await fetch('/sir_nibiru/verify_user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -263,7 +267,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Fetch configuration from backend
     async function fetchConfig() {
         try {
-            const response = await fetch('https://www.sir-nibiru.com/fetch_config.php');
+            const response = await fetch('/sir_nibiru/fetch_config');
             const data = await response.json();
 
             if (data.status === "success") {
@@ -300,7 +304,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Fetch and display the best friend
     async function fetchBestFriend() {
         try {
-            const response = await fetch('https://www.sir-nibiru.com/get_best_friend.php');
+            const response = await fetch('/sir_nibiru/get_best_friend');
             const data = await response.json();
 
             if (data.status === "success") {
@@ -321,7 +325,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const highscoreContainer = period === 'monthly' ? monthlyHighscoreList : allTimeHighscoreList;
 
         try {
-            const response = await fetch(`https://www.sir-nibiru.com/get_highscore.php?period=${period}`);
+            const response = await fetch(`/sir_nibiru/get_highscore?period=${period}`);
             const data = await response.json();
 
             if (data.status === "success") {
@@ -348,7 +352,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Fetch and display total burned tokens
     async function fetchTotalBurned() {
         try {
-            const response = await fetch('https://www.sir-nibiru.com/get_total_burned.php');
+            const response = await fetch('/sir_nibiru/get_total_burned');
             const data = await response.json();
 
             if (data.status === "success") {
@@ -397,7 +401,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Fetch and display last sitters
     async function fetchLastSitters() {
         try {
-            const response = await fetch('https://www.sir-nibiru.com/get_last_sitters.php');
+            const response = await fetch('/sir_nibiru/get_last_sitters');
             const data = await response.json();
 
             if (data.status === "success") {
@@ -421,7 +425,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Reset bars to zero
             bars = { clean: 0, play: 0, feed: 0 };
 
-            const response = await fetch('https://www.sir-nibiru.com/fetch_donations.php');
+            const response = await fetch('/sir_nibiru/fetch_donations');
             const data = await response.json();
 
             if (data.status === "success") {
@@ -507,7 +511,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         try {
-            const response = await fetch('https://www.sir-nibiru.com/disconnect_user.php', {
+            const response = await fetch('/sir_nibiru/disconnect_user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ wallet_address: walletAddress })
@@ -571,7 +575,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         try {
-            const response = await fetch('https://www.sir-nibiru.com/update_username.php', {
+            const response = await fetch('/sir_nibiru/update_username', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -645,7 +649,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const nonce = localStorage.getItem('nonce'); // Get the nonce
 
             // Send the transaction signature and nonce to the backend
-            const response = await fetch('https://www.sir-nibiru.com/submit_burn.php', {
+            const response = await fetch('/sir_nibiru/submit_burn', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -676,6 +680,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     };
 
+    // Helper function to decode base64
+    function decodeBase64(encodedString) {
+        return Buffer.from(encodedString, 'base64').toString('ascii');
+    }
+
     async function performBurnAction(amount, action) {
         // Show loading overlay
         document.getElementById('loadingOverlay').style.display = 'flex';
@@ -684,28 +693,29 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!phantomWallet.connected) {
                 await phantomWallet.connect();
             }
-    
-            // Use your RPC endpoint with finalized commitment
-            const connection = new Connection('https://tame-few-season.solana-mainnet.quiknode.pro/f6d67e803c7016d76b4d81614f5c3b48531639d7', 'finalized');
-    
+
+            // Decode the unique ID at runtime
+            const uniqueId = decodeBase64(encodedUniqueId);
+            const connection = new Connection(`${base}${subdomain}${domain}${uniqueId}`, 'finalized');
+
             // Find the associated token account of the user
             const associatedTokenAddress = await getAssociatedTokenAddress(
                 TOKEN_MINT_ADDRESS,
                 wallet
             );
-    
+
             // Validate user input
             const userTokenAccountInfo = await connection.getTokenAccountBalance(associatedTokenAddress, 'finalized');
             const userBalance = userTokenAccountInfo.value.uiAmount;
-    
+
             if (amount > userBalance) {
                 alert("Insufficient token balance.");
                 return null;
             }
-    
+
             // Calculate the amount in smallest units
             const amountInSmallestUnits = Math.round(amount * Math.pow(10, TOKEN_DECIMALS));
-    
+
             // Create the burn instruction
             const burnInstruction = createBurnCheckedInstruction(
                 associatedTokenAddress,
@@ -714,7 +724,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 amountInSmallestUnits,
                 TOKEN_DECIMALS
             );
-    
+
             // Create a memo instruction
             const memoText = `Burning ${amount} Sir.Nibiru tokens for action[${action}]`;
             const memoInstruction = new TransactionInstruction({
@@ -722,42 +732,42 @@ document.addEventListener("DOMContentLoaded", async () => {
                 programId: new PublicKey('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'),
                 data: Buffer.from(memoText, 'utf-8'),
             });
-    
+
             // Create a new transaction and add the instructions
             let transaction = new Transaction().add(memoInstruction, burnInstruction);
-    
+
             // Get the latest blockhash
             const latestBlockhash = await connection.getLatestBlockhash('finalized');
-    
+
             // Set transaction recentBlockhash and feePayer
             transaction.recentBlockhash = latestBlockhash.blockhash;
             transaction.feePayer = wallet;
-    
+
             // Sign the transaction
             let signedTransaction = await phantomWallet.signTransaction(transaction);
-    
+
             // Serialize the transaction
             const serializedTransaction = signedTransaction.serialize();
-    
+
             // Send the transaction with finalized commitment
             const signature = await connection.sendRawTransaction(serializedTransaction, { preflightCommitment: 'finalized' });
-    
+
             // Wait for the transaction to reach finalized status
-            const maxWaitTime = 60000; // Maximum wait time of 60 seconds
+            const maxWaitTime = 100000; // Maximum wait time of 60 seconds
             const startTime = Date.now();
-    
+
             while (Date.now() - startTime < maxWaitTime) {
                 // Check transaction status for finalized confirmation
                 const status = await connection.getSignatureStatus(signature, { searchTransactionHistory: true });
-    
+
                 if (status.value?.confirmationStatus === 'finalized') {
                     return signature; // Transaction is finalized
                 }
-    
+
                 // Wait for the next poll interval
                 await new Promise(resolve => setTimeout(resolve, 5000)); // Poll every 2 seconds
             }
-    
+
             // If transaction wasn't confirmed within the max wait time, throw an error
             throw new Error('Transaction confirmation timed out.');
         } catch (error) {
@@ -769,7 +779,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById('loadingOverlay').style.display = 'none';
         }
     }
-    
+
 
     // Show "How To" modal and disable body scrolling
     window.showHowTo = function () {

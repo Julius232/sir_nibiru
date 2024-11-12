@@ -2,9 +2,11 @@
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
@@ -21,9 +23,10 @@
     font-style: normal;
 }
 
-html, body {
+html,
+body {
     overflow-x: hidden;
-}    
+}
 
 body {
     background-color: #161616;
@@ -106,7 +109,7 @@ main {
     border-radius: 15px;
     /* Rounded corners */
     text-align: center;
-    max-width: 400px;
+    max-width: 800px;
     /* Increased width for better appearance */
     width: 90%;
     /* Responsive width */
@@ -139,33 +142,48 @@ main {
     /* Input font size */
 }
 
-/* Overlay Buttons */
+/* Common button style */
 .overlay-content button {
-    padding: 10px 15px;
-    /* Padding for buttons */
-    background-color: #1a0901;
-    /* Button color */
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     border: none;
-    /* No border */
-    border-radius: 10px;
-    /* Rounded corners */
-    color: white;
-    /* Text color */
     cursor: pointer;
-    /* Pointer on hover */
-    font-size: 1rem;
-    /* Button font size */
-    margin: 5px;
-    /* Space between buttons */
-    transition: background 0.3s, transform 0.2s;
-    /* Hover effect */
+    padding: 8px;
+    aspect-ratio: 5 / 1;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.overlay-content button:hover {
-    background-color: #fd2738;
-    /* Darker shade on hover */
-    transform: scale(1.05);
-    /* Slight scale effect on hover */
+/* Button-specific images */
+.btn-submit {
+    background-image: url('../img/buttons/submit.webp');
+}
+
+.btn-submit:hover {
+    background-image: url('../img/buttons/submit-hv.webp');
+}
+
+.btn-disconnect {
+    background-image: url('../img/buttons/disconnect_button.webp');
+}
+
+.btn-disconnect:hover {
+    background-image: url('../img/buttons/disconnect_button_hover.webp');
+}
+
+.btn-cancel {
+    background-image: url('../img/buttons/cancel.webp');
+}
+
+.btn-cancel:hover {
+    background-image: url('../img/buttons/cancel_hv.webp');
 }
 
 /* Overlay styling */
@@ -287,16 +305,20 @@ main {
 
 /* Spinner Animation */
 @keyframes spinner {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Responsive Layout for Smaller Screens */
 @media (max-width: 600px) {
-    
+
     .game-container,
     .right-panel {
-        width: 100%; /* Allow the container to scale down */
-        max-width: 512px; /* Ensure it doesn’t exceed the original width */
+        width: 100%;
+        /* Allow the container to scale down */
+        max-width: 512px;
+        /* Ensure it doesn’t exceed the original width */
     }
 
     .button-grid h4 {

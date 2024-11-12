@@ -133,7 +133,7 @@ function fetch_transaction_details($signature) {
 
 function fetch_transaction_details_with_retry($signature, $maxRetries = 5, $initialRetryInterval = 5) {
     global $action, $user_id;
-    $attempt = 5;
+    $attempt = 0;
     $retryInterval = $initialRetryInterval;
 
     while ($attempt < $maxRetries) {
