@@ -1,3 +1,54 @@
+@keyframes matrixGlow {
+    0% {
+        box-shadow: 0 0 10px rgba(45, 126, 74, 0.7), 0 0 20px rgba(45, 136, 74, 0.7), 0 0 30px rgba(45, 116, 74, 0.5);
+        filter: brightness(0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(45, 116, 74, 0.8), 0 0 30px rgba(45, 126, 74, 0.9), 0 0 40px rgba(45, 136, 74, 0.6);
+        filter: brightness(0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(45, 136, 74, 0.7), 0 0 20px rgba(45, 116, 74, 0.7), 0 0 30px rgba(45, 126, 74, 0.6);
+        filter: brightness(0.3);
+    }
+}
+
+@keyframes glitchEffect {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(1px, -1px);
+    }
+
+    50% {
+        transform: translate(-1px, 1px);
+    }
+
+    75% {
+        transform: translate(2px, -2px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes textGlow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 5px rgba(45, 116, 74, 0.7), 0 0 10px rgba(45, 116, 74, 0.7), 0 0 15px rgba(45, 116, 74, 0.6);
+    }
+
+    50% {
+        text-shadow: 0 0 10px rgba(45, 116, 74, 0.8), 0 0 20px rgba(45, 116, 74, 0.9), 0 0 30px rgba(45, 116, 74, 0.6);
+    }
+}
+
 /* Base Styles for the Header */
 header {
     position: relative;
@@ -102,6 +153,11 @@ header {
     transition: transform 0.3s ease;
 }
 
+.nav-links a:hover,
+.nav-links button:hover {
+    animation: matrixGlow 2s infinite alternate, glitchEffect 1s infinite;
+}
+
 /* Individual Icon Styles */
 .icon.token-address {
     background-image: url('../img/buttons/tokenadress.webp');
@@ -202,6 +258,7 @@ header {
     color: #333;
     /* Text color for contrast */
     text-align: center;
+    animation: glitchEffect 1.5s infinite alternate;
 }
 
 .best-friend-name,
@@ -212,6 +269,7 @@ header {
     color: #333;
     margin: 0;
     padding: 0;
+   
 }
 
 .best-friend-name {

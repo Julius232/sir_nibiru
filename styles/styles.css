@@ -1,4 +1,14 @@
-
+@keyframes comicGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 
 /* General Reset */
 * {
@@ -19,6 +29,39 @@ body {
     background-color: #161616;
     color: #333;
     text-align: center;
+    background: linear-gradient(135deg, #161616, #130000, #8d0000);
+    background-size: 300% 300%;
+    animation: comicGradient 8s ease infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Halftone dot overlay */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+/* Comic-style border */
+body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 5px solid #ffcc00;
+    opacity: 0.2;
+    box-sizing: border-box;
+    z-index: -1;
 }
 
 h1 {
