@@ -188,7 +188,6 @@ header {
     align-items: center;
     justify-content: center;
     position: relative;
-    /* Positioning to control span positioning */
     padding-right: 20px;
     /* Add space for centering */
 }
@@ -200,9 +199,7 @@ header {
     position: absolute;
     top: 40%;
     right: 18%;
-    /* Shift text to the right */
     transform: translateX(10px);
-    /* Adjust this for fine-tuning */
     margin: 0;
     padding: 0;
 }
@@ -210,25 +207,21 @@ header {
 #connect-wallet.connected #connect-text {
     color: black !important;
     text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
-    /* Optional glow */
 }
 
 #connect-wallet:hover #connect-text {
     transform: scale(1.05);
-    /* Hover effect */
+    right: 10%;
 }
 
 #connect-wallet:hover {
     transform: scale(1.05);
-    /* Slightly enlarge on hover */
 }
 
 #connect-wallet.connected {
     background-image: url('../img/buttons/phantom-connected.webp');
-    /* Phantom wallet connected image */
     background-size: contain;
     color: black;
-    /* Default color */
 }
 
 /* Hamburger and Pfeil Positioning */
@@ -257,10 +250,8 @@ header {
 /* Pfeil Icon Styles for Scroll-to-Top */
 .pfeil {
     top: 12%;
-    /* Positioned just below the hamburger */
     right: 20px;
     background-image: url('../img/hamburger/pfeil.webp');
-    /* Adjust path as needed */
 }
 
 /* Hide Pfeil by default and display it only on mobile */
@@ -321,7 +312,7 @@ header {
 }
 
 .best-friend-name {
-    font-size: clamp(0.7rem, 1.5vw, 1.2rem);
+    font-size: clamp(0.9rem, 1.7vw, 1.4rem);
     position: absolute;
     top: 53.8%;
     /* Position below the title */
@@ -330,7 +321,7 @@ header {
 }
 
 .best-friend-donation {
-    font-size: clamp(0.5rem, 1.5vw, 1.2rem);
+    font-size: clamp(0.2rem, 1vw, 0.9rem);
     position: absolute;
     top: 60%;
     /* Positioned below the name */
