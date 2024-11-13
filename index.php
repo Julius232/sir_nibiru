@@ -328,6 +328,14 @@ include 'header.php';
         <div id="walletOptionsOverlay" class="overlay" style="display: none;">
             <div class="overlay-content">
                 <h3>Wallet Options</h3>
+
+                <!-- Current Username Display -->
+                <div id="currentUsernameDisplay" class="current-username">
+                    <span><strong id="currentUsername">Loading...</strong></span>
+                </div>
+
+                <img src="img/icon_burn.webp" alt="Burn Icon" class="burn-icon">
+                <span class="menu-text">Tokens Burned: <span id="user-burn-amount">0</span></span>
                 <input type="text" id="newUsernameInput" placeholder="New Username">
 
                 <!-- Button container to align buttons in a row -->
@@ -335,6 +343,10 @@ include 'header.php';
                     <button class="submit btn-submit" onclick="changeUsername()"></button>
                     <button class="cancel btn-cancel" onclick="closeWalletOptions()"></button>
                     <button class="disconnect btn-disconnect" onclick="disconnectWallet()"></button>
+                </div>
+                <!-- Container for transaction details -->
+                <div id="transactionDetails" class="transaction-details">
+                    <!-- Transaction details will be injected here -->
                 </div>
             </div>
         </div>

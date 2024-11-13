@@ -487,9 +487,114 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    async function fetchTransactionDetails() {
+        // Retrieve values from local storage
+        const walletAddress = localStorage.getItem('walletAddress');
+        const username = localStorage.getItem('username');
+        const nonce = localStorage.getItem('nonce');
+
+        if (!walletAddress || !username || !nonce) {
+            console.error("Missing parameters for fetching transaction details.");
+            return;
+        }
+
+        try {
+            const response = await fetch('/sir_nibiru/fetch_user_donations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    wallet_address: walletAddress,
+                    username: username,
+                    nonce: nonce
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                const transactions = result.transactions;
+                const transactionDetailsDiv = document.getElementById('transactionDetails');
+                transactionDetailsDiv.innerHTML = '<h4>Transactions (maximum last 10):</h4>';
+
+                transactions.forEach(tx => {
+                    // Create container for each transaction item
+                    const transactionItem = document.createElement('div');
+                    transactionItem.className = 'transaction-item';
+                    transactionItem.innerHTML = `
+                        <div class="transaction-signature">
+                            <span class="label">Signature:</span>
+                            <a href="https://solscan.io/tx/${tx.signature}" target="_blank">Solscan</a>
+                        </div>
+                        <div class="transaction-action">
+                            <span class="label">Action:</span> ${tx.action}
+                        </div>
+                        <div class="transaction-state">
+                            <span class="label">State:</span> ${tx.state}
+                        </div>
+                        <div class="transaction-amount">
+                            <span class="label">Amount:</span> ${tx.donation_amount}
+                        </div>
+                    `;
+                    transactionDetailsDiv.appendChild(transactionItem);
+                });
+            } else {
+                console.error('Failed to fetch transactions:', result.message);
+            }
+        } catch (error) {
+            console.error('Error fetching transaction details:', error);
+        }
+    }
+
+    async function fetchUserDonationTotal() {
+        // Retrieve values from local storage
+        const walletAddress = localStorage.getItem('walletAddress');
+        const username = localStorage.getItem('username');
+        const nonce = localStorage.getItem('nonce');
+
+        if (!walletAddress || !username || !nonce) {
+            console.error("Missing parameters for fetching donation total.");
+            return;
+        }
+
+        try {
+            const response = await fetch('/sir_nibiru/fetch_user_donation_total', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    wallet_address: walletAddress,
+                    username: username,
+                    nonce: nonce
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                // Update the user's burned tokens total in the UI
+                const totalDonations = result.total_donations || 0; // Fallback to 0 if not returned
+                const userBurnAmount = document.getElementById('user-burn-amount');
+                userBurnAmount.innerHTML = totalDonations;
+            } else {
+                console.error('Failed to fetch donation total:', result.message);
+            }
+        } catch (error) {
+            console.error('Error fetching donation total:', error);
+        }
+    }
+
     // Show wallet options overlay
     function showWalletOptions() {
+        const username = localStorage.getItem('username') || 'Not Set';
+        // Update the username display
+        const currentUsernameElement = document.getElementById('currentUsername');
+        currentUsernameElement.innerHTML = username;
         overlay.style.display = 'flex';
+        fetchUserDonationTotal();
+        fetchTransactionDetails();
     }
 
     // Close wallet options overlay
@@ -643,13 +748,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.updateTokenAmountColor = async function () {
         const inputField = document.getElementById('tokenAmountInput');
         const value = parseInt(inputField.value) || 0; // Parse the value as an integer, default to 0 if empty or invalid
-
-        // Ensure the value is at least 1000
-        if (value < 1000 && value !== 0) {
-            inputField.value = 1000; // Set the input value to the minimum
-            value = 1000; // Update the value for color logic
-        }
-
         if (value >= 1000 && value < 10000) {
             inputField.style.color = 'yellow';
         } else if (value >= 10000 && value < 1000000) {
@@ -663,6 +761,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Adjusted 'submitAction' function
     window.submitAction = async function () {
+        const tokenAmountInput = parseInt(document.getElementById("tokenAmountInput").value) || 0;
+        if (tokenAmountInput < 1000) {
+            alert("The minimum token amount is 1000. Please enter a valid amount.");
+            return;
+        }
         const nonceValid = await ensureNonceValid();
         if (!nonceValid) {
             alert("Failed to refresh session. Please try again.");

@@ -41,6 +41,11 @@ body {
     overflow-x: hidden;
 }
 
+.overlay-content, .modal-content {
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
 body {
     background-color: #161616;
     color: #333;
@@ -142,8 +147,14 @@ main {
     font-size: 2rem;
     font-weight: bold;
     color: #FF4500; /* Burnt orange */
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     text-shadow: 0 0 10px rgba(255, 99, 71, 0.6), 0 0 20px rgba(255, 140, 0, 0.5); /* Glowing effect */
+}
+
+.current-username {
+    font-size: 2rem;
+    text-shadow: 0 0 10px rgba(255, 99, 71, 0.6), 0 0 20px rgba(255, 140, 0, 0.5); /* Glowing effect */
+    margin-bottom: 20px;
 }
 
 /* Input Field Styling with Burn Theme */
@@ -249,6 +260,41 @@ main {
     background-image: url('../img/buttons/cancel_hv.webp');
 }
 
+.transaction-item {
+    background-color: rgba(255, 69, 0, 0.1);
+    border: 2px solid #FF4500; /* Fiery orange-red border */
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    color: #ffffff; /* Gold text */
+    font-size: 1rem;
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 99, 71, 0.3); /* Comic-style shadow */
+    transition: transform 0.2s ease;
+}
+
+.transaction-item:hover {
+    transform: scale(1.03);
+}
+
+.transaction-item .label {
+    font-weight: bold;
+    color: #FF4500; /* Burnt orange for labels */
+}
+
+.transaction-item div {
+    margin: 5px 0;
+}
+
+.transaction-signature a {
+    color: #7e7e7e; /* Set text color to white */
+    text-decoration: none; /* Optional: remove underline */
+    transition: color 0.3s ease; /* Optional: smooth color transition */
+}
+
+.transaction-signature a:hover {
+    color: #ffcc00; /* Optional: add hover effect with a highlight color */
+}
 
 /* Loading Overlay Specific Styles */
 #loadingOverlay .overlay-content {

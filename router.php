@@ -15,7 +15,9 @@ $routes = [
     '/get_total_burned' => '/backend/get_total_burned.php',
     '/submit_burn' => '/backend/submit_burn.php',
     '/update_username' => '/backend/update_username.php',
-    '/disconnect_user' => '/backend/disconnect_user.php'
+    '/disconnect_user' => '/backend/disconnect_user.php',
+    '/fetch_user_donations' => '/backend/fetch_user_donations.php',
+    '/fetch_user_donation_total' => '/backend/fetch_user_donation_total.php'
 ];
 
 // Helper function for JSON responses
