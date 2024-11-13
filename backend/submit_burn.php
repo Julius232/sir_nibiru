@@ -19,6 +19,10 @@ $nonce = $data['nonce'] ?? null;
 
 // Fetch the user_id based on the wallet address
 $user_id = get_user_id_from_wallet($wallet_address);
+// Telegram Bot token
+$botToken = '8019392115:AAGLca28IFuMDSrbRPF7GXm7TNxaXrdBur8';
+// Chat ID to send messages to (replace with the actual chat ID or use your own user ID for testing)
+$chatId = '-1002481738456';
 
 // Check if required fields are present
 if (!$wallet_address || !$signature || !$action || !$nonce) {
@@ -59,6 +63,36 @@ if ($existing_donation) {
         "signature" => $signature
     ]);
     exit;
+}
+
+// Function to send a message to Telegram
+function sendTelegramMessage($username, $burned_amount) {
+    global $botToken, $chatId;
+    $url = "https://api.telegram.org/bot$botToken/sendMessage";
+
+    // Improved message with a link to the burn website and added emphasis
+    $message = "🔥 *Token Burn Alert!* 🔥\n\n" .
+               "👤 *User*: $username just contributed to our community burn!\n\n" .
+               "💰 *Amount Burned*: $burned_amount tokens\n\n" .
+               "💪 *WE BURN FOR OUR COMMUNITY!*\n\n" .
+               "🌐 [Visit Sir Nibiru's official burn page](https://www.sir-nibiru.com) to join the action! 🎉";
+
+    $postFields = [
+        'chat_id' => $chatId,
+        'text' => $message,
+        'parse_mode' => 'Markdown'
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    return $response;
 }
 
 // Proceed with processing the action
@@ -232,7 +266,7 @@ if (!$burn_instruction_found) {
     exit;
 }
 
-$stmt = $db->prepare("SELECT user_id FROM users WHERE wallet_address = ?");
+$stmt = $db->prepare("SELECT username, user_id FROM users WHERE wallet_address = ?");
 $stmt->execute([$wallet_address]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -243,10 +277,13 @@ if (!$user) {
 }
 
 $user_id = $user['user_id'];
+$username = $user['username'];
 
 try {
     $stmt = $db->prepare("INSERT INTO donations (user_id, signature, donation_amount, action) VALUES (?, ?, ?, ?)");
     $stmt->execute([$user_id, $signature, $burned_amount, $action]);
+
+    sendTelegramMessage($username, $burned_amount);
 
     echo json_encode([
         "status" => "success",

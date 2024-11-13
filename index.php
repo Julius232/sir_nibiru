@@ -11,7 +11,7 @@ include 'header.php';
     var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation, isEggParty, totalBurnAmount;
 
     //EGG-PARTY
-    const EGG_PARTY_TARGET = 1000000;  // Threshold to stop egg party
+    const EGG_PARTY_TARGET = 14920000; // Threshold to stop egg party
 
 
     function init() {
