@@ -6,9 +6,13 @@ include 'header.php';
 <!-- Include only the bundled JavaScript file -->
 <script src="dist/bundle.js"></script> <!-- Adjust path as needed -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script src="animations/sir-nibiru7.js"></script>
+<script src="animations/sir-nibiru8.js"></script>
 <script>
-    var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+    var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation, isEggParty, totalBurnAmount;
+
+    //EGG-PARTY
+    const EGG_PARTY_TARGET = 1000000;  // Threshold to stop egg party
+
 
     function init() {
         canvas = document.getElementById("canvas");
@@ -30,73 +34,190 @@ include 'header.php';
 
     function handleComplete(evt, comp) {
         const lib = comp.getLibrary();
-        exportRoot = new lib.sirnibiru7();
+        exportRoot = new lib.sirnibiru8();
         stage = new lib.Stage(canvas);
 
         // Animation Function
         fnStartAnimation = function () {
             stage.addChild(exportRoot);
             createjs.Ticker.framerate = 25;
-
             // Function to handle frame updates based on progress bar widths
             const updateAnimationFrame = () => {
+                // Otherwise, update each bar individually as needed
                 const yellowBarWidth = parseFloat(document.querySelector('.progress-bar.yellow').style.width) || 0;
                 const blueBarWidth = parseFloat(document.querySelector('.progress-bar.blue').style.width) || 0;
                 const greenBarWidth = parseFloat(document.querySelector('.progress-bar.green').style.width) || 0;
 
-                if (yellowBarWidth <= 33 && blueBarWidth <= 33) {
-                    if (exportRoot.currentFrame < 232 || exportRoot.currentFrame >= 260) {
-                        exportRoot.gotoAndStop(232);
-                    } else {
-                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
+                var startFrame = 0;
+                var endFrame = 0;
+
+                const eggPartyPercentage = Math.min(totalBurnAmount / EGG_PARTY_TARGET, 1) * 100;
+
+                if (isEggParty) {
+                    // Calculate the egg party animation frame based on total burned amount
+                    if (eggPartyPercentage < 9) {
+                        startFrame = 300;
+                        endFrame = 324;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage < 18) {
+                        startFrame = 325;
+                        endFrame = 349;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage < 27) {
+                        startFrame = 350;
+                        endFrame = 374;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage < 36) {
+                        startFrame = 375;
+                        endFrame = 399;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage < 45) {
+                        startFrame = 400;
+                        endFrame = 425;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage < 54) {
+                        startFrame = 426;
+                        endFrame = 451;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage < 63) {
+                        startFrame = 452;
+                        endFrame = 477;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage < 72) {
+                        startFrame = 478;
+                        endFrame = 503;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage < 81) {
+                        startFrame = 504;
+                        endFrame = 529;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage < 90) {
+                        startFrame = 530;
+                        endFrame = 555;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (eggPartyPercentage <= 100) {
+                        startFrame = 556;
+                        endFrame = 581;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame - 1) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
                     }
-                } else if (yellowBarWidth > 33 && blueBarWidth <= 33) {
-                    if (exportRoot.currentFrame < 51 || exportRoot.currentFrame >= 98) {
-                        exportRoot.gotoAndStop(51);
-                    } else {
-                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
-                    }
-                } else if (yellowBarWidth <= 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
-                    if (exportRoot.currentFrame < 200 || exportRoot.currentFrame >= 229) {
-                        exportRoot.gotoAndStop(200);
-                    } else {
-                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
-                    }
-                } else if (yellowBarWidth > 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
-                    if (exportRoot.currentFrame < 1 || exportRoot.currentFrame >= 49) {
-                        exportRoot.gotoAndStop(1);
-                    } else {
-                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
-                    }
-                } else if (yellowBarWidth <= 33 && blueBarWidth > 66) {
-                    if (exportRoot.currentFrame < 169 || exportRoot.currentFrame >= 198) {
-                        exportRoot.gotoAndStop(169);
-                    } else {
-                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
-                    }
-                } else if (yellowBarWidth > 33 && blueBarWidth > 66) {
-                    if (exportRoot.currentFrame < 100 || exportRoot.currentFrame >= 151) {
-                        exportRoot.gotoAndStop(100);
-                    } else {
-                        exportRoot.gotoAndPlay(exportRoot.currentFrame + 1);
+
+                } else {
+                    // Logic after egg party ends (when totalBurnAmount >= EGG_PARTY_TARGET)
+                    if (yellowBarWidth <= 33 && blueBarWidth <= 33) {
+                        startFrame = 232;
+                        endFrame = 260;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (yellowBarWidth > 33 && blueBarWidth <= 33) {
+                        startFrame = 51;
+                        endFrame = 98;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (yellowBarWidth <= 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
+                        startFrame = 200;
+                        endFrame = 229;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (yellowBarWidth > 33 && blueBarWidth > 33 && blueBarWidth <= 66) {
+                        startFrame = 1;
+                        endFrame = 49;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (yellowBarWidth <= 33 && blueBarWidth > 66) {
+                        startFrame = 169;
+                        endFrame = 198;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
+                    } else if (yellowBarWidth > 33 && blueBarWidth > 66) {
+                        startFrame = 100;
+                        endFrame = 151;
+                        if (exportRoot.currentFrame < startFrame || exportRoot.currentFrame >= endFrame) {
+                            exportRoot.gotoAndStop(startFrame);
+                        } else {
+                            exportRoot.gotoAndPlay(exportRoot.currentFrame);
+                        }
                     }
                 }
             };
-
             // Function to update the bowl image based on green bar width
             const updateBowlImage = () => {
                 const greenBarWidth = parseFloat(document.querySelector('.progress-bar.green').style.width) || 0;
                 const bowlImage = document.getElementById('bowlImage');
                 let newSrc;
 
-                if (greenBarWidth <= 25) {
-                    newSrc = "animations/images/food/empty_bowl.png";
-                } else if (greenBarWidth <= 50) {
-                    newSrc = "animations/images/food/slightly_filled_bowl.png";
-                } else if (greenBarWidth <= 75) {
-                    newSrc = "animations/images/food/filled_bowl.png";
-                } else {
-                    newSrc = "animations/images/food/over_filled_bowl.png";
+                if (isEggParty) {
+                    bowlImage.style.display = "none";
+                    newSrc = "";
+                }
+                else {
+                    if (greenBarWidth <= 25) {
+                        newSrc = "animations/images/food/empty_bowl.png";
+                    } else if (greenBarWidth <= 50) {
+                        newSrc = "animations/images/food/slightly_filled_bowl.png";
+                    } else if (greenBarWidth <= 75) {
+                        newSrc = "animations/images/food/filled_bowl.png";
+                    } else {
+                        newSrc = "animations/images/food/over_filled_bowl.png";
+                    }
                 }
 
                 // Update src only if it's different from the current one

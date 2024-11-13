@@ -362,13 +362,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (data.status === "success") {
                 // Update the total burned amount in the menu
-                document.getElementById("total-burn-amount").textContent = parseFloat(data.total_donations).toFixed(0);
+                totalBurnAmount = parseFloat(data.total_donations).toFixed(0);
+                isEggParty = totalBurnAmount < EGG_PARTY_TARGET;
+                document.getElementById("total-burn-amount").textContent = totalBurnAmount;
             } else {
                 console.error("Error fetching total burned data:", data.message);
             }
         } catch (error) {
             console.error("Failed to fetch total burned data:", error);
         }
+        updateProgressBars();
     }
 
     // Switch to Monthly Tab
@@ -469,9 +472,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Update progress bars in the DOM
     function updateProgressBars() {
-        document.querySelector('.progress-bar.blue').style.width = `${bars.clean}%`;
-        document.querySelector('.progress-bar.green').style.width = `${bars.feed}%`;
-        document.querySelector('.progress-bar.yellow').style.width = `${bars.play}%`;
+        const eggPartyPercentage = Math.min(totalBurnAmount / EGG_PARTY_TARGET, 1) * 100;
+
+        if (isEggParty) {
+            // Set all bars to the same value based on eggPartyPercentage
+            document.querySelector('.progress-bar.yellow').style.width = `${eggPartyPercentage}%`;
+            document.querySelector('.progress-bar.blue').style.width = `${eggPartyPercentage}%`;
+            document.querySelector('.progress-bar.green').style.width = `${eggPartyPercentage}%`;
+        }
+        else {
+            document.querySelector('.progress-bar.blue').style.width = `${bars.clean}%`;
+            document.querySelector('.progress-bar.green').style.width = `${bars.feed}%`;
+            document.querySelector('.progress-bar.yellow').style.width = `${bars.play}%`;
+        }
     }
 
     // Show wallet options overlay
@@ -524,8 +537,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const result = await response.json();
 
             if (result.status === "success") {
-                console.log("Nonce deleted on the backend for wallet:", walletAddress);
-
                 // Clear localStorage and reset wallet variable
                 localStorage.removeItem('walletAddress');
                 localStorage.removeItem('username');
@@ -783,7 +794,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const signature = await connection.sendRawTransaction(serializedTransaction, { preflightCommitment: 'finalized' });
 
             // Step 8: Confirm transaction status
-            const maxWaitTime = 60000; // 60 seconds max wait
+            const maxWaitTime = 300000; // 60 seconds max wait
             const startTime = Date.now();
             overlayContent.textContent = 'Waiting for confirmation...';
 
