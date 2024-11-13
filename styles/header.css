@@ -369,7 +369,13 @@ header {
         right: -70%;
         z-index: 10;
     }
-
+    .nav-container {
+        pointer-events: none;
+    }
+    
+    .nav-links.active + .nav-container {
+        pointer-events: auto; /* Enable when nav is active */
+    }
 
     /* Adjust header content */
     .header-content {

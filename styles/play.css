@@ -164,13 +164,13 @@
     background-position: center;
     border: none;
     cursor: pointer;
-    padding: 8px;
-
+    padding: 15px 20px; /* Adjust padding as needed */
+    width: 100%; /* Ensures button takes full grid cell width */
     aspect-ratio: 5 / 1;
     font-size: 12px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;    
     gap: 5px;
     color: #ffffff;
     font-weight: bold;
@@ -230,6 +230,7 @@
         background-size: auto;
         margin: -10% auto;
     }
+
 }
 
 /* Responsive Width for Small Screens */
