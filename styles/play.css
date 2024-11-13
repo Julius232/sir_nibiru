@@ -8,8 +8,8 @@
 
 /* Main Container */
 .play-area {
-    background-color: rgb(67, 16, 83);
-    border: 6px solid rgb(27, 5, 26);
+    background-color: rgb(31, 59, 43);
+    border: 6px solid rgb(0, 0, 0);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 4px 10px rgba(0, 0, 0, 0.6);
     padding: var(--base-padding);
     border-radius: 20px;
@@ -53,7 +53,7 @@
     justify-content: center;
     border-radius: 10px;
     border: 6px solid rgb(0, 0, 0);
-    box-shadow: 3px 3px 3px  rgba(0, 0, 0, 0.3);
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* Animation Container */
@@ -136,9 +136,9 @@
 .right-panel {
     margin-top: 10px;
     padding: 10px;
-    background-color: rgba(83, 16, 79, 0.7);
+    background-color: rgba(61, 21, 0, 0.7);
     border-radius: 12px;
-    border: 6px solid rgba(27, 5, 26, 1);
+    border: 6px solid rgb(0, 0, 0);
     box-shadow: 0 18px 18px rgba(0, 0, 0, 0.3);
     width: 100%;
 }
