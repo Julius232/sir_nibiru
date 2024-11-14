@@ -186,7 +186,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById('connect-wallet').classList.add('connected');
             connectText.textContent = storedUsername || "Options";
             connectText.style.color = 'black';
-            console.log("Session restored with wallet:", storedWalletAddress);
         }
     }
 
@@ -364,6 +363,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Update the total burned amount in the menu
                 totalBurnAmount = parseFloat(data.total_donations).toFixed(0);
                 isEggParty = totalBurnAmount < EGG_PARTY_TARGET;
+                toggleButtonVisibility();
                 document.getElementById("total-burn-amount").textContent = totalBurnAmount;
             } else {
                 console.error("Error fetching total burned data:", data.message);
@@ -470,6 +470,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    function toggleButtonVisibility() {
+        const cleanButton = document.querySelector('.btn-clean');
+        const playButton = document.querySelector('.btn-play');
+        const feedButton = document.querySelector('.btn-feed');
+        const howToButton = document.querySelector('.btn-howto');
+        const hatchButton = document.querySelector('.btn-hatch');
+    
+        if (isEggParty) {
+            cleanButton.style.display = 'none';
+            playButton.style.display = 'none';
+            feedButton.style.display = 'none';
+            howToButton.style.display = 'none';
+            hatchButton.style.display = 'flex'; // Show hatch button only in egg party mode
+        } else {
+            cleanButton.style.display = 'flex';
+            playButton.style.display = 'flex';
+            feedButton.style.display = 'flex';
+            howToButton.style.display = 'flex';
+            hatchButton.style.display = 'none'; // Hide hatch button if not in egg party mode
+        }
+    }
+    
     // Update progress bars in the DOM
     function updateProgressBars() {
         const eggPartyPercentage = Math.min(totalBurnAmount / EGG_PARTY_TARGET, 1) * 100;
@@ -722,24 +744,70 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     };
 
-    // Adjusted 'openActionForm' function
     window.openActionForm = async function (action) {
         if (!wallet) {
             alert("Please connect your wallet first.");
             return;
         }
-
+    
         const nonceValid = await ensureNonceValid();
         if (!nonceValid) {
             alert("Failed to refresh session. Please try again.");
             return;
         }
-
+    
         selectedAction = action;
-        document.getElementById("actionTitle").textContent = `BURN 4 ${action.charAt(0).toUpperCase() + action.slice(1)}`;
+        document.getElementById("actionTitle").textContent = `BURN FOR ${action.charAt(0).toUpperCase() + action.slice(1)}`;
+    
+        const actionDescription = document.getElementById("actionDescription");
+    
+        // Set a unique mystical description for each action
+        if (action === "hatch") {
+            actionDescription.innerHTML = `
+                <div class="triangle-text">
+                    <p class="triangle-line large">Through tokens burned, the magic’s bound,</p>
+                    <p class="triangle-line medium">In sacred fire, new life is found.</p>
+                    <p class="triangle-line small">Embers dance, the spell takes hold,</p>
+                    <p class="triangle-line tiny">Unlock the gate with courage bold.</p>
+                    <p class="triangle-line center">Awake, Nibiru, rise from flame.</p>
+                </div>
+                `;
+        } else if (action === "clean") {
+            actionDescription.innerHTML = `
+                <div class="triangle-text">
+                    <p class="triangle-line large">By water’s grace and spirit’s light,</p>
+                    <p class="triangle-line medium">Purge the darkness, make all bright.</p>
+                    <p class="triangle-line small">Through cleansing fire, the soul renews,</p>
+                    <p class="triangle-line tiny">Pure and whole, in sacred hues.</p>
+                    <p class="triangle-line center">Restore, Nibiru, fresh and true.</p>
+                </div>
+                `;
+        } else if (action === "play") {
+            actionDescription.innerHTML = `
+                <div class="triangle-text">
+                    <p class="triangle-line large">With sparks of joy and laughter’s call,</p>
+                    <p class="triangle-line medium">The soul awakens, free for all.</p>
+                    <p class="triangle-line small">A dance of light, a leap of faith,</p>
+                    <p class="triangle-line tiny">Revive the spirit, pure and safe.</p>
+                    <p class="triangle-line center">Rejoice, Nibiru, in boundless play.</p>
+                </div>
+                `;
+        } else if (action === "feed") {
+            actionDescription.innerHTML = `
+                <div class="triangle-text">
+                    <p class="triangle-line large">With gifts of earth, the spirit grows,</p>
+                    <p class="triangle-line medium">Through bounty’s hand, life’s current flows.</p>
+                    <p class="triangle-line small">Feed the heart, fuel the fire within,</p>
+                    <p class="triangle-line tiny">Strength and grace shall now begin.</p>
+                    <p class="triangle-line center">Thrive, Nibiru, with life anew.</p>
+                </div>
+                `;
+        }
+    
+        actionDescription.style.display = "block"; // Ensure the description is visible
         document.getElementById("actionOverlay").style.display = "flex";
     };
-
+    
     // Close action form overlay
     window.closeActionForm = function () {
         document.getElementById("actionOverlay").style.display = "none";

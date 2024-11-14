@@ -212,6 +212,103 @@
     /* Replace with hover image */
 }
 
+.btn-hatch {
+    grid-column: span 2;
+    grid-row: 2; /* Places it in the middle row, spanning both columns */
+    background-image: url('../img/buttons/hatch.webp');
+    display: flex;
+    justify-content: center;
+}
+
+#actionDescription {
+    font-family: 'Cormorant Unicase', serif; /* Use a serif or gothic-inspired font */
+    font-size: 1.1em;
+    color: #b3a18f; /* Muted parchment-like color */
+    text-align: center;
+    margin-top: 15px;
+    line-height: 1.5em;
+    text-shadow: 
+        0 0 2px #b3a18f, /* Subtle, faded glow */
+        0 0 4px #776d65, 
+        0 0 8px #665b53;
+    animation: flicker 2s infinite alternate;
+}
+
+.triangle-text {
+    text-align: center;
+    color: #b3a18f; /* Parchment color for mystique */
+    line-height: 1.5em;
+    margin-top: 15px;
+    border-top: 2px solid #776d65; /* Subtle border at top */
+    border-bottom: 2px solid #776d65; /* Subtle border at bottom */
+    padding: 10px;
+}
+
+.triangle-line {
+    display: block;
+    margin: 0 auto;
+    text-shadow: 
+        0 0 2px #b3a18f, 
+        0 0 4px #776d65, 
+        0 0 6px #665b53;
+    animation: flicker 2s infinite alternate;
+}
+
+/* Sizes for triangular/eye alignment */
+.triangle-line.large {
+    width: 80%;
+    font-size: 1em;
+}
+
+.triangle-line.medium {
+    width: 80%;
+    font-size: 0.9em;
+}
+
+.triangle-line.small {
+    width: 80%;
+    font-size: 0.8em;
+}
+
+.triangle-line.tiny {
+    width: 80%;
+    font-size: 0.7em;
+}
+
+.triangle-line.center {
+    width: 60%;
+    font-size: 1em;
+    font-style: italic;
+    color: #e0dccc;
+}
+
+/* Flicker effect for mystical ambiance */
+@keyframes flicker {
+    0% {
+        opacity: 0.9;
+        text-shadow: 
+            0 0 2px #b3a18f, 
+            0 0 4px #776d65, 
+            0 0 6px #665b53;
+    }
+    50% {
+        opacity: 0.85;
+        text-shadow: 
+            0 0 1px #b3a18f, 
+            0 0 3px #776d65, 
+            0 0 5px #665b53;
+    }
+    100% {
+        opacity: 0.9;
+        text-shadow: 
+            0 0 2px #b3a18f, 
+            0 0 4px #776d65, 
+            0 0 8px #ff0000;
+    }
+}
+
+
+
 /* Responsive Width for Small Screens */
 @media (min-width: 768px) and (max-width: 1024px) {
 

@@ -11,8 +11,8 @@ include 'header.php';
     var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation, isEggParty, totalBurnAmount;
 
     //EGG-PARTY
-    const EGG_PARTY_TARGET = 14920000; // Threshold to stop egg party
-
+    //const EGG_PARTY_TARGET = 14920000; // Threshold to stop egg party
+    const EGG_PARTY_TARGET = 1;
 
     function init() {
         canvas = document.getElementById("canvas");
@@ -439,6 +439,7 @@ include 'header.php';
                     <button class="btn-clean" onclick="openActionForm('clean')"></button>
                     <button class="btn-play" onclick="openActionForm('play')"></button>
                     <button class="btn-feed" onclick="openActionForm('feed')"></button>
+                    <button class="btn-hatch" onclick="openActionForm('hatch')"></button>
                 </div>
             </div>
 
@@ -446,6 +447,9 @@ include 'header.php';
             <div id="actionOverlay" class="overlay" style="display: none;">
                 <div class="overlay-content">
                     <h3 id="actionTitle">Perform Action</h3>
+
+                    <p id="actionDescription" style="display: none;"></p>
+
                     <div class="burn-amount-container">
                         <img src="img/icon_burn.webp" alt="Burn Icon" class="burn-amount-img">
                         <input type="number" id="tokenAmountInput" placeholder="Token Amount" min="1000" step="any"
