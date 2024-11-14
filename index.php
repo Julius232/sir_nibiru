@@ -6,13 +6,12 @@ include 'header.php';
 <!-- Include only the bundled JavaScript file -->
 <script src="dist/bundle.js"></script> <!-- Adjust path as needed -->
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script src="animations/sir-nibiru8.js"></script>
+<script src="animations/sir-nibiru-9.js"></script>
 <script>
     var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation, isEggParty, totalBurnAmount;
 
     //EGG-PARTY
-    //const EGG_PARTY_TARGET = 14920000; // Threshold to stop egg party
-    const EGG_PARTY_TARGET = 1;
+    const EGG_PARTY_TARGET = 14920000; // Threshold to stop egg party
 
     function init() {
         canvas = document.getElementById("canvas");
@@ -34,7 +33,7 @@ include 'header.php';
 
     function handleComplete(evt, comp) {
         const lib = comp.getLibrary();
-        exportRoot = new lib.sirnibiru8();
+        exportRoot = new lib.sirnibiru9();
         stage = new lib.Stage(canvas);
 
         // Animation Function
