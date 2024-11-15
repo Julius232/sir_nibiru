@@ -268,29 +268,41 @@ include 'header.php';
     }
 
     function adjustHeightToBackground() {
-        if (window.innerWidth <= 1024) {
-            // Exit the function early for mobile devices
-            return;
+        const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+        if (viewportWidth > 1024) {
+            const header = document.getElementById('header');
+            const playWithMe = document.getElementById('playWithMe');
+
+            // Header Image
+            const headerImage = new Image();
+            headerImage.src = 'img/header.webp';
+            headerImage.onload = function () {
+                const aspectRatioHeader = headerImage.width / headerImage.height;
+                header.style.height = `${header.offsetWidth / aspectRatioHeader}px`;
+            };
+
+            // PlayWithMe Image
+            const playWithMeImage = new Image();
+            playWithMeImage.src = 'img/bg_interact-with-me.webp';
+            playWithMeImage.onload = function () {
+                const aspectRatioPlayWithMe = playWithMeImage.width / playWithMeImage.height;
+                playWithMe.style.height = `${playWithMe.offsetWidth / aspectRatioPlayWithMe}px`;
+            };
+        } else {
+            // Optionally, reset the heights for smaller screens
+            const header = document.getElementById('header');
+            const playWithMe = document.getElementById('playWithMe');
+
+            if (header) {
+                header.style.height = 'auto';
+            }
+            if (playWithMe) {
+                playWithMe.style.height = 'auto';
+            }
         }
-        const header = document.getElementById('header');
-        const playWithMe = document.getElementById('playWithMe');
-
-        // Header Image
-        const headerImage = new Image();
-        headerImage.src = 'img/header.webp';
-        headerImage.onload = function () {
-            const aspectRatioHeader = headerImage.width / headerImage.height;
-            header.style.height = `${header.offsetWidth / aspectRatioHeader}px`;
-        };
-
-        // PlayWithMe Image
-        const playWithMeImage = new Image();
-        playWithMeImage.src = 'img/bg_interact-with-me.webp';
-        playWithMeImage.onload = function () {
-            const aspectRatioPlayWithMe = playWithMeImage.width / playWithMeImage.height;
-            playWithMe.style.height = `${playWithMe.offsetWidth / aspectRatioPlayWithMe}px`;
-        };
     }
+
 
     // Adjust position on page load and resize
     window.addEventListener('load', () => {
@@ -300,19 +312,19 @@ include 'header.php';
         adjustHeightToBackground();
     });
 
-    // Refresh page on resize with debounce to avoid excessive reloads
-    let resizeTimeout;
-    let lastWindowWidth = window.innerWidth;
-
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            if (Math.abs(window.innerWidth - lastWindowWidth) > 100) { // Increase threshold
-                lastWindowWidth = window.innerWidth; // Update width only on significant change
-                location.reload();
-            }
-        }, 200);
-    });
+    /*     // Refresh page on resize with debounce to avoid excessive reloads
+        let resizeTimeout;
+        let lastWindowWidth = window.innerWidth;
+    
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (Math.abs(window.innerWidth - lastWindowWidth) > 100) { // Increase threshold
+                    lastWindowWidth = window.innerWidth; // Update width only on significant change
+                    location.reload();
+                }
+            }, 200);
+        }); */
 
     window.onload = init;
 </script>

@@ -17,6 +17,10 @@
     margin: 60px auto;
     text-align: center;
     text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 
@@ -164,13 +168,15 @@
     background-position: center;
     border: none;
     cursor: pointer;
-    padding: 15px 20px; /* Adjust padding as needed */
-    width: 100%; /* Ensures button takes full grid cell width */
+    padding: 15px 20px;
+    /* Adjust padding as needed */
+    width: 100%;
+    /* Ensures button takes full grid cell width */
     aspect-ratio: 5 / 1;
     font-size: 12px;
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
     gap: 5px;
     color: #ffffff;
     font-weight: bold;
@@ -214,42 +220,49 @@
 
 .btn-hatch {
     grid-column: span 2;
-    grid-row: 2; /* Places it in the middle row, spanning both columns */
+    grid-row: 2;
+    /* Places it in the middle row, spanning both columns */
     background-image: url('../img/buttons/hatch.webp');
     display: flex;
     justify-content: center;
 }
 
 #actionDescription {
-    font-family: 'Cormorant Unicase', serif; /* Use a serif or gothic-inspired font */
+    font-family: 'Cormorant Unicase', serif;
+    /* Use a serif or gothic-inspired font */
     font-size: 1.1em;
-    color: #b3a18f; /* Muted parchment-like color */
+    color: #b3a18f;
+    /* Muted parchment-like color */
     text-align: center;
     margin-top: 15px;
     line-height: 1.5em;
-    text-shadow: 
-        0 0 2px #b3a18f, /* Subtle, faded glow */
-        0 0 4px #776d65, 
+    text-shadow:
+        0 0 2px #b3a18f,
+        /* Subtle, faded glow */
+        0 0 4px #776d65,
         0 0 8px #665b53;
     animation: flicker 2s infinite alternate;
 }
 
 .triangle-text {
     text-align: center;
-    color: #b3a18f; /* Parchment color for mystique */
+    color: #b3a18f;
+    /* Parchment color for mystique */
     line-height: 1.5em;
     margin-top: 15px;
-    border-top: 2px solid #776d65; /* Subtle border at top */
-    border-bottom: 2px solid #776d65; /* Subtle border at bottom */
+    border-top: 2px solid #776d65;
+    /* Subtle border at top */
+    border-bottom: 2px solid #776d65;
+    /* Subtle border at bottom */
     padding: 10px;
 }
 
 .triangle-line {
     display: block;
     margin: 0 auto;
-    text-shadow: 
-        0 0 2px #b3a18f, 
-        0 0 4px #776d65, 
+    text-shadow:
+        0 0 2px #b3a18f,
+        0 0 4px #776d65,
         0 0 6px #665b53;
     animation: flicker 2s infinite alternate;
 }
@@ -287,35 +300,22 @@
     bottom: 20px;
     right: 20px;
     z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px; /* For spacing if additional controls are added later */
 }
 
 #muteButton {
-    background: linear-gradient(135deg, rgb(255, 235, 59), rgb(255, 193, 7));
-    border-radius: 50px; /* Rounded, modern button */
+    background-color: rgb(252, 248, 0);
+    border-radius: 5px;
     color: #000;
-    padding: 12px 24px;
+    padding: 10px 20px;
     font-size: 1rem;
-    font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), inset 0 -4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 3px solid rgba(0, 0, 0, 0.8);
-    text-shadow: 1px 1px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    border: 6px solid rgb(0, 0, 0);
 }
 
 #muteButton:hover {
     transform: scale(1.1);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35), inset 0 -6px 8px rgba(0, 0, 0, 0.15);
-}
-
-#muteButton:active {
-    transform: scale(0.95);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, rgb(255, 193, 7), rgb(255, 235, 59));
 }
 
 
@@ -323,56 +323,37 @@
 @keyframes flicker {
     0% {
         opacity: 0.9;
-        text-shadow: 
-            0 0 2px #b3a18f, 
-            0 0 4px #776d65, 
+        text-shadow:
+            0 0 2px #b3a18f,
+            0 0 4px #776d65,
             0 0 6px #665b53;
     }
+
     50% {
         opacity: 0.85;
-        text-shadow: 
-            0 0 1px #b3a18f, 
-            0 0 3px #776d65, 
+        text-shadow:
+            0 0 1px #b3a18f,
+            0 0 3px #776d65,
             0 0 5px #665b53;
     }
+
     100% {
         opacity: 0.9;
-        text-shadow: 
-            0 0 2px #b3a18f, 
-            0 0 4px #776d65, 
+        text-shadow:
+            0 0 2px #b3a18f,
+            0 0 4px #776d65,
             0 0 8px #ff0000;
     }
 }
 
 
-
-/* Responsive Width for Small Screens */
-@media (min-width: 768px) and (max-width: 1024px) {
-
-    .play-area {
-        width: 70%;
-        margin: 100px auto;
-        padding: 15px;
-    }
-
-    .play-area h1 {
-        font-size: 24px;
-        margin-bottom: 15px;
-    }
-
-    .play-with-me {
-        background-size: auto;
-        margin: -10% auto;
-    }
-
-}
-
-/* Responsive Width for Small Screens */
-@media (max-width: 768px) {
+/* Responsive Width for Mobile Devices */
+@media (max-width: 1024px) {
 
     .play-area {
         width: 100%;
-        margin: 0px auto;
+        margin: 20px auto;
+        /* Adjusted margin to prevent overlap */
         padding: 15px;
     }
 
@@ -382,7 +363,8 @@
     }
 
     .play-with-me {
-        background-size: auto;
-        margin: -5% auto;
+        background-image: none;
+        background-color: #371400;
+        margin: -3% auto;
     }
 }
