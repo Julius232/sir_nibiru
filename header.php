@@ -46,8 +46,8 @@
         </section>
         <section class="best-friend-section">
             <div class="best-friend-badge">
-                <p class="best-friend-name"><?php echo $bestFriend; ?></p>
-                <p class="best-friend-donation"><?php echo $topDonation; ?></p>
+                <p class="best-friend-name">loading...</p>
+                <p class="best-friend-donation">loading...</p>
             </div>
         </section>
 

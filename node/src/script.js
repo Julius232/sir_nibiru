@@ -30,6 +30,9 @@ const subdomain = 'tame-few-season';
 const domain = '.solana-mainnet.quiknode.pro/';
 const encodedUniqueId = 'ZjZkNjdlODAzYzcwMTZkNzZiNGQ4MTYxNGY1YzNiNDg1MzE2MzlkNw==';
 
+// State to track mute
+let isMuted = true;
+
 document.addEventListener("DOMContentLoaded", async () => {
     // DOM Elements
     const connectButton = document.getElementById('connect-wallet');
@@ -44,6 +47,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const monthlyHighscoreList = document.getElementById('monthlyHighscore');
     const allTimeHighscoreList = document.getElementById('allTimeHighscore');
     const highscoreSection = document.querySelector('.highscore');
+    const eggPartyMusic = document.getElementById('eggPartyMusic');
+    const postEggPartyMusic = document.getElementById('postEggPartyMusic');
+    const muteButton = document.getElementById('muteButton');
+
+    eggPartyMusic.volume = 0.2; // Set volume to 20%
+    postEggPartyMusic.volume = 0.2; // Set volume to 20%
 
     // Variables
     let monthlyDataLoaded = true; // Since we load it by default
@@ -62,6 +71,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     setInterval(fetchAndProcessDonations, 60000); // Poll backend every minute
     setupWalletEvents(); // Set up wallet event listeners
     // Event Listeners
+
+    muteButton.addEventListener("click", () => {
+        playMusicBasedOnPhase();
+    });
+
     connectButton.addEventListener("click", () => {
         if (wallet) {
             showWalletOptions();
@@ -97,6 +111,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     highscoreSection.addEventListener('touchend', () => {
         handleHighscoreSwipe();
     });
+
+    // Function to toggle mute
+    function toggleMute() {
+        isMuted = !isMuted;
+
+        // Mute or unmute the audio
+        eggPartyMusic.muted = isMuted;
+        postEggPartyMusic.muted = isMuted;
+
+        // Update button text
+        muteButton.textContent = isMuted ? 'Play Audio' : 'Pause Audio';
+    }
+
+    // Attach toggleMute to the global window object
+    window.toggleMute = toggleMute;
+
+    // Function to play music based on phase
+    function playMusicBasedOnPhase() {
+        if (isEggParty) {
+            postEggPartyMusic.pause();
+            postEggPartyMusic.currentTime = 0;
+            if (!isMuted) {
+                eggPartyMusic.play().catch(error => console.error("Audio play error:", error));
+            }
+        } else {
+            eggPartyMusic.pause();
+            eggPartyMusic.currentTime = 0;
+            if (!isMuted) {
+                postEggPartyMusic.play().catch(error => console.error("Audio play error:", error));
+            }
+        }
+    }
 
     // Function to check if the nonce is valid (i.e., not older than 6 days)
     function isNonceValid() {
@@ -630,11 +676,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             showWalletOptions();
             return;
         }
-    
+
         try {
             // Detect the user platform (iPhone or Android)
             const isAndroid = /Android/i.test(navigator.userAgent);
-    
+
             if (isAndroid) {
                 // Redirect to Phantom's universal link for mobile platforms
                 const deepLink = `https://phantom.app/ul/connect?app_url=${encodeURIComponent(window.location.href)}`;
@@ -888,7 +934,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (result.status === "success") {
                 alert("Action performed successfully!");
-                location.reload();
+                // Close the action overlay
+                closeActionForm();
+                // Fetch and process donations to update progress bars
+                await fetchAndProcessDonations();
+                // Update total burned tokens
+                await fetchTotalBurned();
+                // Update last sitters
+                await fetchLastSitters();
+                // Update best friend
+                await fetchBestFriend();
+                // Update user donation total if the user is logged in
+                if (wallet) {
+                    await fetchUserDonationTotal();
+                }
             } else {
                 alert(`Action failed: ${result.message}`);
             }

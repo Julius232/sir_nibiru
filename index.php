@@ -9,7 +9,7 @@ include 'header.php';
 <script src="animations/sir-nibiru-9.js"></script>
 <script>
     var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation, isEggParty, totalBurnAmount;
-
+    isEggParty = true;
     //EGG-PARTY
     const EGG_PARTY_TARGET = 14920000; // Threshold to stop egg party
 
@@ -403,6 +403,18 @@ include 'header.php';
     </section>
 
     <section class="play-with-me" id="playWithMe">
+        <div id="musicControls">
+            <audio id="eggPartyMusic" loop muted>
+                <source src="audio/egg_party.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <audio id="postEggPartyMusic" loop muted>
+                <source src="audio/post_egg_party.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <button id="muteButton" onclick="toggleMute()">Play Audio</button>
+        </div>
+
         <div class="play-area">
             <h1>INTERACT WITH ME</h1>
             <!-- Game Frame on the Left -->
