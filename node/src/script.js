@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const feedButton = document.querySelector('.btn-feed');
         const howToButton = document.querySelector('.btn-howto');
         const hatchButton = document.querySelector('.btn-hatch');
-    
+
         if (isEggParty) {
             cleanButton.style.display = 'none';
             playButton.style.display = 'none';
@@ -491,7 +491,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             hatchButton.style.display = 'none'; // Hide hatch button if not in egg party mode
         }
     }
-    
+
     // Update progress bars in the DOM
     function updateProgressBars() {
         const eggPartyPercentage = Math.min(totalBurnAmount / EGG_PARTY_TARGET, 1) * 100;
@@ -630,8 +630,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             showWalletOptions();
             return;
         }
-
+    
         try {
+            // Detect the user platform (iPhone or Android)
+            const isAndroid = /Android/i.test(navigator.userAgent);
+    
+            if (isAndroid) {
+                // Redirect to Phantom's universal link for mobile platforms
+                const deepLink = `https://phantom.app/ul/connect?app_url=${encodeURIComponent(window.location.href)}`;
+                window.location.href = deepLink;
+                return;
+            }
+
             await phantomWallet.connect();
             if (!phantomWallet.connected) {
                 throw 'Failed to connect to Phantom wallet.';
@@ -749,18 +759,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert("Please connect your wallet first.");
             return;
         }
-    
+
         const nonceValid = await ensureNonceValid();
         if (!nonceValid) {
             alert("Failed to refresh session. Please try again.");
             return;
         }
-    
+
         selectedAction = action;
         document.getElementById("actionTitle").textContent = `BURN FOR ${action.charAt(0).toUpperCase() + action.slice(1)}`;
-    
+
         const actionDescription = document.getElementById("actionDescription");
-    
+
         // Set a unique mystical description for each action
         if (action === "hatch") {
             actionDescription.innerHTML = `
@@ -803,11 +813,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
                 `;
         }
-    
+
         actionDescription.style.display = "block"; // Ensure the description is visible
         document.getElementById("actionOverlay").style.display = "flex";
     };
-    
+
     // Close action form overlay
     window.closeActionForm = function () {
         document.getElementById("actionOverlay").style.display = "none";
@@ -894,31 +904,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     async function performBurnAction(amount, action) {
-        // Show loading overlay with initial message
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const overlayContent = document.querySelector('#loadingOverlay .overlay-content p');
+
+        // Ensure the overlay and content are present
+        if (!loadingOverlay || !overlayContent) {
+            console.error("Loading overlay or content not found in DOM.");
+            return;
+        }
+
+        // Show the overlay
         loadingOverlay.style.display = 'flex';
-        const overlayContent = document.querySelector('.overlay-content p');
 
         try {
+            // Update text to indicate wallet connection
+            overlayContent.textContent = 'Connecting wallet...';
+
             // Ensure the wallet is connected
             if (!phantomWallet.connected) {
-                overlayContent.textContent = 'Connecting wallet...';
                 await phantomWallet.connect();
             }
 
             // Decode the unique ID at runtime
+            overlayContent.textContent = 'Initializing connection...';
             const uniqueId = decodeBase64(encodedUniqueId);
             const connection = new Connection(`${base}${subdomain}${domain}${uniqueId}`, 'finalized');
 
-            // Step 1: Retrieve associated token account
-            overlayContent.textContent = 'Checking associated token account...';
+            // Retrieve associated token account
+            overlayContent.textContent = 'Retrieving token account...';
             const associatedTokenAddress = await getAssociatedTokenAddress(
                 TOKEN_MINT_ADDRESS,
                 wallet
             );
 
-            // Step 2: Verify token balance
-            overlayContent.textContent = 'Validating token balance...';
+            // Verify token balance
+            overlayContent.textContent = 'Checking token balance...';
             const userTokenAccountInfo = await connection.getTokenAccountBalance(associatedTokenAddress, 'finalized');
             const userBalance = userTokenAccountInfo.value.uiAmount;
 
@@ -930,8 +950,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Calculate the amount in smallest units
             const amountInSmallestUnits = Math.round(amount * Math.pow(10, TOKEN_DECIMALS));
 
-            // Step 3: Create burn instruction
-            overlayContent.textContent = 'Creating burn transaction...';
+            // Create burn instruction
+            overlayContent.textContent = 'Preparing burn transaction...';
             const burnInstruction = createBurnCheckedInstruction(
                 associatedTokenAddress,
                 TOKEN_MINT_ADDRESS,
@@ -940,34 +960,50 @@ document.addEventListener("DOMContentLoaded", async () => {
                 TOKEN_DECIMALS
             );
 
-            // Step 4: Add memo instruction
-            const memoText = `Burning ${amount} Sir.Nibiru tokens for action[${action}]`;
+            // Add memo instruction
+            const memoText = `Burning ${amount} Sir.Nibiru tokens for action [${action}]`;
             const memoInstruction = new TransactionInstruction({
                 keys: [],
                 programId: new PublicKey('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'),
                 data: Buffer.from(memoText, 'utf-8'),
             });
 
-            // Step 5: Create and prepare transaction
-            overlayContent.textContent = 'Preparing transaction...';
+            // Create and prepare transaction
+            overlayContent.textContent = 'Finalizing transaction...';
             let transaction = new Transaction().add(memoInstruction, burnInstruction);
             const latestBlockhash = await connection.getLatestBlockhash('finalized');
             transaction.recentBlockhash = latestBlockhash.blockhash;
             transaction.feePayer = wallet;
 
-            // Step 6: Sign transaction
+            // Sign transaction
             overlayContent.textContent = 'Signing transaction...';
             let signedTransaction = await phantomWallet.signTransaction(transaction);
 
-            // Step 7: Serialize and send transaction
+            // Serialize and send transaction
             overlayContent.textContent = 'Sending transaction to network...';
             const serializedTransaction = signedTransaction.serialize();
             const signature = await connection.sendRawTransaction(serializedTransaction, { preflightCommitment: 'finalized' });
 
-            // Step 8: Confirm transaction status
-            const maxWaitTime = 300000; // 60 seconds max wait
+            // Confirm transaction status
+            const maxWaitTime = 60000; // 60 seconds max wait
             const startTime = Date.now();
-            overlayContent.textContent = 'Waiting for confirmation...';
+            overlayContent.textContent = 'Waiting for transaction confirmation...';
+
+            // Update the status message
+            overlayContent.textContent = 'Waiting for transaction confirmation...';
+
+            // Add a new line for "DO NOT CLOSE THE BROWSER WINDOW"
+            let doNotCloseMessage = document.querySelector('.do-not-close'); // Check if it already exists
+            if (!doNotCloseMessage) {
+                doNotCloseMessage = document.createElement('p');
+                doNotCloseMessage.textContent = 'DO NOT CLOSE THE BROWSER WINDOW';
+                doNotCloseMessage.style.color = 'red';
+                doNotCloseMessage.style.fontWeight = 'bold';
+                doNotCloseMessage.style.marginTop = '10px';
+                doNotCloseMessage.classList.add('do-not-close');
+                overlayContent.parentElement.appendChild(doNotCloseMessage); // Append it after the current overlay content
+            }
+
 
             while (Date.now() - startTime < maxWaitTime) {
                 const status = await connection.getSignatureStatus(signature, { searchTransactionHistory: true });
@@ -982,15 +1018,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             throw new Error('Transaction confirmation timed out.');
         } catch (error) {
             console.error("Error performing burn action:", error);
+            overlayContent.textContent = 'Transaction failed! Please try again.';
             alert(`Transaction failed: ${error.message}`);
-            overlayContent.textContent = 'Transaction failed!';
             return null;
         } finally {
             // Hide the loading overlay after processing
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Optional delay to display the final status
             loadingOverlay.style.display = 'none';
         }
     }
-
 
     // Show "How To" modal and disable body scrolling
     window.showHowTo = function () {

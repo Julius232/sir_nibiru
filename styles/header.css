@@ -373,7 +373,7 @@ header {
         pointer-events: none;
     }
     
-    .nav-links.active + .nav-container {
+    .nav-links.active {
         pointer-events: auto; /* Enable when nav is active */
     }
 

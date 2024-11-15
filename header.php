@@ -39,7 +39,8 @@
             <a href="#playWithMe" class="menu-link">Play |</a>
             <a href="#highscore" class="menu-link">Highscore |</a>
             <a href="#roadmap" class="menu-link">Roadmap |</a>
-            <a href="#story" class="menu-link">The Story</a>
+            <a href="#story" class="menu-link">The Story |</a>
+            <a href="whitepaper/Sir_Nibiru_Project_Whitepaper_v1.pdf" class="menu-link" download>Whitepaper</a>
             <img src="img/icon_burn.webp" alt="Burn Icon" class="burn-icon">
             <span class="menu-text">Tokens Burned: <span id="total-burn-amount">0</span></span>
         </section>
