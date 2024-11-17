@@ -20,7 +20,7 @@ $nonce = $data['nonce'] ?? null;
 // Fetch the user_id based on the wallet address
 $user_id = get_user_id_from_wallet($wallet_address);
 // Telegram Bot token
-$botToken = '8019392115:AAGLca28IFuMDSrbRPF7GXm7TNxaXrdBur8';
+$botToken = 
 // Chat ID to send messages to (replace with the actual chat ID or use your own user ID for testing)
 $chatId = '-1002481738456';
 
