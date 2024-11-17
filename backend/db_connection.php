@@ -1,17 +1,4 @@
 <?php
-
-// Define database constants (adjust these values based on your actual database configuration)
-
-//define('DB_HOST', 'mysqlsvr80.world4you.com');  // Database host
-
-//define('DB_PORT', '3306');                      // Database port
-
-//define('DB_NAME', '4158319db1');                // Database name
-
-//define('DB_USER', 'sql5999128');                // Database username
-
-//define('DB_PASSWORD', 'f+8qq@ts');              // Database password
-
 define('DB_HOST', 'localhost');  // Database host
 define('DB_PORT', '3306');
 define('DB_NAME', '4158319db1');
