@@ -533,6 +533,17 @@ include 'header.php';
         </div>
     </div>
 
+    <div id="overlay" style="display: none;">
+        <div id="popup">
+            <h3>Please Open in Phantom Browser</h3>
+            <p>It seems like you're not using the Phantom browser. Please open this website in the Phantom wallet app's
+                browser or download Phantom.</p>
+            <button id="closePopupButton">Okay</button>
+            <button id="redirectToDownloadButton">Download Phantom</button>
+        </div>
+    </div>
+
+
 </main>
 
 <?php

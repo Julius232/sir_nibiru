@@ -25,13 +25,17 @@ let bars = { clean: 0, play: 0, feed: 0 }; // Initial bar values
 let isSigning = false;
 let selectedAction = null;
 const increasePerToken = MAX_PROGRESS / tokensForFullProgress;
-const base = 'https://';
-const subdomain = 'tame-few-season';
-const domain = '.solana-mainnet.quiknode.pro/';
-const encodedUniqueId = 'ZjZkNjdlODAzYzcwMTZkNzZiNGQ4MTYxNGY1YzNiNDg1MzE2MzlkNw==';
 
 // State to track mute
 let isMuted = true;
+
+// Popup functions
+function showPopup() {
+    const overlay = document.getElementById('overlay');
+    if (overlay) {
+        overlay.style.display = 'flex'; // Use 'flex' if you're using flexbox for centering
+    }
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
     // DOM Elements
@@ -50,6 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const eggPartyMusic = document.getElementById('eggPartyMusic');
     const postEggPartyMusic = document.getElementById('postEggPartyMusic');
     const muteButton = document.getElementById('muteButton');
+    const closePopup = document.getElementById('closePopupButton');
+    const redirectToDownload = document.getElementById('redirectToDownloadButton');
 
     eggPartyMusic.volume = 0.2; // Set volume to 20%
     postEggPartyMusic.volume = 0.2; // Set volume to 20%
@@ -70,7 +76,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     fetchAndProcessDonations(); // Fetch donations and update progress bars
     setInterval(fetchAndProcessDonations, 60000); // Poll backend every minute
     setupWalletEvents(); // Set up wallet event listeners
-    // Event Listeners
+    handleDeepLinkReturn();
+
+    closePopup.addEventListener('click', () => {
+        const overlay = document.getElementById('overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+    });
+
+    redirectToDownload.addEventListener('click', () => {
+        window.open('https://phantom.app/download', '_blank');
+    });
 
     muteButton.addEventListener("click", () => {
         playMusicBasedOnPhase();
@@ -256,9 +273,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             connectText.textContent = "";
             document.getElementById('connect-wallet').classList.remove('connected');
         });
+
     }
 
-    // Adjusted 'handleNonceVerification' function to store nonce timestamp
+
+    // Handle nonce verification
     async function handleNonceVerification(wallet) {
         if (isSigning) return;
 
@@ -313,6 +332,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             isSigning = false;
         }
     }
+
 
     // Fetch configuration from backend
     async function fetchConfig() {
@@ -670,27 +690,118 @@ document.addEventListener("DOMContentLoaded", async () => {
         overlay.style.display = 'none';
     };
 
-    // Connect wallet function
+    // Utility function to detect iPhone devices
+    function isIPhoneDevice() {
+        return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    // Utility function to detect Android devices
+    function isAndroidDevice() {
+        return /Android/i.test(navigator.userAgent);
+    }
+
+
+    // Handle deep link return from Phantom
+    function handleDeepLinkReturn() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const publicKey = urlParams.get('public_key');
+        const session = urlParams.get('session');
+        const signature = urlParams.get('signature');
+        const errorCode = urlParams.get('errorCode');
+        const errorMessage = urlParams.get('errorMessage');
+
+        if (errorCode) {
+            console.error('Error from Phantom:', errorMessage);
+            alert(`Error from Phantom: ${errorMessage}`);
+            return;
+        }
+
+        if (publicKey && signature) {
+            // User has signed the message
+            const walletAddress = publicKey;
+
+            // Retrieve the nonce from sessionStorage
+            const nonce = sessionStorage.getItem('nonce');
+
+            if (!nonce) {
+                console.error('Nonce not found in session storage.');
+                return;
+            }
+
+            // Send signature to backend for verification
+            fetch('/sir_nibiru/verify_user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    wallet_address: walletAddress,
+                    signature: signature,
+                    nonce: nonce, // Include nonce for verification
+                    public_key: publicKey
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        connectText.textContent = data.username;
+                        connectText.style.color = 'black';
+                        sessionStorage.setItem('walletAddress', walletAddress);
+                        sessionStorage.setItem('username', data.username);
+                    } else {
+                        console.error("Nonce verification failed:", data.error);
+                    }
+                })
+                .catch(err => {
+                    console.error("Failed to verify nonce with backend:", err);
+                });
+        } else if (publicKey && session) {
+            // Initial connection after connect deep link
+            wallet = publicKey;
+            connectText.textContent = "Options";
+            connectText.style.color = 'black';
+
+            // Store the session for later use
+            sessionStorage.setItem('phantomSession', session);
+
+            handleNonceVerification(wallet);
+        }
+    }
+
     async function connectWallet() {
+        console.log("connectWallet function triggered");
         if (wallet) {
             showWalletOptions();
             return;
         }
 
         try {
-            // Detect the user platform (iPhone or Android)
-            const isAndroid = /Android/i.test(navigator.userAgent);
+            const isiPhone = isIPhoneDevice();
+            const isAndroid = isAndroidDevice();
+            const isMobile = isiPhone || isAndroid;
+            const provider = window.phantom?.solana || window.solana;
+            const isPhantomInstalled = provider && provider.isPhantom;
 
-            if (isAndroid) {
-                // Redirect to Phantom's universal link for mobile platforms
-                const deepLink = `https://phantom.app/ul/connect?app_url=${encodeURIComponent(window.location.href)}`;
-                window.location.href = deepLink;
-                return;
-            }
-
-            await phantomWallet.connect();
-            if (!phantomWallet.connected) {
-                throw 'Failed to connect to Phantom wallet.';
+            if (isMobile) {
+                if (isPhantomInstalled) {
+                    await phantomWallet.connect();
+                    if (!phantomWallet.connected) {
+                        throw 'Failed to connect to Phantom wallet.';
+                    }
+                } else {
+                    if (isiPhone) {
+                        await phantomWallet.connect();
+                    }
+                    showPopup();
+                    return;
+                }
+            } else {
+                if (!isPhantomInstalled) {
+                    showPopup();
+                    return;
+                }
+                await phantomWallet.connect();
+                if (!phantomWallet.connected) {
+                    throw 'Failed to connect to Phantom wallet.';
+                }
             }
 
             wallet = phantomWallet.publicKey;
@@ -701,6 +812,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert("Failed to connect wallet: " + error);
         }
     }
+
 
     // Disconnect wallet and remove session data
     window.disconnectWallet = async function () {
@@ -742,6 +854,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             await phantomWallet.disconnect();
         }
     };
+
 
     // Adjusted 'changeUsername' function
     window.changeUsername = async function () {
@@ -986,8 +1099,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Decode the unique ID at runtime
             overlayContent.textContent = 'Initializing connection...';
-            const uniqueId = decodeBase64(encodedUniqueId);
-            const connection = new Connection(`${base}${subdomain}${domain}${uniqueId}`, 'finalized');
+            const rpcEndpoint = 'https://tame-few-season.solana-mainnet.quiknode.pro/f6d67e803c7016d76b4d81614f5c3b48531639d7';
+            const connection = new Connection(rpcEndpoint, 'finalized');
 
             // Retrieve associated token account
             overlayContent.textContent = 'Retrieving token account...';
