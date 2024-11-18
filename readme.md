@@ -1,4 +1,9 @@
 # Sir Nibiru Project
+Blowfish ticket number 4333
+Domains: 
+https://www.sir-nibiru.com
+https://www.sir-nibiru.com/sir_nibiru/
+
 
 This project is a PHP, Node.js, and JavaScript-based application with a MySQL database. It is designed to run on a XAMPP server and uses Webpack for bundling JavaScript files. This README will guide you through setting up the environment, installing dependencies, and running the project.
 
