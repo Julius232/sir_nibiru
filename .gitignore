@@ -17,3 +17,4 @@ node/*
 
 # Ignore other unnecessary files (customize as needed)
 *.log
+*.env

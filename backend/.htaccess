@@ -1,0 +1,17 @@
+# Block direct access to all PHP files
+<FilesMatch "\.php$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Block access to .env files specifically
+<Files .env>
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Optional: Block other sensitive file types (e.g., config files, logs)
+<FilesMatch "\.(log|ini|sh|bak|sql)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>

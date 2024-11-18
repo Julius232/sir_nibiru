@@ -19,8 +19,6 @@
                 <p><strong>Website Developer: </strong>Julius Szemelliker</p>
                 <p><strong>Contact:</strong></p>
                 <p>Julius Szemelliker</p>
-                <p>Hainfelder Straße 19, 3040 Neulengbach, Österreich</p>
-                <p>Tel.: +436765945246</p>
                 <p>E-Mail: <a href="mailto:sirnibiru@gmail.com">sirnibiru@gmail.com</a></p>
 
                 <p><strong>Disclaimer:</strong><br>

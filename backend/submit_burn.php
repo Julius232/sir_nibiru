@@ -1,7 +1,23 @@
 <?php
 include 'db_connection.php';
 include 'local_development.php';
+include_once 'config_loader.php';
+
 header("Content-Type: application/json");
+
+// Load environment variables from the .env file
+try {
+    loadEnv(__DIR__ . '/.env');
+} catch (Exception $e) {
+    echo json_encode([
+        "status" => "error",
+        "message" => $e->getMessage()
+    ]);
+    exit;
+}
+
+// Fetch the bot token from the environment variables
+$botToken = getenv('BOT_TOKEN');
 
 $db = connect_db();
 define('API_URL', 'https://tame-few-season.solana-mainnet.quiknode.pro/f6d67e803c7016d76b4d81614f5c3b48531639d7');
@@ -19,8 +35,7 @@ $nonce = $data['nonce'] ?? null;
 
 // Fetch the user_id based on the wallet address
 $user_id = get_user_id_from_wallet($wallet_address);
-// Telegram Bot token
-$botToken = 
+
 // Chat ID to send messages to (replace with the actual chat ID or use your own user ID for testing)
 $chatId = '-1002481738456';
 
@@ -66,7 +81,7 @@ if ($existing_donation) {
 }
 
 // Function to send a message to Telegram
-function sendTelegramMessage($username, $burned_amount) {
+function sendTelegramMessage($username, $burned_amount, $signature) {
     global $botToken, $chatId;
     $url = "https://api.telegram.org/bot$botToken/sendMessage";
 
@@ -74,6 +89,7 @@ function sendTelegramMessage($username, $burned_amount) {
     $message = "🔥 *Token Burn Alert!* 🔥\n\n" .
                "👤 *User*: $username just contributed to our community burn!\n\n" .
                "💰 *Amount Burned*: $burned_amount tokens\n\n" .
+               "https://solscan.io/tx/$signature\n\n" .
                "💪 *WE BURN FOR OUR COMMUNITY!*\n\n" .
                "🌐 [Visit Sir Nibiru's official burn page](https://www.sir-nibiru.com) to join the action! 🎉";
 
@@ -283,7 +299,7 @@ try {
     $stmt = $db->prepare("INSERT INTO donations (user_id, signature, donation_amount, action) VALUES (?, ?, ?, ?)");
     $stmt->execute([$user_id, $signature, $burned_amount, $action]);
 
-    sendTelegramMessage($username, $burned_amount);
+    sendTelegramMessage($username, $burned_amount, $signature);
 
     echo json_encode([
         "status" => "success",
