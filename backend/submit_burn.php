@@ -83,28 +83,37 @@ if ($existing_donation) {
 // Function to send a message to Telegram
 function sendTelegramMessage($username, $burned_amount, $signature) {
     global $botToken, $chatId;
-    $url = "https://api.telegram.org/bot$botToken/sendMessage";
 
-    // Improved message with a link to the burn website and added emphasis
-    $message = "🔥 *Token Burn Alert!* 🔥\n\n" .
+    // Define API URL
+    $url = "https://api.telegram.org/bot$botToken/sendPhoto";
+
+    // Prepare the message caption
+    $caption = "🔥 *Token Burn Alert!* 🔥\n\n" .
                "👤 *User*: $username just contributed to our community burn!\n\n" .
                "💰 *Amount Burned*: $burned_amount tokens\n\n" .
                "https://solscan.io/tx/$signature\n\n" .
                "💪 *WE BURN FOR OUR COMMUNITY!*\n\n" .
                "🌐 [Visit Sir Nibiru's official burn page](https://www.sir-nibiru.com) to join the action! 🎉";
 
+    // Path to your local image file or image URL
+    $photo = "https://www.sir-nibiru.com/sir_nibiru/img/burn/burn.png"; // Replace with your image URL or local file path
+
+    // Prepare POST fields
     $postFields = [
         'chat_id' => $chatId,
-        'text' => $message,
+        'photo' => $photo,
+        'caption' => $caption,
         'parse_mode' => 'Markdown'
     ];
 
+    // Initialize cURL
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
+    // Execute cURL request
     $response = curl_exec($ch);
     curl_close($ch);
 
